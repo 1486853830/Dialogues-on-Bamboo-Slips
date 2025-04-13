@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek 聊天</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            /* 修改背景设置，移除混合模式 */
+            background: url('amo.png') center/cover no-repeat fixed;
+        }
+        #chat-container {
+            background: transparent; /* 改为完全透明 */
+            border-radius: 8px;
+            padding: 20px;
+            height: 400px; /* 调整高度 */
+            overflow-y: auto;
+            white-space: pre-wrap; /* 添加自动换行 */
+            word-break: break-word; /* 长单词或URL强制换行 */
+            /* 移除backdrop-filter属性 */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 123, 255, 0.3) transparent;
+        }
+        
+        /* 自定义滚动条样式 */
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #chat-container::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 4px;
+        }
+        
+        #chat-container::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 123, 255, 0.3);
+            border-radius: 4px;
+        }
+        
+        #chat-container::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 123, 255, 0.5);
+        }
+        .user-message {
+            background-color: rgba(227, 242, 253, 0.5); /* 保留轻微透明度 */
+        }
+        .bot-message {
+            background-color: rgba(241, 241, 241, 0.5); /* 保留轻微透明度 */
+        }
+        #input-area {
+            display: flex;
+            gap: 10px;
+            position: fixed; /* 固定在底部 */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 760px;
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+        }
+        #user-input {
+            flex: 1;
+            padding: 12px 15px; /* 增加左右内边距 */
+            border: 1px solid rgba(221, 221, 221, 0.7); /* 加深边框 */
+            border-radius: 8px; /* 增加圆角 */
+            background: rgba(255, 255, 255, 0.4); /* 增加透明度 */
+            backdrop-filter: blur(8px); /* 增强模糊效果 */
+            font-size: 15px; /* 增大字体 */
+            color: #333; /* 加深文字颜色 */
+            transition: all 0.3s ease; /* 添加过渡效果 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 添加轻微阴影 */
+        }
+        #user-input:focus {
+            outline: none;
+            border-color: rgba(0, 123, 255, 0.5); /* 聚焦时边框变蓝 */
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* 聚焦时添加发光效果 */
+        }
+        #user-input::placeholder {
+            color: rgba(102, 102, 102, 0.7); /* 优化占位符颜色 */
+        }
+        button {
+            background-color: rgba(0, 123, 255, 0.7); /* 蓝色半透明 */
+            color: white;
+            padding: 0 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 80px;
+            font-weight: bold; /* 字体加粗 */
+            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            display: inline-block;
+            backdrop-filter: blur(8px);
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: rgba(227, 242, 253, 0.7);
+            margin-left: auto;  /* 右侧对齐关键属性 */
+            margin-right: 0;
+            text-align: right;
+            display: block; /* 改为block确保独占一行 */
+            width: fit-content; /* 宽度适应内容 */
+            max-width: 80%;
+        }
+        .bot-message {
+            background-color: rgba(241, 241, 241, 0.7);
+            margin-right: auto;
+            margin-left: 0;
+            text-align: left;
+            display: block; /* 改为block确保独占一行 */
+            width: fit-content; /* 宽度适应内容 */
+            max-width: 80%;
+        }
+        /* 添加加载动画样式 */
+        .loading-spinner {
+            display: block;
+            width: 30px;
+            height: 30px;
+            border: 4px solid rgba(0,123,255,0.3);
+            border-radius: 50%;
+            border-top-color: #007bff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 15px 0 15px 15px; /* 增加间距 */
+        }
+        /* 修改标题容器样式 */
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: rgba(241, 241, 241, 0.5);
+            padding: 10px 25px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
+            width: fit-content;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .title-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            object-fit: cover;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 修改标题部分 -->
+    <!-- 在header-container div后面添加音乐控制按钮 -->
+    <div class="header-container">
+        <img src="head.png" class="title-avatar" alt="头像">
+        <h1>寒翎锐</h1>
+    </div>
+
+
+    <!-- 删除所有重复的样式定义，只保留这一个 -->
+
+
+
+
+    <!-- 在script标签中添加音乐控制逻辑 -->
+    <script>
+        // ... 已有代码 ...
+
+
+
+        // ... 已有代码 ...
+    </script>
+    
+    <style>
+        /* 更新音乐控制按钮样式 */
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        #music-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #music-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        #music-toggle::before {
+            content: "♪";
+            font-size: 16px;
+        }
+    </style>
+
+    <div id="chat-container"></div>
+    <div id="input-area">
+        <input type="text" id="user-input" placeholder="输入你的消息...">
+        <button id="send-button">发送</button>
+    </div>
+
+    <script>
+        let API_KEY;
+        const fileUrl = 'API_KEY.txt';
+        fetch(fileUrl)
+            .then(response => response.text())
+            .then(data => {
+                API_KEY = data.trim();
+            })
+            .catch(error => {
+                console.error('读取API_KEY.txt失败:', error);
+            });
+        
+        // 添加默认系统消息
+        // 系统消息配置
+        const systemMessage = {
+            role: "system",
+            content: "寒翎锐，古代背景下陈将军的亲卫，对将军忠心耿耿，誓死追随。你负责保护将军安全、执行将军命令，并以将军的意志为最高准则。你将以'将军'称呼用户并开启对话演绎，并表现出绝对的忠诚与服从。"
+        };
+
+        // 初始化消息历史
+        // 消息历史记录
+        let messageHistory = [systemMessage];
+        // 消息ID计数器
+        let messageIdCounter = 0;
+        
+        // 从本地存储加载历史消息
+        const savedHistory = localStorage.getItem('chatHistory');
+        if (savedHistory) {
+            messageHistory = JSON.parse(savedHistory);
+            // 显示历史消息
+            messageHistory.forEach(msg => {
+                if (msg.role === 'user') {
+                    displayMessage(msg.content, 'user');
+                } else if (msg.role === 'assistant') {
+                    displayMessage(msg.content, 'bot');
+                }
+            });
+        }
+        
+        // 显示消息函数
+        function displayMessage(message, sender, isRephrase = false) {
+            const chatContainer = document.getElementById('chat-container');
+            
+            // 如果是用户消息，移除前一条机器人消息的重说按钮
+            if (sender === 'user') {
+                const buttons = chatContainer.querySelectorAll('button');
+                if (buttons.length > 0) {
+                    buttons[buttons.length - 1].remove();
+                }
+            }
+            
+            // 如果是重说，移除上一条机器人消息和它的重说按钮
+            if (isRephrase) {
+                // 找到原消息元素
+                const originalMessageElement = document.querySelector(`[data-message-id="${rephraseBtn.dataset.messageId}"]`);
+                if (originalMessageElement) {
+                    // 创建新消息元素
+                    const newMessageElement = document.createElement('div');
+                    newMessageElement.classList.add('message', `${sender}-message`);
+                    const processedMessage = message.replace(/（([^）]*)）|\(([^)]*)\)/g, '<span style="opacity:0.6">$&</span> ').replace(/<\/span>\s+/g, '</span> ');
+                    newMessageElement.innerHTML = processedMessage;
+                    // 在原消息下方插入新消息
+                    originalMessageElement.parentNode.insertBefore(newMessageElement, originalMessageElement.nextSibling);
+                    // 如果是机器人消息，添加重说按钮
+                    if (sender === 'bot') {
+                        const rephraseBtn = document.createElement('button');
+                        rephraseBtn.textContent = '重说';
+                        rephraseBtn.style.cssText = `
+                            background: rgba(0,123,255,0.7);
+                            color: white !important;
+                            padding: 8px 15px;
+                            border: none;
+                            border-radius: 20px;
+                            cursor: pointer;
+                            font-size: 14px;
+                            font-weight: bold;
+                            backdrop-filter: blur(5px);
+                            transition: all 0.3s ease;
+                            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                            width: auto;
+                            margin-bottom: 15px;
+                        `;
+                        originalMessageElement.parentNode.insertBefore(rephraseBtn, newMessageElement.nextSibling);
+                    }
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    return;
+                }
+            }
+
+            // 创建消息元素
+            const messageElement = document.createElement('div');
+            // 生成唯一消息ID
+            const currentMessageId = `msg-${messageIdCounter++}`;
+            messageElement.classList.add('message', `${sender}-message`);
+            
+            // 处理括号内容，添加透明效果并在反括号后加空格
+            const processedMessage = message.replace(/（([^）]*)）|\(([^)]*)\)/g, 
+                '<span style="opacity:0.6">$&</span> ')
+                .replace(/<\/span>\s+/g, '</span> ');
+            
+            messageElement.innerHTML = processedMessage;
+            chatContainer.appendChild(messageElement);
+            
+            // 如果是机器人消息，添加重说按钮
+            if (sender === 'bot') {
+                // 为每条机器人消息创建唯一的ID
+                const messageId = Date.now();
+                messageElement.dataset.messageId = messageId;
+                // 创建重说按钮
+                const rephraseBtn = document.createElement('button');
+                rephraseBtn.dataset.messageId = currentMessageId;
+                rephraseBtn.textContent = '';
+                rephraseBtn.style.cssText = `
+                    background: rgba(0,0,0,0);
+                    color: white !important;
+                    padding: 8px 15px;
+                    border: none;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: bold;
+                    backdrop-filter: blur(5px);
+                    transition: all 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    width: auto;
+                    margin-bottom: 15px;
+                `;
+                // 保存当前消息ID到闭包中
+                const savedMessageId = currentMessageId;
+                // 重说按钮点击事件
+                rephraseBtn.onclick = async () => {
+                    const currentMessageId = savedMessageId;
+                    // 根据消息ID找到对应消息
+                    const targetMessage = document.querySelector(`[data-message-id="${currentMessageId}"]`);
+                    if (!targetMessage) return;
+                    // 移除目标消息及之后所有消息
+                    const chatContainer = document.getElementById('chat-container');
+                    const children = Array.from(chatContainer.children);
+                    let removeFromIndex = children.indexOf(targetMessage);
+                    // 移除从当前消息开始的所有元素
+                    if (removeFromIndex !== -1) {
+                        for (let i = children.length - 1; i >= removeFromIndex; i--) {
+                            chatContainer.removeChild(children[i]);
+                        }
+                    }
+                    // 从消息历史中删除当前机器人消息
+                    const currentMessageIndex = messageHistory.findIndex(msg => msg.role === 'assistant' && msg.content === targetMessage.textContent.trim());
+                    if (currentMessageIndex !== -1) {
+                        messageHistory.splice(currentMessageIndex, 1);
+                    }
+                    // 保留用户上一条消息作为上下文
+                    const lastUserMessage = messageHistory.findLast(msg => msg.role === 'user');
+                    if (lastUserMessage) {
+                        messageHistory = messageHistory.slice(0, messageHistory.indexOf(lastUserMessage) + 1);
+                    }
+                    // 更新本地存储
+                    localStorage.setItem('chatHistory', JSON.stringify(messageHistory));
+                    // 重新发送请求，确保参数正确
+                    await sendMessage(true);
+                    console.log('重说请求已发送');
+                };
+                chatContainer.appendChild(rephraseBtn);
+            }
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendMessage(isRephrase = false) {
+            let userInput;
+            
+            if (!isRephrase) {
+                userInput = document.getElementById('user-input').value;
+                if (!userInput.trim()) return;
+                
+                // 先添加用户消息到历史
+                messageHistory.push({role: "user", content: userInput});
+                
+                // 然后显示用户消息
+                displayMessage(userInput, 'user');
+                document.getElementById('user-input').value = '';
+            }
+        
+            // 创建加载元素并放在聊天容器中
+            const loadingElement = document.createElement('div');
+            loadingElement.className = 'loading-spinner';
+            loadingElement.style.margin = '10px 0 10px 10px'; // 调整位置
+            document.getElementById('chat-container').appendChild(loadingElement);
+            
+            try {
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: messageHistory,
+                        temperature: isRephrase ? 0.9 : 0.7
+                    })
+                });
+                
+                const data = await response.json();
+                const botResponse = data.choices[0].message.content;
+                
+                // 移除加载元素
+                if (loadingElement.parentNode) {
+                    loadingElement.parentNode.removeChild(loadingElement);
+                }
+                
+                // 显示机器人回复
+                displayMessage(botResponse, 'bot', isRephrase);
+                messageHistory.push({role: "assistant", content: botResponse});
+                // 保存到本地存储
+                localStorage.setItem('chatHistory', JSON.stringify(messageHistory));
+                
+            } catch (error) {
+                // 出错时也移除加载元素
+                if (loadingElement.parentNode) {
+                    loadingElement.parentNode.removeChild(loadingElement);
+                }
+                displayMessage("抱歉，出错了: " + error.message, 'bot', isRephrase);
+            }
+        }
+
+        // 将事件监听移到DOMContentLoaded回调中
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加清除历史按钮
+            const clearBtn = document.createElement('button');
+            clearBtn.textContent = '清除历史';
+            clearBtn.id = 'clear-history';
+            clearBtn.style.cssText = `
+                background: rgba(255, 0, 0, 0.7);
+                color: white !important;
+                padding: 8px 15px;
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: bold;
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                width: auto;
+                display: inline-block;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+            `;
+            clearBtn.onclick = function() {
+                localStorage.removeItem('chatHistory');
+                messageHistory = [systemMessage];
+                document.getElementById('chat-container').innerHTML = '';
+            };
+            document.body.appendChild(clearBtn);
+            const bgImg = new Image();
+            bgImg.src = 'amo.png';
+            bgImg.onerror = function() {
+                document.body.style.background = 'linear-gradient(to bottom, #f5f5f5, #e0e0e0)';
+                console.log('背景图片加载失败，已使用备用背景');
+            };
+            
+            // 修改发送按钮事件监听，阻止默认行为
+            document.getElementById('send-button').addEventListener('click', function(e) {
+                e.preventDefault(); // 阻止按钮默认行为
+                sendMessage();
+            });
+            
+            document.getElementById('user-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // 阻止回车键默认行为
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+<style>
+    /* 进一步缩小整体尺寸 */
+    body {
+        max-width: 650px; /* 原700px */
+        padding: 12px; /* 原15px */
+    }
+    
+    #chat-container {
+        background: transparent;
+        border-radius: 8px;
+        padding: 20px;
+        height: calc(100vh - 170px); /* 动态高度，减去输入框和边距高度 */
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin-top: 70px;
+        margin-bottom: 40px; /* 增加与输入框的间距 */
+    }
+    .header-container {
+        padding: 6px 16px; /* 原8px 20px */
+        border-radius: 14px; /* 原16px */
+    }
+    
+    .title-avatar {
+        width: 35px; /* 原40px */
+        height: 35px; /* 原40px */
+    }
+    
+    h1 {
+        font-size: 18px; /* 原20px */
+    }
+    
+    /* 恢复原来的消息样式 */
+    .message {
+        padding: 12px 16px;
+        font-size: inherit;
+    }
+    
+    #input-area {
+        padding: 6px; /* 原8px */
+    }
+    
+    #user-input {
+        padding: 8px; /* 原10px */
+        font-size: 14px;
+    }
+    
+    button {
+        font-size: 14px;
+        padding: 0 16px; /* 原0 20px */
+    }
+</style>
