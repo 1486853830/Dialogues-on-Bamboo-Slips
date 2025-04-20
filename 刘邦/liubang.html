@@ -109,7 +109,7 @@
             background-color: rgba(227, 242, 253, 0.7);
             margin-left: auto;  /* 右侧对齐关键属性 */
             margin-right: 0;
-            text-align: right;
+            text-align: left;
             display: block; /* 改为block确保独占一行 */
             width: fit-content; /* 宽度适应内容 */
             max-width: 80%;
@@ -277,7 +277,7 @@
     </div>
 
     <script>
-        const API_KEY = 'sk-14e39852c6c342db98cd8616d5b65e92';
+        const API_KEY = localStorage.getItem('apiKey');
         // 直接从变量中获取API密钥，不再从文件读取
         
         // 添加默认系统消息
