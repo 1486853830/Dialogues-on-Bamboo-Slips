@@ -205,26 +205,32 @@ h1 {
 }
 
 /* 修改上拉菜单样式 */
+/* 添加这些样式来替换内联样式 */
+#menu-toggle {
+    position: absolute;
+    right: 115px;
+    top: 50%;
+    width: 0;
+    transform: translateY(-50%);
+    background-color: transparent;
+    font-size: 20px;
+}
+
 #pull-up-menu {
     display: none;
     position: fixed;
-    bottom: 70px;
-    /* 调整到离输入框更近的位置 */
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 40px);
-    background: rgba(0, 0, 0, 0.5);
-    /* 更透明的背景 */
-    backdrop-filter: blur(15px);
-    /* 增强毛玻璃效果 */
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(100px);
     border-radius: 12px;
     padding: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     max-height: 200px;
     overflow-y: auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    /* 添加边框 */
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .preset-btn {

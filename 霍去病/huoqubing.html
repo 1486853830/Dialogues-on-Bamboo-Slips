@@ -9,22 +9,13 @@
 </head>
 
 
-<!-- 修改后的返回按钮 -->
-<div class="back-button" onclick="location.href='../index.html'">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path d="M19 12H5M12 19l-7-7 7-7" />
-    </svg>
-</div>
-
-<!-- 在body中添加返回按钮 -->
-
-<body onload="setTimeout(switchToBackgroundImage, 4000);">
-    <!-- 返回按钮 -->
+<!-- 删除重复的返回按钮 -->
+<body>
+    <!-- 只保留一个返回按钮 -->
     <div class="back-button" onclick="location.href='../index.html'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
-
     </div>
 
     <!-- 原有header-container -->
@@ -203,7 +194,7 @@
             
             // 创建音频元素
             const audio = new Audio();
-            audio.src = '../musics/纵横天下.mp3'; // 假设音乐文件在index.html同级目录
+            audio.src = '../musics/不夜城.mp3'; // 假设音乐文件在index.html同级目录
             audio.loop = true;
             
             musicBtn.onclick = function() {
@@ -270,11 +261,6 @@
 </body>
 
 </html>
-<style>
-
-
-
-</style>
 
 <script>
     // 添加菜单切换功能
