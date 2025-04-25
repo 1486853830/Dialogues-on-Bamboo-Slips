@@ -5,9 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>曹操</title>
     <link rel="stylesheet" type="text/css" href="caocao.css">
+    <style>
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        #background-video.show {
+            opacity: 1;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- 在body开始处添加视频元素 -->
+    <video id="background-video" preload="auto">
+        <source src="caocao.mp4" type="video/mp4">
+    </video>
     <div class="back-button" onclick="location.href='../index.html'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -47,5 +67,22 @@
     </div>
 
     <script src="caocao.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('background-video');
+            const body = document.body;
+            
+            // 点击任意位置触发视频播放
+            body.addEventListener('click', function() {
+                video.classList.add('show');
+                video.play();
+            });
+            
+            // 视频结束后平滑隐藏
+            video.addEventListener('ended', function() {
+                video.classList.remove('show');
+            });
+        });
+    </script>
 </body>
 </html>
