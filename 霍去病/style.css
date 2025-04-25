@@ -152,6 +152,12 @@ button {
 }
 
 /* 添加加载动画样式 */
+/* 添加旋转动画关键帧 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 修改加载动画样式 */
 .loading-spinner {
     display: block;
     width: 30px;
@@ -159,9 +165,8 @@ button {
     border: 4px solid rgba(0, 123, 255, 0.3);
     border-radius: 50%;
     border-top-color: #007bff;
-    animation: spin 1s ease-in-out infinite;
+    animation: spin 1s linear infinite; /* 修改为linear使旋转更平滑 */
     margin: 15px 0 15px 15px;
-    /* 增加间距 */
 }
 
 /* 修改标题容器样式 */
@@ -370,3 +375,32 @@ button {
         left: 80px;
         /* 其他样式保持不变 */
     }
+
+/* 重说按钮样式 */
+.rephrase-btn {
+    display: block;
+    margin: 10px 0 0 0; /* 修改为左对齐 */
+    padding: 8px 16px;
+    background: rgba(0, 123, 255, 0.8);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.rephrase-btn:hover {
+    background: rgba(0, 123, 255, 1);
+    transform: scale(1.05);
+}
+
+.rephrase-btn:active {
+    transform: scale(0.98);
+}
+
+.message-container {
+    margin-bottom: 15px;
+}

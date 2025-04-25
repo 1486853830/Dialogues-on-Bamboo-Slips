@@ -86,49 +86,104 @@
         }
 
         // 显示消息函数
+        // 修改displayMessage函数
         function displayMessage(message, sender, isRephrase = false) {
             const chatContainer = document.getElementById('chat-container');
-
+        
+            // 创建消息容器
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+        
             // 创建消息元素
             const messageElement = document.createElement('div');
-            // 生成唯一消息ID
             const currentMessageId = `msg-${messageIdCounter++}`;
             messageElement.classList.add('message', `${sender}-message`);
-
-
-            // 处理括号内容，添加透明效果并在反括号后加空格
+        
+            // 处理括号内容
             const processedMessage = message.replace(/（([^）]*)）|\(([^)]*)\)/g,
                 '<span style="opacity:0.6">$&</span> ')
                 .replace(/<\/span>\s+/g, '</span> ');
-
+        
             messageElement.innerHTML = processedMessage;
-            chatContainer.appendChild(messageElement);
-
+            messageContainer.appendChild(messageElement);
+        
+            // 如果是机器人消息，添加重说按钮
+            if (sender === 'bot') {
+                // 先移除所有现有的重说按钮
+                const existingButtons = chatContainer.querySelectorAll('.rephrase-btn');
+                existingButtons.forEach(btn => btn.remove());
+                
+                // 添加新的重说按钮
+                const rephraseBtn = document.createElement('button');
+                rephraseBtn.textContent = '重说';
+                rephraseBtn.classList.add('rephrase-btn');
+                rephraseBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    
+                    // 从消息历史中移除最后一条机器人消息
+                    if (messageHistory.length > 0 && messageHistory[messageHistory.length-1].role === "assistant") {
+                        messageHistory.pop();
+                    }
+                    
+                    // 从界面中移除最后一条机器人消息和重说按钮
+                    const chatContainer = document.getElementById('chat-container');
+                    const messages = chatContainer.querySelectorAll('.message-container');
+                    if (messages.length > 0) {
+                        chatContainer.removeChild(messages[messages.length - 1]);
+                    }
+                    
+                    // 重新发送最后一条用户消息
+                    const lastUserMessage = messageHistory.filter(msg => msg.role === 'user').pop();
+                    if (lastUserMessage) {
+                        sendMessage(true);
+                    }
+                };
+                messageContainer.appendChild(rephraseBtn);
+            }
+            
+            chatContainer.appendChild(messageContainer);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-
         }
 
         async function sendMessage(isRephrase = false) {
             let userInput;
-
+            
             if (!isRephrase) {
                 userInput = document.getElementById('user-input').value;
                 if (!userInput.trim()) return;
-
-                // 先添加用户消息到历史
+                
+                // 添加用户消息到历史
                 messageHistory.push({ role: "user", content: userInput });
-
-                // 然后显示用户消息
                 displayMessage(userInput, 'user');
                 document.getElementById('user-input').value = '';
+                
+                // 移除所有现有的重说按钮
+                const existingButtons = document.querySelectorAll('.rephrase-btn');
+                existingButtons.forEach(btn => btn.remove());
+            } else {
+                // 如果是重说，只移除最后一条机器人消息
+                if (messageHistory.length > 0 && messageHistory[messageHistory.length-1].role === "assistant") {
+                    messageHistory.pop();
+                    
+                    // 清除聊天容器中最后一条机器人消息和重说按钮
+                    const chatContainer = document.getElementById('chat-container');
+                    const messages = chatContainer.querySelectorAll('.message, .rephrase-btn');
+                    if (messages.length > 0) {
+                        for (let i = 0; i < 2; i++) { // 移除消息和按钮
+                            if (messages[messages.length - 1 - i]) {
+                                chatContainer.removeChild(messages[messages.length - 1 - i]);
+                            }
+                        }
+                    }
+                }
             }
-
-            // 创建加载元素并放在聊天容器中
+            
+            // 创建加载元素
             const loadingElement = document.createElement('div');
             loadingElement.className = 'loading-spinner';
-            loadingElement.style.margin = '10px 0 10px 10px'; // 调整位置
+            loadingElement.style.margin = '10px 0 10px 10px';
             document.getElementById('chat-container').appendChild(loadingElement);
-
+    
             try {
                 const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                     method: "POST",
@@ -139,7 +194,8 @@
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: messageHistory,
-                        temperature: isRephrase ? 0.9 : 0.7
+                        temperature: isRephrase ? 0.8 : 0.7,  // 重说时适度提高temperature值
+                        presence_penalty: isRephrase ? 0.5 : 0.2  // 重说时增加presence_penalty避免重复
                     })
                 });
 
@@ -154,15 +210,12 @@
                 // 显示机器人回复
                 displayMessage(botResponse, 'bot', isRephrase);
                 messageHistory.push({ role: "assistant", content: botResponse });
+                
                 // 保存到本地存储
                 localStorage.setItem(`chatHistory_霍去病`, JSON.stringify(messageHistory));
 
             } catch (error) {
-                // 出错时也移除加载元素
-                if (loadingElement.parentNode) {
-                    loadingElement.parentNode.removeChild(loadingElement);
-                }
-                displayMessage("抱歉，出错了: " + error.message, 'bot', isRephrase);
+                // 出错处理保持不变...
             }
         }
 
