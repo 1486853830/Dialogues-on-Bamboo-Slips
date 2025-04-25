@@ -1,0 +1,406 @@
+body {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #121212;
+    /* 改为深色背景 */
+    color: #e0e0e0;
+    /* 浅色文字 */
+    max-width: 650px;
+    padding: 12px;
+    overflow: hidden;
+    /* 禁止页面滚动 */
+    background: url('liubang.png') center/cover no-repeat fixed;
+}
+
+#chat-container {
+    background: rgba(30, 30, 30, 0.8);
+    /* 深色半透明背景 */
+    border-radius: 8px;
+    padding: 20px;
+    height: 400px;
+    overflow-y: auto;
+    color: #e0e0e0;
+    background: transparent;
+    border-radius: 8px;
+    padding: 20px;
+    height: calc(100vh - 170px);
+    overflow-y: auto;
+    /* 保留聊天容器的滚动 */
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-top: 70px;
+    margin-bottom: 40px;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+}
+
+.user-message {
+    background-color: rgba(0, 100, 200, 0.5);
+    /* 深蓝色用户消息 */
+    color: #ffffff;
+}
+
+.bot-message {
+    background-color: rgba(50, 50, 50, 0.7);
+    /* 深灰色机器人消息 */
+    color: #ffffff;
+}
+
+#input-area {
+    display: flex;
+    gap: 10px;
+    position: fixed;
+    /* 固定在底部 */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 760px;
+    backdrop-filter: blur(10px);
+    /* 毛玻璃效果 */
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    /* 半透明背景 */
+}
+
+#user-input {
+    flex: 1;
+    padding: 12px 15px;
+    /* 增加左右内边距 */
+    border: 1px solid rgba(221, 221, 221, 0.7);
+    /* 加深边框 */
+    border-radius: 8px;
+    /* 增加圆角 */
+    background: rgba(255, 255, 255, 0.4);
+    /* 增加透明度 */
+    backdrop-filter: blur(8px);
+    /* 增强模糊效果 */
+    font-size: 15px;
+    /* 增大字体 */
+    color: #333;
+    /* 加深文字颜色 */
+    transition: all 0.3s ease;
+    /* 添加过渡效果 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* 添加轻微阴影 */
+}
+
+#user-input:focus {
+    outline: none;
+    border-color: rgba(0, 123, 255, 0.5);
+    /* 聚焦时边框变蓝 */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    /* 聚焦时添加发光效果 */
+}
+
+#user-input::placeholder {
+    color: rgba(102, 102, 102, 0.7);
+    /* 优化占位符颜色 */
+}
+
+button {
+    background-color: rgba(0, 123, 255, 0.7);
+    /* 蓝色半透明 */
+    color: white;
+    padding: 0 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 80px;
+    font-weight: bold;
+    /* 字体加粗 */
+    backdrop-filter: blur(5px);
+    /* 毛玻璃效果 */
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 80%;
+    display: inline-block;
+    backdrop-filter: blur(8px);
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: rgba(227, 242, 253, 0.7);
+    margin-left: auto;
+    /* 右侧对齐关键属性 */
+    margin-right: 0;
+    text-align: left;
+    display: block;
+    /* 改为block确保独占一行 */
+    width: fit-content;
+    /* 宽度适应内容 */
+    max-width: 80%;
+}
+
+.bot-message {
+    background-color: rgba(241, 241, 241, 0.7);
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+    display: block;
+    /* 改为block确保独占一行 */
+    width: fit-content;
+    /* 宽度适应内容 */
+    max-width: 80%;
+}
+
+/* 添加加载动画样式 */
+/* 添加旋转动画关键帧 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 修改加载动画样式 */
+.loading-spinner {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 4px solid rgba(0, 123, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #007bff;
+    animation: spin 1s linear infinite; /* 修改为linear使旋转更平滑 */
+    margin: 15px 0 15px 15px;
+}
+
+/* 修改标题容器样式 */
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: rgba(241, 241, 241, 0.5);
+    padding: 6px 16px;
+    border-radius: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    width: fit-content;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.title-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    object-fit: cover;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* 修改顶部头像框样式 */
+.header-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    
+}
+
+/* 修改上拉菜单样式 */
+/* 添加这些样式来替换内联样式 */
+#menu-toggle {
+    position: absolute;
+    right: 115px;
+    top: 50%;
+    width: 0;
+    transform: translateY(-50%);
+    background-color: transparent;
+    font-size: 20px;
+}
+
+#pull-up-menu {
+    display: none;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(100px);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.preset-btn {
+    background: rgba(30, 30, 30, 0.8) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.preset-btn:hover {
+    background: rgba(50, 50, 50, 0.8) !important;
+}
+
+
+.message {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* 黑色背景 */
+    color: white;
+    /* 白色文字 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 浅色边框 */
+}
+
+.bot-message {
+    background-color: rgba(20, 20, 20, 0.7);
+    /* 深灰背景 */
+    color: white;
+    /* 白色文字 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 浅色边框 */
+}
+
+#input-area {
+    background: rgba(0, 0, 0, 0.7);
+    /* 黑色背景 */
+    backdrop-filter: blur(10px);
+}
+
+#user-input {
+    background: rgba(30, 30, 30, 0.8);
+    /* 深灰背景 */
+    color: white;
+    /* 白色文字 */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#user-input::placeholder {
+    color: rgba(200, 200, 200, 0.7);
+    /* 浅灰占位符 */
+}
+
+#send-button {
+    background: rgba(0, 100, 200, 0.7);
+    /* 蓝色按钮 */
+    color: white;
+}
+
+#menu-toggle {
+    background: rgba(0, 0, 0, 0);
+    /* 蓝色按钮 */
+    color: white;
+}
+
+.header-container {
+    padding: 6px 16px;
+    /* 原8px 20px */
+    border-radius: 14px;
+    /* 原16px */
+}
+
+.title-avatar {
+    width: 35px;
+    /* 原40px */
+    height: 35px;
+    /* 原40px */
+}
+
+h1 {
+    font-size: 18px;
+    /* 原20px */
+}
+
+/* 恢复原来的消息样式 */
+.message {
+    padding: 12px 16px;
+    font-size: inherit;
+}
+
+#input-area {
+    padding: 6px;
+    /* 原8px */
+}
+
+#user-input {
+    padding: 8px;
+    /* 原10px */
+    font-size: 14px;
+}
+
+button {
+    font-size: 14px;
+    padding: 0 16px;
+    /* 原0 20px */
+}
+
+    /* 修改返回按钮样式 */
+    .back-button {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        background: rgba(0, 123, 255, 0.5);
+        /* 调整为半透明蓝色 */
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        /* 稍微缩小 */
+        height: 45px;
+        /* 稍微缩小 */
+        backdrop-filter: blur(5px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .back-button svg {
+        stroke: white;
+        /* 白色箭头 */
+        width: 26px;
+        /* 增大箭头 */
+        height: 26px;
+        /* 增大箭头 */
+    }
+
+    /* 调整标题容器位置 */
+    .header-container {
+        left: 80px;
+        /* 其他样式保持不变 */
+    }
+
+/* 重说按钮样式 */
+.rephrase-btn {
+    display: block;
+    margin: 10px 0 0 0; /* 修改为左对齐 */
+    padding: 8px 16px;
+    background: rgba(0, 123, 255, 0.8);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.rephrase-btn:hover {
+    background: rgba(0, 123, 255, 1);
+    transform: scale(1.05);
+}
+
+.rephrase-btn:active {
+    transform: scale(0.98);
+}
+
+.message-container {
+    margin-bottom: 15px;
+}
