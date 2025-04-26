@@ -69,6 +69,10 @@
             const video = document.getElementById('background-video');
             const body = document.body;
             
+            // 页面加载后自动播放一次
+            video.classList.add('show');
+            video.play();
+            
             // 双击任意位置触发视频播放
             body.addEventListener('dblclick', function() {
                 video.classList.add('show');
