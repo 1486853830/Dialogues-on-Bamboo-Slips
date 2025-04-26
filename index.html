@@ -142,18 +142,11 @@
                 <label>背景音乐（暂不支持切换）：</label>
                 <div style="display: flex; gap: 10px; margin-top: 8px;">
                     <select id="bgm-select" class="settings-btn-secondary">
-                        <option value="">无</option>
+                        
                     </select>
                     <button id="bgm-toggle" class="settings-btn-secondary" style="width: 80px;">关闭</button>
                 </div>
             </div>
-
-            <div class="settings-item">
-                <label>开发人员：陈卓</label>
-                <label>联系开发者：19112913292（微信）</label>
-                <label>测试专用API（受保护）：<br><br>sk-72f4d8a2b42f4585b413fc7a307a8b55</label>
-            </div>
-
             <!-- 修改按钮样式 -->
             <style>
                 .settings-btn-secondary {
@@ -539,7 +532,7 @@
         title.style.marginTop = '0';
 
         // 角色列表
-        const characters = ['孔子', '霍去病', '刘邦', '赵云', '丘处机', '樊哙', '曹操'];
+        const characters = ['孔子', '霍去病', '刘邦', '赵云', '丘处机', '樊哙', '曹操', '张良'];
         const list = document.createElement('div');
 
         characters.forEach(character => {
@@ -610,9 +603,9 @@
     function scanMusicFiles() {
         const musicFiles = [
             { name: "不夜城", path: "musics/不夜城.mp3" },
-            { name: "蝶飞花舞", path: "musics/蝶飞花舞.mp3" },
-            { name: "明镜菩提", path: "musics/明镜菩提.mp3" },
-            { name: "纵横天下", path: "musics/纵横天下.mp3" }
+           // { name: "蝶飞花舞", path: "musics/蝶飞花舞.mp3" },
+           // { name: "明镜菩提", path: "musics/明镜菩提.mp3" },
+           // { name: "纵横天下", path: "musics/纵横天下.mp3" }
         ];
 
         const select = document.getElementById('bgm-select');
