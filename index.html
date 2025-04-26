@@ -208,7 +208,11 @@
             <div class="agent-name">刘邦</div>
             <div class="agent-desc">刘邦，字季，沛丰邑中阳里人，中国历史上杰出的政治家、战略家，汉朝开国皇帝</div>
         </div>
-
+        <div class="agent-card" onclick="location.href='张良/zhangliang.html'">
+            <img src="张良/zhanglianghead.png" class="agent-avatar" alt="张良">
+            <div class="agent-name">张良</div>
+            <div class="agent-desc">张良，字子房。秦末汉初杰出谋臣、政治家，西汉开国功臣，与韩信、萧何并称为“汉初三杰”。</div>
+        </div>
         <div class="agent-card" onclick="location.href='赵云/zhaoyun.html'">
             <img src="赵云/zhaoyunhead.png" class="agent-avatar" alt="赵云">
             <div class="agent-name">赵云</div>
@@ -230,6 +234,8 @@
             <div class="agent-name">曹操</div>
             <div class="agent-desc">曹操，字孟德，小字阿瞒，沛国谯县人，东汉末年丞相、权臣、政治家、军事家、文学家、诗人、书法家，魏王，曹魏政权奠基者。</div>
         </div>
+
+
         <div class="agent-card" onclick="location.href='##'">
             <img src="head.png" class="agent-avatar" alt="敬请期待">
             <div class="agent-name">敬请期待</div>
@@ -608,7 +614,7 @@
             { name: "明镜菩提", path: "musics/明镜菩提.mp3" },
             { name: "纵横天下", path: "musics/纵横天下.mp3" }
         ];
-    
+
         const select = document.getElementById('bgm-select');
         musicFiles.forEach(music => {
             const option = document.createElement('option');
@@ -616,7 +622,7 @@
             option.textContent = music.name;
             select.appendChild(option);
         });
-        
+
         // 默认选择不夜城
         select.value = "musics/不夜城.mp3";
         bgm.src = "musics/不夜城.mp3";
@@ -628,7 +634,7 @@
     function tryAutoPlay() {
         if (bgmEnabled && bgm.src) {
             const playPromise = bgm.play();
-            
+
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     console.log('自动播放被阻止:', error);
@@ -646,10 +652,10 @@
     document.addEventListener('DOMContentLoaded', () => {
         scanMusicFiles();
         document.getElementById('bgm-toggle').textContent = '开启';
-        
+
         // 1秒后尝试自动播放
         setTimeout(tryAutoPlay, 1000);
-        
+
         // 循环播放
         bgm.addEventListener('ended', () => {
             if (bgmEnabled) {
@@ -658,4 +664,4 @@
             }
         });
     });
-    </script>
+</script>
