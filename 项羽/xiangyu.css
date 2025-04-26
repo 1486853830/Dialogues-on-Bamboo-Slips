@@ -13,6 +13,30 @@ body {
     background: url('xiangyu.png') center/cover no-repeat fixed;
 }
 
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#background-video.show {
+    opacity: 1;
+}
+
+/* 修改后的样式 */
+.hide-chat #chat-container,
+.hide-chat #input-area {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
 #chat-container {
     background: rgba(30, 30, 30, 0.8);
     /* 深色半透明背景 */
@@ -154,7 +178,9 @@ button {
 /* 添加加载动画样式 */
 /* 添加旋转动画关键帧 */
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* 修改加载动画样式 */
@@ -165,7 +191,8 @@ button {
     border: 4px solid rgba(0, 123, 255, 0.3);
     border-radius: 50%;
     border-top-color: #007bff;
-    animation: spin 1s linear infinite; /* 修改为linear使旋转更平滑 */
+    animation: spin 1s linear infinite;
+    /* 修改为linear使旋转更平滑 */
     margin: 15px 0 15px 15px;
 }
 
@@ -206,7 +233,7 @@ h1 {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    
+
 }
 
 /* 修改上拉菜单样式 */
@@ -232,7 +259,7 @@ h1 {
     backdrop-filter: blur(100px);
     border-radius: 12px;
     padding: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -340,46 +367,47 @@ button {
     /* 原0 20px */
 }
 
-    /* 修改返回按钮样式 */
-    .back-button {
-        position: absolute;
-        left: 20px;
-        top: 20px;
-        background: rgba(0, 123, 255, 0.5);
-        /* 调整为半透明蓝色 */
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 45px;
-        /* 稍微缩小 */
-        height: 45px;
-        /* 稍微缩小 */
-        backdrop-filter: blur(5px);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 10;
-    }
+/* 修改返回按钮样式 */
+.back-button {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: rgba(0, 123, 255, 0.5);
+    /* 调整为半透明蓝色 */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    /* 稍微缩小 */
+    height: 45px;
+    /* 稍微缩小 */
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
 
-    .back-button svg {
-        stroke: white;
-        /* 白色箭头 */
-        width: 26px;
-        /* 增大箭头 */
-        height: 26px;
-        /* 增大箭头 */
-    }
+.back-button svg {
+    stroke: white;
+    /* 白色箭头 */
+    width: 26px;
+    /* 增大箭头 */
+    height: 26px;
+    /* 增大箭头 */
+}
 
-    /* 调整标题容器位置 */
-    .header-container {
-        left: 80px;
-        /* 其他样式保持不变 */
-    }
+/* 调整标题容器位置 */
+.header-container {
+    left: 80px;
+    /* 其他样式保持不变 */
+}
 
 /* 重说按钮样式 */
 .rephrase-btn {
     display: block;
-    margin: 10px 0 0 0; /* 修改为左对齐 */
+    margin: 10px 0 0 0;
+    /* 修改为左对齐 */
     padding: 8px 16px;
     background: rgba(0, 123, 255, 0.8);
     color: white;
@@ -389,7 +417,7 @@ button {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .rephrase-btn:hover {
@@ -404,3 +432,35 @@ button {
 .message-container {
     margin-bottom: 15px;
 }
+
+
+/* 添加视频播放时的隐藏样式 */
+.video-playing #chat-container,
+.video-playing #input-area {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+/* 视频结束后的显示样式 */
+.video-ended #chat-container,
+.video-ended #input-area {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.8s ease;
+}
+
+/* 消息渐显动画 */
+.message {
+    animation: messageFadeIn 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+@keyframes messageFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
