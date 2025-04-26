@@ -20,6 +20,45 @@ if (savedHistory) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('background-video');
+    const body = document.body;
+    
+    // 确保视频自动播放
+    video.autoplay = true;
+    video.muted = true;
+    
+    // 视频开始播放时添加video-playing类
+    video.addEventListener('play', function() {
+        body.classList.add('video-playing');
+        body.classList.remove('video-ended');
+        video.classList.add('show');
+    });
+    
+    // 视频结束时添加video-ended类
+    video.addEventListener('ended', function() {
+        body.classList.remove('video-playing');
+        body.classList.add('video-ended');
+        video.classList.remove('show');
+    });
+    
+    // 初始状态
+    body.classList.add('video-playing');
+    video.classList.add('show');
+
+    // 添加全局双击事件监听
+    document.addEventListener('dblclick', function(e) {
+        // 如果当前没有播放视频
+        if (video.paused) {
+            video.currentTime = 0; // 重置到开头
+            video.play();
+            body.classList.add('video-playing');
+            body.classList.remove('video-ended');
+            video.classList.add('show');
+        }
+    });
+});
+
 function displayMessage(message, sender, isRephrase = false) {
     const chatContainer = document.getElementById('chat-container');
     
@@ -172,7 +211,7 @@ async function getPresetResponse() {
                     ...recentMessages,
                     {
                         role: "user",
-                        content: "请基于以上对话，生成3个适合我回复曹操的选项，每个选项不超过15字，格式为：1.选项1 2.选项2 3.选项3"
+                        content: "请基于以上对话，生成3个适合我回复曹操的选项，每个选项不超过50字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3"
                     }
                 ],
                 temperature: 0.7
@@ -300,8 +339,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.getElementById('menu-toggle');
     const pullUpMenu = document.getElementById('pull-up-menu');
     
+    // 修改菜单切换功能部分
+    let lastClickTime = 0;
     menuToggle.addEventListener('click', async function (e) {
         e.stopPropagation();
+        
+        const now = Date.now();
+        if (now - lastClickTime < 300) { // 300ms内再次点击视为双击
+            pullUpMenu.style.display = 'none';
+            lastClickTime = 0;
+            return;
+        }
+        lastClickTime = now;
+    
+        // 如果菜单已显示，则隐藏
+        if (pullUpMenu.style.display === 'block') {
+            pullUpMenu.style.display = 'none';
+            return;
+        }
 
         // 显示加载状态
         pullUpMenu.innerHTML = `
@@ -310,17 +365,20 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
         pullUpMenu.style.display = 'block';
+        pullUpMenu.style.maxHeight = 'none';
+        pullUpMenu.style.height = 'auto';
 
         // 获取预设回答选项
         const options = await getPresetResponse();
 
-        // 创建选项按钮
+        // 在创建选项按钮的部分，修改容器样式：
         pullUpMenu.innerHTML = `
             <div style="
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
                 padding: 12px;
+                height: auto;  // 确保高度自适应
             ">
                 ${options.map(opt => `
                     <button class="preset-btn" data-text="${opt}" 
@@ -362,7 +420,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 点击其他地方关闭菜单
-    document.addEventListener('click', function () {
+    document.addEventListener('click', function (e) {
+        if (!pullUpMenu.contains(e.target) && e.target !== menuToggle) {
+            pullUpMenu.style.display = 'none';
+        }
+    });
+
+    // 添加双击事件处理
+    menuToggle.addEventListener('dblclick', function(e) {
+        e.stopPropagation();
         pullUpMenu.style.display = 'none';
     });
 });

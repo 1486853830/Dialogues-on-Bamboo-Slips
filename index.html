@@ -142,7 +142,7 @@
                 <label>背景音乐（暂不支持切换）：</label>
                 <div style="display: flex; gap: 10px; margin-top: 8px;">
                     <select id="bgm-select" class="settings-btn-secondary">
-                        
+
                     </select>
                     <button id="bgm-toggle" class="settings-btn-secondary" style="width: 80px;">关闭</button>
                 </div>
@@ -184,15 +184,15 @@
     </div>
     <h1>键谈星霜·梦溯华胥</h1>
     <div class="agents-container">
-        <div class="agent-card" onclick="location.href='孔子/kongzi.html'">
-            <img src="孔子/kongzihead.png" class="agent-avatar" alt="孔子">
-            <div class="agent-name">孔子</div>
-            <div class="agent-desc">孔子，名丘，字仲尼，春秋时期鲁国陬邑人，祖籍宋国栗邑。中国古代思想家、政治家、教育家，儒家学派创始人。</div>
-        </div>
 
+        <div class="agent-card" onclick="location.href='曹操/caocao.html'">
+            <img src="曹操/caocaohead.png" class="agent-avatar" alt="曹操">
+            <div class="agent-name">曹操（Pro）</div>
+            <div class="agent-desc">曹操，字孟德，小字阿瞒，沛国谯县人，东汉末年丞相、权臣、政治家、军事家、文学家、诗人、书法家，魏王，曹魏政权奠基者。</div>
+        </div>
         <div class="agent-card" onclick="location.href='霍去病/huoqubing.html'">
             <img src="霍去病/huoqubinghead.png" class="agent-avatar" alt="霍去病">
-            <div class="agent-name">霍去病</div>
+            <div class="agent-name">霍去病（Pro）</div>
             <div class="agent-desc">霍去病，河东郡平阳县人，西汉时期名将、军事家、民族英雄。</div>
         </div>
 
@@ -211,7 +211,11 @@
             <div class="agent-name">赵云</div>
             <div class="agent-desc">赵云，字子龙，常山真定人。身长八尺，姿颜雄伟，汉末三国时期蜀汉名将，与关羽、张飞并称“燕南三士”。</div>
         </div>
-
+        <div class="agent-card" onclick="location.href='孔子/kongzi.html'">
+            <img src="孔子/kongzihead.png" class="agent-avatar" alt="孔子">
+            <div class="agent-name">孔子</div>
+            <div class="agent-desc">孔子，名丘，字仲尼，春秋时期鲁国陬邑人，祖籍宋国栗邑。中国古代思想家、政治家、教育家，儒家学派创始人。</div>
+        </div>
         <div class="agent-card" onclick="location.href='丘处机/qiuchuji.html'">
             <img src="丘处机/qiuchujihead.png" class="agent-avatar" alt="丘处机">
             <div class="agent-name">丘处机</div>
@@ -222,11 +226,7 @@
             <div class="agent-name">樊哙</div>
             <div class="agent-desc">樊哙,泗水郡沛县（今江苏省沛县）人。西汉开国元勋，军事统帅。</div>
         </div>
-        <div class="agent-card" onclick="location.href='曹操/caocao.html'">
-            <img src="曹操/caocaohead.png" class="agent-avatar" alt="曹操">
-            <div class="agent-name">曹操</div>
-            <div class="agent-desc">曹操，字孟德，小字阿瞒，沛国谯县人，东汉末年丞相、权臣、政治家、军事家、文学家、诗人、书法家，魏王，曹魏政权奠基者。</div>
-        </div>
+
 
 
         <div class="agent-card" onclick="location.href='##'">
@@ -603,9 +603,9 @@
     function scanMusicFiles() {
         const musicFiles = [
             { name: "不夜城", path: "musics/不夜城.mp3" },
-           // { name: "蝶飞花舞", path: "musics/蝶飞花舞.mp3" },
-           // { name: "明镜菩提", path: "musics/明镜菩提.mp3" },
-           // { name: "纵横天下", path: "musics/纵横天下.mp3" }
+            // { name: "蝶飞花舞", path: "musics/蝶飞花舞.mp3" },
+            // { name: "明镜菩提", path: "musics/明镜菩提.mp3" },
+            // { name: "纵横天下", path: "musics/纵横天下.mp3" }
         ];
 
         const select = document.getElementById('bgm-select');
