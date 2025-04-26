@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // 创建音频元素
     const audio = new Audio();
-    audio.src = '../musics/不夜城.mp3';
+    audio.src = '../musics/纵横天下.mp3';
     audio.loop = true;
     
     musicBtn.onclick = function() {
