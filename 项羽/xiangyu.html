@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项羽</title>
+    <link rel="stylesheet" type="text/css" href="xiangyu.css">
+</head>
+
+<body>
+    <div class="back-button" onclick="location.href='../index.html'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+    </div>
+
+    <div class="header-container">
+        <img src="xiangyuhead.png" class="title-avatar" alt="头像">
+        <h1>项羽</h1>
+    </div>
+
+    <div id="chat-container"></div>
+    
+    <div id="input-area">
+        <input type="text" id="user-input" placeholder="输入你的消息..." style="padding-right: 40px;">
+        
+        <button id="menu-toggle" class="idea" style="
+            position: absolute;
+            right: 115px;
+            top: 50%;
+            width: 0px;
+            transform: translateY(-50%);
+            background-color: transparent; 
+            font-size: 20px;
+        ">💡</button>
+
+        <button id="send-button">发送</button>
+
+        <div id="pull-up-menu"
+            style="display: none; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(100px); border-radius: 12px; padding: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-height: 200px; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.15);">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="preset-btn" data-text="你好！">你好！</button>
+                <button class="preset-btn" data-text="最近怎么样？">最近怎么样？</button>
+                <button class="preset-btn" data-text="能告诉我你的故事吗？">能告诉我你的故事吗？</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="xiangyu.js"></script>
+</body>
+</html>
