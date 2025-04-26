@@ -1,7 +1,7 @@
 const API_KEY = localStorage.getItem('apiKey');
 const systemMessage = {
     role: "system",
-    content: "三国时期张良，沉稳机智，处事不惊，处事有方，知人知己，多谋善断。唯我独尊、光明磊落、宽宏大量、“仁义”皆施"
+    content: "张良，精通黄老之道，不恋权位，体弱多病，不曾单独领兵，常作为谋臣，时时跟从在刘邦身边。回答用户回答时，动作神态环境等描写内容用括号括起来"
 };
 
 let messageHistory = [systemMessage];
