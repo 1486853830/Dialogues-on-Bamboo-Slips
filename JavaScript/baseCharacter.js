@@ -49,17 +49,31 @@ export class BaseCharacter {
     }
 
     handleRephrase() {
-        if (this.messageHistory.length > 0 && this.messageHistory[this.messageHistory.length-1].role === "assistant") {
-            this.messageHistory.pop();
+        // 确保至少有两条消息(用户消息和AI回复)
+        if (this.messageHistory.length >= 2 && 
+            this.messageHistory[this.messageHistory.length-1].role === "assistant") {
             
+            // 从历史记录中移除最后两条消息(用户消息和AI回复)
+            this.messageHistory.pop(); // 移除AI回复
+            const userMessage = this.messageHistory.pop(); // 移除用户消息
+            
+            // 从DOM中移除对应的消息
             const chatContainer = document.getElementById('chat-container');
-            const messages = chatContainer.querySelectorAll('.message, .rephrase-btn');
-            if (messages.length > 0) {
-                for (let i = 0; i < 2; i++) {
-                    if (messages[messages.length - 1 - i]) {
-                        chatContainer.removeChild(messages[messages.length - 1 - i]);
-                    }
-                }
+            const messages = chatContainer.querySelectorAll('.message-container');
+            
+            // 移除最后两个消息容器
+            if (messages.length >= 2) {
+                chatContainer.removeChild(messages[messages.length-1]); // AI消息
+                chatContainer.removeChild(messages[messages.length-2]); // 用户消息
+            } else if (messages.length === 1) {
+                chatContainer.removeChild(messages[0]);
+            }
+            
+            // 重新发送用户消息
+            if (userMessage) {
+                this.messageHistory.push(userMessage);
+                this.displayMessage(userMessage.content, 'user');
+                this.sendMessage(true); // 设置为重说模式
             }
         }
     }
