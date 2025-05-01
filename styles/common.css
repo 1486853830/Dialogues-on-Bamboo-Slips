@@ -385,9 +385,9 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 45px;
+    width: 30px;
     /* 稍微缩小 */
-    height: 45px;
+    height: 30px;
     /* 稍微缩小 */
     backdrop-filter: blur(5px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+    background-color: black;
+}
+
+#background-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.1);
+    opacity: 0;
+    transition: filter 3s ease-in-out, opacity 1s ease-in-out;
+}
+
+#image-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('布达拉宫.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+#background-video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.2); /* 初始亮度设为20% */
+    opacity: 0;
+    transition: 
+        filter 5s cubic-bezier(0.4, 0, 0.2, 1), /* 使用贝塞尔曲线使过渡更平滑 */
+        opacity 1s ease-in-out;
+}
+
+#text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 3s ease-in-out;
+}
+
+#text-overlay p {
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+/* 其他原有样式保持不变 */
+/* 在文件合适位置添加藏文字体定义 */
+@font-face {
+    font-family: 'TibetanFont';
+    src: url('../../fonts/ShangShouXuanCangTi-2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 创建藏文字体样式类 */
+.tibetan-text {
+    font-family: 'TibetanFont', 'Noto Sans Tibetan', sans-serif;
+    font-size: 1.2em;
+    line-height: 1.8;
+    letter-spacing: 1px;
+}
+
+.tibetan-text {
+    font-family: 'TibetanFont', 'Noto Sans Tibetan', sans-serif !important;
+}
