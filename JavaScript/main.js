@@ -8,6 +8,7 @@ import { ZhangLiang } from '../characters/张良/zhangliang.js';
 import { FanKuai } from '../characters/樊哙/fankuai.js';
 import { ZhaoYun } from '../characters/赵云/zhaoyun.js';
 import { Songzanganbu } from '../characters/松赞干布/songzanganbu.js';
+import { Wenchenggongzhu } from '../characters/文成公主/wenchenggongzhu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -41,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         zhaoyun.init();
     } else if (path.includes('songzanganbu')) {
         const zhaoyun = new Songzanganbu();
+        zhaoyun.init();
+    } else if (path.includes('wenchenggongzhu')) {
+        const zhaoyun = new Wenchenggongzhu();
         zhaoyun.init();
     }
 });
