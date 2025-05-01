@@ -1,12 +1,12 @@
-import { HuoQubing } from '../霍去病/huoqubing.js';
-import { LiuBang } from '../刘邦/liubang.js';
-import { XiangYu } from '../项羽/xiangyu.js';
-import { CaoCao } from '../曹操/caocao.js';
-import { QiuChuji } from '../丘处机/qiuchuji.js';
-import { KongZi } from '../孔子/kongzi.js';
-import { ZhangLiang } from '../张良/zhangliang.js';
-import { FanKuai } from '../樊哙/fankuai.js';
-import { ZhaoYun } from '../赵云/zhaoyun.js';
+import { HuoQubing } from '../characters/霍去病/huoqubing.js';
+import { LiuBang } from '../characters/刘邦/liubang.js';
+import { XiangYu } from '../characters/项羽/xiangyu.js';
+import { CaoCao } from '../characters/曹操/caocao.js';
+import { QiuChuji } from '../characters/丘处机/qiuchuji.js';
+import { KongZi } from '../characters/孔子/kongzi.js';
+import { ZhangLiang } from '../characters/张良/zhangliang.js';
+import { FanKuai } from '../characters/樊哙/fankuai.js';
+import { ZhaoYun } from '../characters/赵云/zhaoyun.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();

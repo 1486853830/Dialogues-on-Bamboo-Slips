@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>张良</title>
-    <link rel="stylesheet" type="text/css" href="../styles/common.css">
-    <link rel="stylesheet" type="text/css" href="zhangliang.css">
+    <title>项羽</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="xiangyu.css"> <!-- 角色特有样式 -->
 </head>
 
 <body>
-    <div class="back-button" onclick="location.href='../index.html'">
+    <video id="background-video" preload="auto">
+        <source src="xiangyu.mp4" type="video/mp4">
+    </video>
+    <div class="back-button" onclick="location.href='../../index.html'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
     </div>
 
     <div class="header-container">
-        <img src="zhanglianghead.png" class="title-avatar" alt="头像">
-        <h1>张良</h1>
+        <img src="xiangyuhead.png" class="title-avatar" alt="头像">
+        <h1>项羽</h1>
     </div>
 
     <div id="chat-container"></div>
-    
+
     <div id="input-area">
         <input type="text" id="user-input" placeholder="输入你的消息..." style="padding-right: 40px;">
-        
+
         <button id="menu-toggle" class="idea" style="
             position: absolute;
             right: 115px;
@@ -46,7 +50,7 @@
             </div>
         </div>
     </div>
-
-    <script type="module" src="../JavaScript/main.js"></script>
+    <script type="module" src="../../JavaScript/main.js"></script>
 </body>
+
 </html>

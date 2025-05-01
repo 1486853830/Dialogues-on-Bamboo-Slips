@@ -1,4 +1,4 @@
-import { BaseCharacter } from '../JavaScript/baseCharacter.js';
+import { BaseCharacter } from '../../JavaScript/baseCharacter.js';
 
 export class XiangYu extends BaseCharacter {
     constructor() {

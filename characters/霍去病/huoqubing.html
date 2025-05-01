@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>刘邦</title>
-    <link rel="stylesheet" type="text/css" href="../styles/common.css">
-    <link rel="stylesheet" type="text/css" href="liubang.css">
+    <title>霍去病</title>
+    <link rel="stylesheet" type="text/css" href="../../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="huoqubing.css">
 </head>
 
 <body>
     <video id="background-video" preload="auto">
-    <source src="liubang.mp4" type="video/mp4">
+    <source src="huoqubing.mp4" type="video/mp4">
 </video>
-    <div class="back-button" onclick="location.href='../index.html'">
+    <div class="back-button" onclick="location.href='../../index.html'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
     </div>
 
     <div class="header-container">
-        <img src="liubanghead.png" class="title-avatar" alt="头像">
-        <h1>刘邦</h1>
+        <img src="huoqubinghead.png" class="title-avatar" alt="头像">
+        <h1>霍去病</h1>
     </div>
 
     <div id="chat-container"></div>
@@ -28,7 +28,15 @@
     <div id="input-area">
         <input type="text" id="user-input" placeholder="输入你的消息..." style="padding-right: 40px;">
         
-        <button id="menu-toggle">💡</button>
+        <button id="menu-toggle" class="idea" style="
+            position: absolute;
+            right: 115px;
+            top: 50%;
+            width: 0px;
+            transform: translateY(-50%);
+            background-color: transparent; 
+            font-size: 20px;
+        ">💡</button>
 
         <button id="send-button">发送</button>
 
@@ -41,6 +49,7 @@
             </div>
         </div>
     </div>
-    <script type="module" src="../JavaScript/main.js"></script>
+    <script type="module" src="../../JavaScript/main.js"></script>
+
 </body>
 </html>

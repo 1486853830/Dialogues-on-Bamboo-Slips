@@ -1,4 +1,4 @@
-import { BaseCharacter } from '../JavaScript/baseCharacter.js';
+import { BaseCharacter } from '../../JavaScript/baseCharacter.js';
 
 export class FanKuai extends BaseCharacter {
     constructor() {

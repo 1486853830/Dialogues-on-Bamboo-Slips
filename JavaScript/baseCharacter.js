@@ -367,7 +367,7 @@ export class BaseCharacter {
         `;
         
         const audio = new Audio();
-        audio.src = `../musics/${this.getMusicForCharacter()}.mp3`;
+        audio.src = `../../musics/${this.getMusicForCharacter()}.mp3`;
         audio.loop = true;
         
         musicBtn.onclick = () => {
