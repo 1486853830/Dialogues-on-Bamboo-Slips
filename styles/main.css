@@ -1,0 +1,309 @@
+.settings-btn-secondary {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    /* 与API密钥输入框相同的底色 */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 与API密钥输入框相同的边框 */
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    /* 增大字体大小 */
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.settings-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    /* 悬停时稍微加深 */
+    transform: translateY(-2px);
+}
+
+.settings-btn-secondary:active {
+    transform: translateY(0);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('../images/background.png') center/cover no-repeat fixed;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 添加毛玻璃遮罩层 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+}
+
+h1 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.agents-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .agents-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .agents-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.agent-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* 更平滑的过渡曲线 */
+    will-change: transform, box-shadow;
+    /* 优化性能 */
+}
+
+/* 添加发光边缘效果 */
+.agent-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+.agent-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(255, 255, 255, 0.5);
+    /* 悬停时增强柔光 */
+}
+
+.agent-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.agent-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0 5px;
+}
+
+.agent-desc {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 修改背景遮罩层颜色 */
+body::before {
+    background: rgba(0, 0, 0, 0.4);
+    /* 从0.2改为0.4增加黑色浓度 */
+    backdrop-filter: blur(8px);
+}
+
+/* 如果需要卡片背景也变深 */
+.agent-card {
+    background: rgba(0, 0, 0, 0.3);
+    /* 新增深色卡片背景 */
+    color: white;
+    /* 文字改为白色 */
+}
+
+.agent-desc {
+    color: rgba(255, 255, 255, 0.8);
+    /* 描述文字改为浅灰色 */
+}
+
+/* 调整悬停效果透明度 */
+.agent-card:hover {
+    background: rgba(255, 255, 255, 0.7);
+    /* 悬停时稍微减少透明度 */
+    color: black;
+    /* 悬停时文字变黑色 */
+}
+
+.agent-card:hover .agent-name,
+.agent-card:hover .agent-desc {
+    color: black;
+    /* 确保名称和描述都变黑 */
+}
+
+/* 添加流星样式 */
+.meteor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    z-index: -1;
+}
+/* 设置按钮样式 */
+.settings-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 100;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+
+.settings-btn:hover {
+    transform: rotate(30deg);
+}
+
+/* 设置弹窗样式 */
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-content {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-content h2 {
+    color: white;
+    margin-top: 0;
+    text-align: center;
+}
+
+.settings-item {
+    margin: 20px 0;
+}
+
+.settings-item label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.settings-item input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.settings-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+/* 更新弹窗动画 */
+.settings-modal {
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.settings-modal[style*="flex"] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 优化保存按钮样式 */
+.settings-actions button {
+    background: linear-gradient(135deg, #4a6bff, #3a56e0);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 107, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+}
+
+.settings-actions button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+}
+
+.settings-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 107, 255, 0.4);
+}
+
+.settings-actions button:hover::after {
+    transform: translateX(100%);
+}
+
+.settings-actions button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
+}
