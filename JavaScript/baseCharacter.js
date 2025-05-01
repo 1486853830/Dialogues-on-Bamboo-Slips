@@ -149,7 +149,7 @@ export class BaseCharacter {
                         ...recentMessages,
                         {
                             role: "user",
-                            content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过50字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
+                            content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过80字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
                         }
                     ],
                     temperature: 0.7
