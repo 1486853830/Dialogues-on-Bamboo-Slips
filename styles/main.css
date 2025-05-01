@@ -177,6 +177,7 @@ body::before {
     opacity: 0;
     z-index: -1;
 }
+
 /* 设置按钮样式 */
 .settings-btn {
     position: fixed;
@@ -306,4 +307,95 @@ body::before {
 .settings-actions button:active {
     transform: translateY(0);
     box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
+}
+
+.agents-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.agent-card {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 280px;
+    max-width: 350px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow-x: hidden; /* 修改为hidden移除滚动条 */
+    scrollbar-width: none; /* 兼容Firefox */
+}
+
+.tab-header::-webkit-scrollbar {
+    display: none; /* 兼容Chrome/Safari */
+}
+/* 修改选项卡样式 */
+.tab-container {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #007bff;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
