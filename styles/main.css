@@ -478,3 +478,54 @@ body::before {
 .story-card:hover .story-cover {
     opacity: 0.9;
 }
+
+/* 音乐控制容器样式 */
+.bgm-control {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    align-items: center;
+}
+
+/* 下拉菜单样式 */
+select.settings-btn-secondary {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 8px 30px 8px 15px;
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    min-width: 150px;
+    transition: all 0.3s ease;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+/* 悬停效果 */
+select.settings-btn-secondary:hover {
+    background-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* 聚焦效果 */
+select.settings-btn-secondary:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+
+/* 下拉选项样式 */
+select.settings-btn-secondary option {
+    background-color: #333;
+    color: white;
+}
+
+/* 按钮统一宽度 */
+#bgm-toggle {
+    width: 80px;
+}
