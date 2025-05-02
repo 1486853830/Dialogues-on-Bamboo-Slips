@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
+        // 添加开场音频结束监听
+        audio.addEventListener('ended', function() {
+            const storyAudio = new Audio('media/情节1.mp3');
+            storyAudio.play().catch(e => console.log('情节音频播放失败:', e));
+        });
+        
         // 12秒后隐藏文字（不影响视频逻辑）
         setTimeout(() => {
             textOverlay.style.opacity = '0';
