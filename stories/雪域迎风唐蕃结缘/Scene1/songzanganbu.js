@@ -1,27 +1,24 @@
 // 场景特定的松赞干布设定
 const sceneCharacter = {
-    name: '松赞干布(故事模式)',
+    name: '松赞干布',
     age: '13岁',
     background: '刚刚完成平定内乱的年轻赞普',
     personality: '果敢坚毅但略显青涩，正在寻求巩固王权的方法',
     currentSituation: '刚刚肃清叛臣，正在考虑与大唐和亲以巩固统治'
 };
 
-// 独立的故事模式聊天记录存储
-const STORY_CHAT_PREFIX = 'story_chat_';
+// 故事场景专用存储键
+const SCENE_CHAT_KEY = 'scene_chat_songzanganbu_story';
 
-// 故事模式专用存储键
-const STORY_CHAT_KEY = 'story_chat_songzanganbu';
-
-// 保存故事模式聊天记录
-function saveStoryChat(message, sender) {
-    let history = JSON.parse(localStorage.getItem(STORY_CHAT_KEY) || '[]');
+// 保存聊天记录
+function saveChat(message, sender) {
+    let history = JSON.parse(localStorage.getItem(SCENE_CHAT_KEY) || '[]');
     history.push({
         message,
         sender,
         timestamp: new Date().toISOString()
     });
-    localStorage.setItem(STORY_CHAT_KEY, JSON.stringify(history));
+    localStorage.setItem(SCENE_CHAT_KEY, JSON.stringify(history));
 }
 
 // 初始化时保存开场白
@@ -45,14 +42,14 @@ window.onload = function() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
     // 保存开场消息
-    saveStoryChat(greeting, 'bot');
+    saveChat(greeting, 'bot');
 }
 
 // 监听发送按钮
 document.getElementById('send-button').addEventListener('click', function() {
     const input = document.getElementById('user-input').value.trim();
     if (input) {
-        saveStoryChat(input, 'user');
+        saveChat(input, 'user');
         // ... 其他发送逻辑 ...
     }
 });
