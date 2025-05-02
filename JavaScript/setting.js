@@ -10,8 +10,69 @@ function toggleSettings() {
         if (savedApiKey) {
             document.getElementById('apiKey').value = savedApiKey;
         }
+        // 加载保存的音乐设置
+        const savedBgm = localStorage.getItem('bgm');
+        if (savedBgm) {
+            document.getElementById('bgm-select').value = savedBgm;
+        }
     }
 }
+
+// 添加音乐控制变量
+// 修改音乐控制变量为全局变量
+let bgmPlayer = null;
+let isBgmPlaying = false;
+
+// 初始化音乐控制
+function initBgmControl() {
+    if (!bgmPlayer) {
+        bgmPlayer = new Audio();
+    }
+    
+    const bgmToggle = document.getElementById('bgm-toggle');
+    const savedBgm = localStorage.getItem('bgm');
+    
+    if (savedBgm) {
+        document.getElementById('bgm-select').value = savedBgm;
+        bgmPlayer.src = savedBgm;
+    }
+    
+    bgmToggle.addEventListener('click', function() {
+        if (isBgmPlaying) {
+            bgmPlayer.pause();
+            this.textContent = '播放';
+            isBgmPlaying = false;
+        } else {
+            const bgmSelect = document.getElementById('bgm-select');
+            bgmPlayer.src = bgmSelect.value;
+            bgmPlayer.loop = true;
+            bgmPlayer.play();
+            this.textContent = '暂停';
+            isBgmPlaying = true;
+            localStorage.setItem('bgm', bgmSelect.value);
+        }
+    });
+
+    document.getElementById('bgm-select').addEventListener('change', function() {
+        if (isBgmPlaying) {
+            bgmPlayer.src = this.value;
+            bgmPlayer.play();
+            localStorage.setItem('bgm', this.value);
+        }
+    });
+}
+
+// 修改DOMContentLoaded事件
+window.addEventListener('DOMContentLoaded', function() {
+    initBgmControl();
+    
+    // 如果有保存的音乐设置，自动播放
+    if (localStorage.getItem('bgm')) {
+        bgmPlayer.play();
+        document.getElementById('bgm-toggle').textContent = '暂停';
+        isBgmPlaying = true;
+    }
+});
 
 function saveSettings() {
     const apiKey = document.getElementById('apiKey').value.trim();
@@ -23,6 +84,10 @@ function saveSettings() {
     localStorage.setItem('apiKey', apiKey);
     alert('设置已保存成功');
     toggleSettings();
+    
+    // 保存音乐设置
+    const bgmSelect = document.getElementById('bgm-select');
+    localStorage.setItem('bgm', bgmSelect.value);
 }
 
 // 点击弹窗外部关闭
@@ -63,7 +128,7 @@ function manageChatHistory() {
     title.style.marginTop = '0';
 
     // 角色列表
-    const characters = ['孔子', '霍去病', '刘邦', '赵云', '丘处机', '樊哙', '曹操', '张良', '项羽'];
+    const characters = ['孔子', '霍去病', '刘邦', '赵云', '丘处机', '樊哙', '曹操', '张良', '项羽','松赞干布','文成公主'];
     const list = document.createElement('div');
 
     characters.forEach(character => {
