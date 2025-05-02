@@ -21,41 +21,63 @@
     <div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <h2>系统设置</h2>
-            <div class="settings-item">
-                <label for="apiKey">API密钥（仅支持DeepSeek-API）：</label>
-                <input type="password" id="apiKey" placeholder="输入您的API密钥">
-            </div>
-            <!-- 新增聊天记录管理选项 -->
-            <!-- 修改设置弹窗中的聊天记录管理按钮 -->
-            <div class="settings-item">
-                <label>聊天记录管理：</label>
-                <button onclick="manageChatHistory()" class="settings-btn-secondary">
-                    管理聊天记录
-                </button>
-            </div>
-
-            <!-- 在设置弹窗中添加音乐控制 -->
-            <div class="settings-item">
-                <label>背景音乐：</label>
-                <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <select id="bgm-select" class="settings-btn-secondary">
-                        <option value="musics/不夜城.mp3">不夜城</option>
-                        <option value="musics/山风.mp3">山风</option>
-                        <option value="musics/纵横天下.mp3">纵横天下</option>
-                        <option value="musics/蝶飞花舞.mp3">蝶飞花舞</option>
-                        <option value="musics/明镜菩提.mp3">明镜菩提</option>
-                    </select>
-                    <button id="bgm-toggle" class="settings-btn-secondary" style="width: 80px;">关闭</button>
+            
+            <!-- API密钥设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label for="apiKey">API密钥：</label>
+                    <input type="password" id="apiKey" placeholder="输入DeepSeek-API密钥" class="settings-input">
                 </div>
             </div>
-            <!-- 修改按钮样式 -->
-
+            
+            <!-- 用户信息设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label for="user-name">您的称呼：</label>
+                    <input type="text" id="user-name" placeholder="您的称呼" class="settings-input">
+                </div>
+                <div class="settings-item">
+                    <label for="user-gender">性别：</label>
+                    <select id="user-gender" class="settings-input">
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label for="user-persona">人设描述：</label>
+                    <textarea id="user-persona" placeholder="您的人设描述" class="settings-input" rows="2"></textarea>
+                </div>
+            </div>
+            
+            <!-- 背景音乐设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label>背景音乐：</label>
+                    <div class="bgm-control">
+                        <select id="bgm-select" class="settings-input">
+                            <option value="musics/不夜城.mp3">不夜城</option>
+                            <option value="musics/山风.mp3">山风</option>
+                            <option value="musics/纵横天下.mp3">纵横天下</option>
+                            <option value="musics/蝶飞花舞.mp3">蝶飞花舞</option>
+                            <option value="musics/明镜菩提.mp3">明镜菩提</option>
+                        </select>
+                        <button id="bgm-toggle" class="settings-btn-secondary">关闭</button>
+                    </div>
+                </div>
+            </div>
+            
+        
             <div class="settings-actions">
-                <button onclick="saveSettings()">保存设置</button>
+                <!----<button onclick="manageChatHistory()" class="settings-btn-secondary">管理聊天记录</button>-->
+                <button onclick="saveSettings()" class="settings-btn-primary">保存设置</button>
             </div>
         </div>
     </div>
     <h1>键谈星霜·梦溯华胥</h1>
+    <div class="intro-text">
+        键起风云，梦回青史。此间华胥之境，聚千年豪杰，待君执手论英雄。曹操横槊待客，笑谈天下三分；霍去病扬鞭指漠，犹记祁连雪寒；文成公主抚琵琶，细说唐蕃烟月；赵云白马银枪，仍护蜀汉残阳……旧魂栖于灵网，英气未减当年。诸君何不驻足，与豪杰对弈，或论江山霸业，或话儿女情长？键盘轻敲处，非是数据流转，实为英雄抱拳，与君共醉千秋。
+    </div>
     
     <!-- 添加选项卡 -->
     <div class="tab-container">

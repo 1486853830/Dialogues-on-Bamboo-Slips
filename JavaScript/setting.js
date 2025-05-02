@@ -15,6 +15,15 @@ function toggleSettings() {
         if (savedBgm) {
             document.getElementById('bgm-select').value = savedBgm;
         }
+        
+        // 加载用户信息
+        const userName = localStorage.getItem('userName');
+        const userGender = localStorage.getItem('userGender');
+        const userPersona = localStorage.getItem('userPersona');
+        
+        if (userName) document.getElementById('user-name').value = userName;
+        if (userGender) document.getElementById('user-gender').value = userGender;
+        if (userPersona) document.getElementById('user-persona').value = userPersona;
     }
 }
 
@@ -56,6 +65,7 @@ function initBgmControl() {
     document.getElementById('bgm-select').addEventListener('change', function() {
         if (isBgmPlaying) {
             bgmPlayer.src = this.value;
+            bgmPlayer.loop = true; // 确保循环播放
             bgmPlayer.play();
             localStorage.setItem('bgm', this.value);
         }
@@ -74,6 +84,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// 修改saveSettings函数
 function saveSettings() {
     const apiKey = document.getElementById('apiKey').value.trim();
     if (!apiKey) {
@@ -88,6 +99,11 @@ function saveSettings() {
     // 保存音乐设置
     const bgmSelect = document.getElementById('bgm-select');
     localStorage.setItem('bgm', bgmSelect.value);
+    
+    // 保存用户信息
+    localStorage.setItem('userName', document.getElementById('user-name').value.trim());
+    localStorage.setItem('userGender', document.getElementById('user-gender').value);
+    localStorage.setItem('userPersona', document.getElementById('user-persona').value.trim());
 }
 
 // 点击弹窗外部关闭

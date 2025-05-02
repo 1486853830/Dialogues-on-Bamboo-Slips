@@ -2,6 +2,12 @@ export class BaseCharacter {
     constructor(characterName, systemMessage) {
         this.API_KEY = localStorage.getItem('apiKey');
         this.characterName = characterName;
+        
+        // 获取用户信息
+        this.userName = localStorage.getItem('userName') || '访客';
+        this.userGender = localStorage.getItem('userGender') || 'unknown';
+        this.userPersona = localStorage.getItem('userPersona') || '';
+        
         this.systemMessage = systemMessage || {
             role: "system",
             content: ""
@@ -80,6 +86,13 @@ export class BaseCharacter {
 
     async sendMessage(isRephrase = false) {
         let userInput;
+
+        // 在系统消息中包含用户信息
+        if(this.messageHistory.length === 1) { // 只有系统消息时
+            this.systemMessage.content = `你正在与${this.userName}(${this.userGender})对话。
+            用户人设: ${this.userPersona}
+            请以${this.characterName}的身份和口吻进行对话。`;
+        }
 
         if (!isRephrase) {
             userInput = document.getElementById('user-input').value;

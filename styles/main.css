@@ -195,8 +195,63 @@ body::before {
     transform: rotate(30deg);
 }
 
+
+.settings-modal {
+    /* 保持原有样式 */
+}
+
+.settings-content {
+    max-width: 400px;
+    padding: 20px;
+    width: 90%;
+}
+
+.settings-group {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.settings-item {
+    margin: 10px 0;
+}
+
+.settings-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* 输入框样式 */
+.settings-input {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+}
+
+/* 背景音乐控制 */
+.bgm-control {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 按钮样式 */
+.settings-btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
 /* 设置弹窗样式 */
 .settings-modal {
+    /* 设置弹窗样式 */
     display: none;
     position: fixed;
     top: 0;
@@ -332,16 +387,20 @@ body::before {
 
 .tab-header {
     display: flex;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     margin-bottom: 20px;
     max-width: 100%;
-    overflow-x: hidden; /* 修改为hidden移除滚动条 */
-    scrollbar-width: none; /* 兼容Firefox */
+    overflow-x: hidden;
+    /* 修改为hidden移除滚动条 */
+    scrollbar-width: none;
+    /* 兼容Firefox */
 }
 
 .tab-header::-webkit-scrollbar {
-    display: none; /* 兼容Chrome/Safari */
+    display: none;
+    /* 兼容Chrome/Safari */
 }
+
 /* 修改选项卡样式 */
 .tab-container {
     max-width: 100%;
@@ -418,8 +477,10 @@ body::before {
     cursor: pointer;
     transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     color: white;
-    position: relative; /* 新增定位 */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* 新增边框 */
+    position: relative;
+    /* 新增定位 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 新增边框 */
 }
 
 /* 添加边缘发光效果 */
@@ -438,8 +499,8 @@ body::before {
 /* 增强悬停时的边缘效果 */
 .story-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 
-                0 0 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(255, 255, 255, 0.4);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -493,9 +554,9 @@ select.settings-btn-secondary {
     -webkit-appearance: none;
     -moz-appearance: none;
     padding: 8px 30px 8px 15px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
@@ -509,14 +570,14 @@ select.settings-btn-secondary {
 
 /* 悬停效果 */
 select.settings-btn-secondary:hover {
-    background-color: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.3);
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* 聚焦效果 */
 select.settings-btn-secondary:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
 /* 下拉选项样式 */
@@ -528,4 +589,108 @@ select.settings-btn-secondary option {
 /* 按钮统一宽度 */
 #bgm-toggle {
     width: 80px;
+}
+
+/* 用户信息控制样式 */
+.user-info-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.settings-input {
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.settings-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+textarea.settings-input {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* 设置组样式 */
+.settings-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-group h3 {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 紧凑的设置项 */
+.settings-item {
+    margin: 12px 0;
+}
+
+.settings-item label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 操作按钮区域 */
+.settings-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.settings-btn-primary {
+    background: linear-gradient(135deg, #4a6bff, #3a56e0);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.settings-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+/* 文本输入框样式 */
+.settings-input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+.intro-text {
+    max-width: 800px;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
