@@ -531,6 +531,7 @@ export class BaseCharacter {
             '张良': '蝶飞花舞',
             '樊哙': '不夜城',
             '赵云': '不夜城',
+            '松赞干布': '山风',
 
         };
         return musicMap[this.characterName] || '不夜城';

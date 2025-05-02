@@ -12,7 +12,7 @@ import { Wenchenggongzhu } from '../characters/文成公主/wenchenggongzhu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
-    
+
     if (path.includes('huoqubing')) {
         const huoqubing = new HuoQubing();
         huoqubing.init();
@@ -41,10 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const zhaoyun = new ZhaoYun();
         zhaoyun.init();
     } else if (path.includes('songzanganbu')) {
-        const zhaoyun = new Songzanganbu();
-        zhaoyun.init();
+        const songzanganbu = new Songzanganbu();
+        songzanganbu.init();
     } else if (path.includes('wenchenggongzhu')) {
-        const zhaoyun = new Wenchenggongzhu();
-        zhaoyun.init();
+        const wenchenggongzhu = new Wenchenggongzhu();
+        wenchenggongzhu.init();
     }
 });
+
+
+function saveChatHistory(message, sender) {
+    // 判断是否是故事模式
+    if (window.location.pathname.includes('雪域迎风唐蕃结缘')) {
+        // 调用故事模式专用存储
+        saveStoryChat(message, sender);
+    } else {
+        // 原有普通聊天存储逻辑
+        saveNormalChat(message, sender); 
+    }
+}
