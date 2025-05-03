@@ -10,6 +10,7 @@ import { ZhaoYun } from '../characters/赵云/zhaoyun.js';
 import { Songzanganbu } from '../characters/松赞干布/songzanganbu.js';
 import { Wenchenggongzhu } from '../characters/文成公主/wenchenggongzhu.js';
 import { Niudun } from '../characters/牛顿/niudun.js';
+import { Mengdeer } from '../characters/孟德尔/mengdeer.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -50,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('niudun')) {
         const niudun = new Niudun();
         niudun.init();
+    } else if (path.includes('mengdeer')) {
+        const mengdeer = new Mengdeer();
+        mengdeer.init();
     }
 });
 

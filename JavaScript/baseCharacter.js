@@ -25,8 +25,11 @@ export class BaseCharacter {
         const currentMessageId = `msg-${this.messageIdCounter++}`;
         messageElement.classList.add('message', `${sender}-message`);
 
-        const processedMessage = message.replace(/（([^）]*)）|\(([^)]*)\)/g,
-            '<span style="opacity:0.6">$&</span> ')
+        const processedMessage = message
+            // 处理括号内容
+            .replace(/（([^）]*)）|\(([^)]*)\)/g, '<span style="opacity:0.6">$&</span>')
+            // 处理星号内容(保留星号并应用半透明效果)
+            .replace(/\*([^*]+)\*/g, '<span style="opacity:0.6">（$1）</span>')
             .replace(/<\/span>\s+/g, '</span> ');
 
         messageElement.innerHTML = processedMessage;
