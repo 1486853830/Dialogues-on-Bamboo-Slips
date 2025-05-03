@@ -24,6 +24,29 @@ function toggleSettings() {
         if (userName) document.getElementById('user-name').value = userName;
         if (userGender) document.getElementById('user-gender').value = userGender;
         if (userPersona) document.getElementById('user-persona').value = userPersona;
+        
+        // 添加半屏显示开关到背景音乐设置组下方
+        const halfScreen = localStorage.getItem('halfScreen');
+        if (!document.getElementById('halfScreen-toggle')) {
+            const container = document.createElement('div');
+            container.style.margin = '10px 0';
+            
+            const label = document.createElement('label');
+            label.textContent = '半屏显示对话内容: ';
+            label.style.color = 'white';
+            label.style.marginRight = '10px';
+            
+            const toggle = document.createElement('input');
+            toggle.type = 'checkbox';
+            toggle.id = 'halfScreen-toggle';
+            toggle.style.width = '20px';
+            toggle.style.height = '20px';
+            toggle.checked = halfScreen === 'true';
+            
+            container.appendChild(label);
+            container.appendChild(toggle);
+            modal.querySelector('.settings-group').appendChild(container);
+        }
     }
 }
 
@@ -104,6 +127,12 @@ function saveSettings() {
     localStorage.setItem('userName', document.getElementById('user-name').value.trim());
     localStorage.setItem('userGender', document.getElementById('user-gender').value);
     localStorage.setItem('userPersona', document.getElementById('user-persona').value.trim());
+    
+    // 保存半屏显示设置
+    const halfScreenToggle = document.getElementById('halfScreen-toggle');
+    if (halfScreenToggle) {
+        localStorage.setItem('halfScreen', halfScreenToggle.checked);
+    }
 }
 
 // 点击弹窗外部关闭

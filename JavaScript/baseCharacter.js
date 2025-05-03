@@ -16,8 +16,35 @@ export class BaseCharacter {
         this.messageIdCounter = 0;
     }
 
+    // 修改displayMessage方法
     displayMessage(message, sender, isRephrase = false) {
         const chatContainer = document.getElementById('chat-container');
+        
+        // 应用半屏显示设置
+        const halfScreen = localStorage.getItem('halfScreen') === 'true';
+        if (halfScreen) {
+            chatContainer.style.position = 'fixed';
+            chatContainer.style.bottom = '0';
+            chatContainer.style.left = '0';
+            chatContainer.style.width = '100%';
+            chatContainer.style.height = '50vh';
+            chatContainer.style.overflowY = 'auto';
+            chatContainer.style.background = 'none';
+            chatContainer.style.boxSizing = 'border-box'; // 确保内边距不影响宽度
+            // 添加渐隐效果
+            chatContainer.style.maskImage = 'linear-gradient(to bottom, transparent 0%, black 20px, black 100%)';
+            chatContainer.style.webkitMaskImage = 'linear-gradient(to bottom, transparent 0%, black 20px, black 100%)';
+        } else {
+            chatContainer.style.position = '';
+            chatContainer.style.bottom = '';
+            chatContainer.style.left = '';
+            chatContainer.style.width = '';
+            chatContainer.style.height = '';
+            chatContainer.style.overflowY = '';
+            chatContainer.style.background = '';
+            chatContainer.style.maskImage = '';
+            chatContainer.style.webkitMaskImage = '';
+        }
         const messageContainer = document.createElement('div');
         messageContainer.classList.add('message-container');
 
