@@ -582,7 +582,10 @@ body::before {
 }
 
 /* 下拉菜单样式 */
-select.settings-btn-secondary {
+
+/* 修复下拉菜单样式 */
+select.settings-input {
+    height: 40px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -601,20 +604,23 @@ select.settings-btn-secondary {
     background-size: 16px;
 }
 
-/* 悬停效果 */
-select.settings-btn-secondary:hover {
+
+
+select.settings-input:hover {
     background-color: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* 聚焦效果 */
-select.settings-btn-secondary:focus {
+
+
+select.settings-input:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
-/* 下拉选项样式 */
-select.settings-btn-secondary option {
+
+
+select.settings-input option {
     background-color: #333;
     color: white;
 }
@@ -622,6 +628,7 @@ select.settings-btn-secondary option {
 /* 按钮统一宽度 */
 #bgm-toggle {
     width: 80px;
+    margin-top: 0px;
 }
 
 /* 用户信息控制样式 */
@@ -697,11 +704,13 @@ textarea.settings-input {
 }
 
 .settings-btn-secondary {
+    height: 40px; /* 固定高度 */
+    padding: 0 15px; /* 调整内边距 */
+    line-height: 40px; /* 确保文字垂直居中 */
+    box-sizing: border-box; /* 包含内边距和边框 */
     background: rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 8px 15px;
-    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
     cursor: pointer;
 }
 
@@ -714,6 +723,13 @@ textarea.settings-input {
     border-radius: 8px;
     color: white;
     font-size: 14px;
+}
+
+/* 对于textarea类型的settings-input需要特殊处理 */
+textarea.settings-input {
+    height: auto; /* 恢复自动高度 */
+    line-height: normal; /* 恢复默认行高 */
+    padding: 10px 15px; /* 调整内边距 */
 }
 
 .intro-text {
