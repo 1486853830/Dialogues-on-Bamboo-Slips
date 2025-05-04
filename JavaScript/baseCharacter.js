@@ -121,7 +121,9 @@ export class BaseCharacter {
         if(this.messageHistory.length === 1) { // 只有系统消息时
             this.systemMessage.content = `你正在与${this.userName}(${this.userGender})对话。
             用户人设: ${this.userPersona}
-            请以${this.characterName}的身份和口吻进行对话。`;
+            请以${this.characterName}的身份和口吻进行对话。
+            你需要主动推动故事情节发展，在回复中：
+            内容简短不超过50字，动作神态等内容用括号括上`;
         }
 
         if (!isRephrase) {
@@ -153,8 +155,9 @@ export class BaseCharacter {
                 body: JSON.stringify({
                     model: "deepseek-chat",
                     messages: this.messageHistory,
-                    temperature: isRephrase ? 0.8 : 0.7,
-                    presence_penalty: isRephrase ? 0.5 : 0.2
+                    temperature: 0.8,  // 提高创造性
+                    presence_penalty: 0.5,
+                    frequency_penalty: 0.5  // 减少重复内容
                 })
             });
 
@@ -336,6 +339,51 @@ export class BaseCharacter {
                     this.displayMessage(msg.content, 'bot');
                 }
             });
+        } else {
+            this.sendWelcomeMessage(); // 确保在类内部调用
+        }
+    }
+
+    async sendWelcomeMessage() {
+        const loadingElement = document.createElement('div');
+        loadingElement.className = 'loading-spinner';
+        document.getElementById('chat-container').appendChild(loadingElement);
+
+        try {
+            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: [{
+                        role: "system",
+                        content: `作为${this.characterName}，用1-2句话向${this.userName}(${this.userGender})打招呼，结合用户人设"${this.userPersona}"。包含动作描写（用括号标注，语言不要打引号），总字数100字左右。`
+                    }],
+                    temperature: 0.9
+                })
+            });
+
+            const data = await response.json();
+            const welcomeMessage = data.choices[0].message.content;
+
+            if (loadingElement.parentNode) {
+                loadingElement.parentNode.removeChild(loadingElement);
+            }
+
+            this.displayMessage(welcomeMessage, 'bot');
+            this.messageHistory.push({ role: "assistant", content: welcomeMessage });
+            localStorage.setItem(`chatHistory_${this.characterName}`, JSON.stringify(this.messageHistory));
+        } catch (error) {
+            console.error("生成欢迎消息出错:", error);
+            if (loadingElement.parentNode) {
+                loadingElement.parentNode.removeChild(loadingElement);
+            }
+            const fallbackMessage = `（微笑）${this.userName}，你好！`;
+            this.displayMessage(fallbackMessage, 'bot');
+            this.messageHistory.push({ role: "assistant", content: fallbackMessage });
         }
     }
 
