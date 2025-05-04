@@ -12,6 +12,7 @@ import { Wenchenggongzhu } from '../characters/文成公主/wenchenggongzhu.js';
 import { Niudun } from '../characters/牛顿/niudun.js';
 import { Mengdeer } from '../characters/孟德尔/mengdeer.js';
 import { Yelvabaoji } from '../characters/耶律阿保机/yelvabaoji.js';
+import { Zhanfengzu } from '../characters/斩锋卒/zhanfengzu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -57,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
         mengdeer.init();
     } else if (path.includes('yelvabaoji')) {
         const yelvabaoji = new Yelvabaoji();
-        yelvabaoji.init(); 
+        yelvabaoji.init();
+    } else if (path.includes('zhanfengzu')) {
+        const zhanfengzu = new Zhanfengzu();
+        zhanfengzu.init(); 
     }
 });
 

@@ -627,6 +627,7 @@ export class BaseCharacter {
             '牛顿': '明镜菩提',
             '孟德尔': '浮生若梦',
             '文成公主': '花都',
+            '斩锋卒': '山风',
 
         };
         return musicMap[this.characterName] || '不夜城';

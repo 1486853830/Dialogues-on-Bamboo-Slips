@@ -21,7 +21,7 @@
     <div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <h2>系统设置</h2>
-            
+
             <!-- API密钥设置 -->
             <div class="settings-group">
                 <div class="settings-item">
@@ -29,7 +29,7 @@
                     <input type="password" id="apiKey" placeholder="输入DeepSeek-API密钥" class="settings-input">
                 </div>
             </div>
-            
+
             <!-- 用户信息设置 -->
             <div class="settings-group">
                 <div class="settings-item">
@@ -49,7 +49,7 @@
                     <textarea id="user-persona" placeholder="您的人设描述" class="settings-input" rows="2"></textarea>
                 </div>
             </div>
-            
+
             <!-- 背景音乐设置 -->
             <div class="settings-group">
                 <div class="settings-item">
@@ -66,8 +66,8 @@
                     </div>
                 </div>
             </div>
-            
-        
+
+
             <div class="settings-actions">
                 <!----<button onclick="manageChatHistory()" class="settings-btn-secondary">管理聊天记录</button>-->
                 <button onclick="saveSettings()" class="settings-btn-primary">保存设置</button>
@@ -84,14 +84,15 @@
             <button id="search-button" class="settings-btn-secondary">搜索</button>
         </div>
     </div>
-    
+
     <!-- 添加选项卡 -->
     <div class="tab-container">
         <div class="tab-header">
-            <button class="tab-btn active" onclick="switchTab('characters')">人物</button>
-            <button class="tab-btn" onclick="switchTab('stories')">故事</button>
+            <button class="tab-btn active" onclick="switchTab('characters')">威名显赫</button>
+            <button class="tab-btn" onclick="switchTab('nameless')">名匿青史</button>
+            <button class="tab-btn" onclick="switchTab('stories')">史帙鸿踪</button>
         </div>
-        
+
         <div id="characters-tab" class="tab-content active">
             <!-- 现有的人物卡片容器 -->
             <div class="agents-container">
@@ -105,7 +106,7 @@
                     <div class="agent-name">霍去病</div>
                     <div class="agent-desc">霍去病，河东郡平阳县人，西汉时期名将、军事家、民族英雄。</div>
                 </div>
-            
+
                 <div class="agent-card" onclick="location.href='characters/刘邦/liubang.html'">
                     <img src="characters/刘邦/liubanghead.png" class="agent-avatar" alt="刘邦">
                     <div class="agent-name">刘邦</div>
@@ -173,19 +174,31 @@
                 </div>
             </div>
         </div>
-    
-    <div id="stories-tab" class="tab-content">
-        <div class="stories-container">
-            <div class="story-card" onclick="location.href='stories/雪域迎风唐蕃结缘/Scene1/xueyuyingfengtangbojieyuan.html'">
-                <img src="stories/雪域迎风唐蕃结缘/media/雪域迎风唐蕃结缘.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
-                <div class="story-content">
-                    <h3 class="story-title">雪域迎风·唐蕃结缘（敬请期待）</h3>
-                    <div class="story-desc">公元641年，唐朝宗室女文成公主远嫁吐蕃赞普松赞干布，携谷物种子、工匠典籍入藏，传播中原农耕、纺织等技术。松赞干布为其兴建布达拉宫，改服饰、创文字，开启唐蕃200年友好往来。这段和亲佳话成为汉藏文化交流的里程碑，至今在西藏民间传颂。</div>
+
+        <div id="nameless-tab" class="tab-content">
+            <div class="agents-container">
+                <div class="agent-card" onclick="location.href='characters/斩锋卒/zhanfengzu.html'">
+                    <img src="characters/斩锋卒/zhanfengzuhead.png" class="agent-avatar" alt="斩锋卒">
+                    <div class="nameless-name">斩锋卒</div>
+                    <div class="nameless-desc">“斩锋卒”只是他的称号，无人知晓他的名字，他不图青史留名，只为同袍能多一份生机，为身后家国守一方安宁</div>
                 </div>
             </div>
-            
         </div>
-    </div>
+        <div id="stories-tab" class="tab-content">
+            <div class="stories-container">
+                <div class="story-card"
+                    onclick="location.href='stories/雪域迎风唐蕃结缘/Scene1/xueyuyingfengtangbojieyuan.html'">
+                    <img src="stories/雪域迎风唐蕃结缘/media/雪域迎风唐蕃结缘.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
+                    <div class="story-content">
+                        <h3 class="story-title">雪域迎风·唐蕃结缘（敬请期待）</h3>
+                        <div class="story-desc">
+                            公元641年，唐朝宗室女文成公主远嫁吐蕃赞普松赞干布，携谷物种子、工匠典籍入藏，传播中原农耕、纺织等技术。松赞干布为其兴建布达拉宫，改服饰、创文字，开启唐蕃200年友好往来。这段和亲佳话成为汉藏文化交流的里程碑，至今在西藏民间传颂。
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 </body>
 
 </html>
