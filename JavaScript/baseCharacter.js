@@ -464,14 +464,20 @@ export class BaseCharacter {
         const audio = new Audio();
         audio.src = `../../musics/${this.getMusicForCharacter()}.mp3`;
         audio.loop = true;
-
+        
+        // 修改这里：添加自动播放
+        audio.play().catch(e => {
+            console.log('自动播放被阻止:', e);
+            musicBtn.textContent = '🔇';
+        });
+        
         musicBtn.onclick = () => {
             if (audio.paused) {
                 audio.play();
                 musicBtn.textContent = '🔊';
             } else {
                 audio.pause();
-                musicBtn.textContent = '🔊';
+                musicBtn.textContent = '🔇';
             }
         };
         document.body.appendChild(musicBtn);
@@ -614,7 +620,7 @@ export class BaseCharacter {
     getMusicForCharacter() {
         const musicMap = {
             '霍去病': '蝶飞花舞',
-            '刘邦': '明镜菩提',
+            '刘邦': '永恒之地',
             '项羽': '纵横天下',
             '曹操': '不夜城',
             '丘处机': '纵横天下',
@@ -627,8 +633,8 @@ export class BaseCharacter {
             '牛顿': '明镜菩提',
             '孟德尔': '浮生若梦',
             '文成公主': '花都',
-            '斩锋卒': '山风',
-
+            '斩锋卒': '永恒之地',
+            '锦衣卫': '天上人间'
         };
         return musicMap[this.characterName] || '不夜城';
     }
