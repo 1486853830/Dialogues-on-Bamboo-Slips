@@ -78,6 +78,34 @@ h1 {
     }
 }
 
+.author-footer {
+    width: 100%;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    margin-top: 40px; /* 增加与上方内容的间距 */
+    position: relative;
+    bottom: 0; /* 新增：紧贴底部 */
+}
+
+/* 修改body样式 */
+body {
+    /* ... 其他样式不变 ... */
+    padding-bottom: 0; /* 确保底部没有内边距 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.author-content p {
+    margin: 0 0 15px 0; /* 增加段落间距 */
+    line-height: 1.8;
+    text-align: justify;
+    text-indent: 2em;
+}
+
 .agent-card {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 16px;
@@ -789,4 +817,11 @@ textarea.settings-input {
     font-style: italic;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.developer-name {
+    display: block;
+    margin-bottom: 15px; /* 调整这个值可以改变间距大小 */
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
 }
