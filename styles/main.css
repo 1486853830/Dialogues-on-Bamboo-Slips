@@ -825,3 +825,1186 @@ textarea.settings-input {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.85);
 }
+
+/* 在body样式中添加 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('../images/background.png') center/cover no-repeat fixed;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 添加毛玻璃遮罩层 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+}
+
+h1 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.agents-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .agents-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .agents-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.author-footer {
+    width: 100%;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    margin-top: 40px; /* 增加与上方内容的间距 */
+    position: relative;
+    bottom: 0; /* 新增：紧贴底部 */
+}
+
+/* 修改body样式 */
+body {
+    /* ... 其他样式不变 ... */
+    padding-bottom: 0; /* 确保底部没有内边距 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.author-content p {
+    margin: 0 0 15px 0; /* 增加段落间距 */
+    line-height: 1.8;
+    text-align: justify;
+    text-indent: 2em;
+}
+
+.agent-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* 更平滑的过渡曲线 */
+    will-change: transform, box-shadow;
+    /* 优化性能 */
+}
+
+/* 添加发光边缘效果 */
+.agent-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+.agent-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(255, 255, 255, 0.5);
+    /* 悬停时增强柔光 */
+}
+
+.agent-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.agent-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0 5px;
+}
+
+.agent-desc {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 修改背景遮罩层颜色 */
+body::before {
+    background: rgba(0, 0, 0, 0.4);
+    /* 从0.2改为0.4增加黑色浓度 */
+    backdrop-filter: blur(8px);
+}
+
+/* 如果需要卡片背景也变深 */
+.agent-card {
+    background: rgba(0, 0, 0, 0.3);
+    /* 新增深色卡片背景 */
+    color: white;
+    /* 文字改为白色 */
+}
+
+.agent-desc {
+    color: rgba(255, 255, 255, 0.8);
+    /* 描述文字改为浅灰色 */
+}
+
+/* 调整悬停效果透明度 */
+.agent-card:hover {
+    background: rgba(255, 255, 255, 0.7);
+    /* 悬停时稍微减少透明度 */
+    color: black;
+    /* 悬停时文字变黑色 */
+}
+
+.agent-card:hover .agent-name,
+.agent-card:hover .agent-desc {
+    color: black;
+    /* 确保名称和描述都变黑 */
+}
+
+/* 添加流星样式 */
+.meteor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    z-index: -1;
+}
+
+/* 设置按钮样式 */
+.settings-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 100;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+
+.settings-btn:hover {
+    transform: rotate(30deg);
+}
+
+
+.settings-content {
+    max-width: 400px;
+    padding: 20px;
+    width: 90%;
+}
+
+.settings-group {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.settings-item {
+    margin: 10px 0;
+}
+
+.settings-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* 输入框样式 */
+.settings-input {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+}
+
+/* 背景音乐控制 */
+.bgm-control {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 按钮样式 */
+.settings-btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* 设置弹窗样式 */
+.settings-modal {
+    /* 设置弹窗样式 */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-content {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-content h2 {
+    color: white;
+    margin-top: 0;
+    text-align: center;
+}
+
+.settings-item {
+    margin: 20px 0;
+}
+
+.settings-item label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.settings-item input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.settings-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+/* 更新弹窗动画 */
+.settings-modal {
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.settings-modal[style*="flex"] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 优化保存按钮样式 */
+.settings-actions button {
+    background: linear-gradient(135deg, #4a6bff, #3a56e0);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 107, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+}
+
+.settings-actions button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+}
+
+.settings-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 107, 255, 0.4);
+}
+
+.settings-actions button:hover::after {
+    transform: translateX(100%);
+}
+
+.settings-actions button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
+}
+
+.agents-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.agent-card {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 280px;
+    max-width: 350px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow-x: hidden;
+    /* 修改为hidden移除滚动条 */
+    scrollbar-width: none;
+    /* 兼容Firefox */
+}
+
+.tab-header::-webkit-scrollbar {
+    display: none;
+    /* 兼容Chrome/Safari */
+}
+
+/* 修改选项卡样式 */
+.tab-container {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.tab-header {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #007bff;
+}
+
+.tab-content {
+    /* 修复后的选项卡动画样式 */
+    .tab-content {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .tab-content.active {
+        display: block;
+        animation: slideIn 0.3s ease forwards;
+    }
+    
+    .tab-content:not(.active) {
+        display: none;
+        animation: slideOut 0.3s ease forwards;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+    }
+}
+
+.tab-content.active {
+    display: block;
+}
+
+
+/* 故事卡片容器 */
+.stories-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* 故事卡片样式 */
+.story-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: white;
+    position: relative;
+    /* 新增定位 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 新增边框 */
+}
+
+/* 添加边缘发光效果 */
+.story-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+}
+
+/* 增强悬停时的边缘效果 */
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
+        0 0 25px rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.story-card:hover::before {
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.story-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.story-content {
+    padding: 20px;
+}
+
+.story-title {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.story-desc {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+/* 悬停效果 */
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.story-card:hover .story-cover {
+    opacity: 0.9;
+}
+
+/* 音乐控制容器样式 */
+.bgm-control {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    align-items: center;
+}
+
+/* 下拉菜单样式 */
+
+/* 修复下拉菜单样式 */
+select.settings-input {
+    height: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 8px 30px 8px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    min-width: 150px;
+    transition: all 0.3s ease;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+
+
+select.settings-input:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-container .settings-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#character-search {
+    flex: 1;
+    min-width: 0;
+    margin-right: 10px;
+}
+
+#search-button {
+    width: 100px;
+    white-space: nowrap;
+}
+
+.settings-input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 14px;
+}
+
+.settings-btn-secondary {
+    padding: 8px 16px;
+    background: rgba(0,123,255,0.5);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 0px
+}
+
+.settings-btn-secondary:hover {
+    background: rgba(0,123,255,0.7);
+}
+
+select.settings-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+
+
+select.settings-input option {
+    background-color: #333;
+    color: white;
+}
+
+/* 按钮统一宽度 */
+#bgm-toggle {
+    width: 80px;
+    margin-top: 0px;
+}
+
+/* 用户信息控制样式 */
+.user-info-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.settings-input {
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.settings-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+textarea.settings-input {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* 设置组样式 */
+.settings-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-group h3 {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 紧凑的设置项 */
+.settings-item {
+    margin: 12px 0;
+}
+
+.settings-item label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 操作按钮区域 */
+.settings-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.settings-btn-primary {
+    background: linear-gradient(135deg, #4a6bff, #3a56e0);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.settings-btn-secondary {
+    height: 40px; /* 固定高度 */
+    padding: 0 15px; /* 调整内边距 */
+    line-height: 40px; /* 确保文字垂直居中 */
+    box-sizing: border-box; /* 包含内边距和边框 */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* 文本输入框样式 */
+.settings-input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+}
+
+/* 对于textarea类型的settings-input需要特殊处理 */
+textarea.settings-input {
+    height: auto; /* 恢复自动高度 */
+    line-height: normal; /* 恢复默认行高 */
+    padding: 10px 15px; /* 调整内边距 */
+}
+
+.intro-text {
+    max-width: 800px;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.developer-name {
+    display: block;
+    margin-bottom: 15px; /* 调整这个值可以改变间距大小 */
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* 在body样式中添加 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('../images/background.png') center/cover no-repeat fixed;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 添加毛玻璃遮罩层 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+}
+
+h1 {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.agents-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .agents-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .agents-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.author-footer {
+    width: 100%;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    margin-top: 40px; /* 增加与上方内容的间距 */
+    position: relative;
+    bottom: 0; /* 新增：紧贴底部 */
+}
+
+/* 修改body样式 */
+body {
+    /* ... 其他样式不变 ... */
+    padding-bottom: 0; /* 确保底部没有内边距 */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.author-content p {
+    margin: 0 0 15px 0; /* 增加段落间距 */
+    line-height: 1.8;
+    text-align: justify;
+    text-indent: 2em;
+}
+
+.agent-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* 更平滑的过渡曲线 */
+    will-change: transform, box-shadow;
+    /* 优化性能 */
+}
+
+/* 添加发光边缘效果 */
+.agent-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+.agent-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(255, 255, 255, 0.5);
+    /* 悬停时增强柔光 */
+}
+
+.agent-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.agent-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 10px 0 5px;
+}
+
+.agent-desc {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 修改背景遮罩层颜色 */
+body::before {
+    background: rgba(0, 0, 0, 0.4);
+    /* 从0.2改为0.4增加黑色浓度 */
+    backdrop-filter: blur(8px);
+}
+
+/* 如果需要卡片背景也变深 */
+.agent-card {
+    background: rgba(0, 0, 0, 0.3);
+    /* 新增深色卡片背景 */
+    color: white;
+    /* 文字改为白色 */
+}
+
+.agent-desc {
+    color: rgba(255, 255, 255, 0.8);
+    /* 描述文字改为浅灰色 */
+}
+
+/* 调整悬停效果透明度 */
+.agent-card:hover {
+    background: rgba(255, 255, 255, 0.7);
+    /* 悬停时稍微减少透明度 */
+    color: black;
+    /* 悬停时文字变黑色 */
+}
+
+.agent-card:hover .agent-name,
+.agent-card:hover .agent-desc {
+    color: black;
+    /* 确保名称和描述都变黑 */
+}
+
+/* 添加流星样式 */
+.meteor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    z-index: -1;
+}
+
+/* 设置按钮样式 */
+.settings-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 100;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+
+.settings-btn:hover {
+    transform: rotate(30deg);
+}
+
+
+.settings-content {
+    max-width: 400px;
+    padding: 20px;
+    width: 90%;
+}
+
+.settings-group {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.settings-item {
+    margin: 10px 0;
+}
+
+.settings-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* 输入框样式 */
+.settings-input {
+    width: 100%;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+}
+
+/* 背景音乐控制 */
+.bgm-control {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 按钮样式 */
+.settings-btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* 设置弹窗样式 */
+.settings-modal {
+    /* 设置弹窗样式 */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-content {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    padding: 30px;
+    width: 80%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.settings-content h2 {
+    color: white;
+    margin-top: 0;
+    text-align: center;
+}
+
+.settings-item {
+    margin: 20px 0;
+}
+
+.settings-item label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.settings-item input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.settings-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+
+/* 更新弹窗动画 */
+.settings-modal {
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.settings-modal[style*="flex"] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 优化保存按钮样式 */
+.settings-actions button {
+    background: linear-gradient(135deg, #4a6bff, #3a56e0);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 107, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 1px;
+}
+
+.settings-actions button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+}
+
+.settings-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 107, 255, 0.4);
+}
+
+.settings-actions button:hover::after {
+    transform: translateX(100%);
+}
+
+.settings-actions button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
+}
+
+.agents-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.agent-card {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 280px;
+    max-width: 350px;
+    box-sizing: border-box;
+    width: 100%;
+}
