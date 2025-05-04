@@ -179,7 +179,7 @@ export class BaseCharacter {
 
     async getPresetResponse() {
         try {
-            const recentMessages = this.messageHistory.slice(-4);
+            // 修改这里：使用全部聊天记录而不是.slice(-4)
             const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
@@ -189,13 +189,13 @@ export class BaseCharacter {
                 body: JSON.stringify({
                     model: "deepseek-chat",
                     messages: [
-                        ...recentMessages,
+                        ...this.messageHistory,  // 使用全部历史记录
                         {
                             role: "user",
                             content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过80字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
                         }
                     ],
-                    temperature: 0.7
+                    temperature: 1
                 })
             });
 
