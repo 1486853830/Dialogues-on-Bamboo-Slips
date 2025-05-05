@@ -481,3 +481,32 @@ button {
     user-select: none;
     /* 标准语法 */
 }
+
+
+/* 添加横屏模式下的居中样式 */
+@media screen and (orientation: landscape) {
+    body {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: 100vh;
+        width: 650px;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    #chat-container {
+        height: calc(100vh - 170px);
+    }
+    
+    #input-area {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .header-container {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
