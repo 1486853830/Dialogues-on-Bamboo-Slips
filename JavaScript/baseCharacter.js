@@ -171,7 +171,7 @@ export class BaseCharacter {
                     })
                 };
             } else {
-                apiUrl = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
+                apiUrl = "/proxy/dashscope"; 
                 requestOptions = {
                     method: "POST",
                     headers: {
@@ -199,14 +199,26 @@ export class BaseCharacter {
 
             response = await fetch(apiUrl, requestOptions);
 
+            if (!response.ok) {
+                throw new Error(`HTTP 请求失败，状态码: ${response.status}`);
+            }
+
             let botResponse;
+            const data = await response.json();
+            console.log('API 响应数据:', data); // 打印响应数据，方便调试
+
             if (this.apiProvider === 'deepseek') {
-                const data = await response.json();
-                botResponse = data.choices[0].message.content;
+                if (data.choices && data.choices[0] && data.choices[0].message) {
+                    botResponse = data.choices[0].message.content;
+                } else {
+                    throw new Error('DeepSeek API 响应数据结构异常');
+                }
             } else {
-                // 通义千问响应处理
-                const data = await response.json();
-                botResponse = data.output.choices[0].message.content;
+                if (data.output && data.output.choices && data.output.choices[0] && data.output.choices[0].message) {
+                    botResponse = data.output.choices[0].message.content;
+                } else {
+                    throw new Error('通义千问 API 响应数据结构异常');
+                }
             }
 
             if (loadingElement.parentNode) {
@@ -426,14 +438,20 @@ export class BaseCharacter {
     }
 
     async sendWelcomeMessage() {
+        // 创建 loadingElement
         const loadingElement = document.createElement('div');
         loadingElement.className = 'loading-spinner';
+        loadingElement.style.margin = '10px 0 10px 10px';
         document.getElementById('chat-container').appendChild(loadingElement);
     
         try {
             let response;
+            let apiUrl;
+            let requestOptions;
+    
             if (this.apiProvider === 'deepseek') {
-                response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                apiUrl = "https://api.deepseek.com/v1/chat/completions";
+                requestOptions = {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -441,16 +459,16 @@ export class BaseCharacter {
                     },
                     body: JSON.stringify({
                         model: "deepseek-chat",
-                        messages: [{
-                            role: "system",
-                            content: `作为${this.characterName}，用1-2句话向${this.userName}(${this.userGender})打招呼，结合用户人设"${this.userPersona}"。包含动作描写（用括号标注，语言不要打引号），总字数100字左右。`
-                        }],
-                        temperature: 0.9
+                        messages: this.messageHistory,
+                        temperature: 0.8,
+                        presence_penalty: 0.5,
+                        frequency_penalty: 0.5
                     })
-                });
+                };
             } else {
-                // 通义千问API调用
-                response = await fetch("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", {
+                // 使用代理地址
+                apiUrl = "/proxy/dashscope"; 
+                requestOptions = {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -460,50 +478,47 @@ export class BaseCharacter {
                     body: JSON.stringify({
                         model: "qwen-long",
                         input: {
-                            messages: [{
-                                role: "system",
-                                content: `作为${this.characterName}，用1-2句话向${this.userName}(${this.userGender})打招呼，结合用户人设"${this.userPersona}"。包含动作描写（用括号标注，语言不要打引号），总字数100字左右。`
-                            }]
+                            messages: this.messageHistory
                         },
                         parameters: {
                             result_format: "message",
-                            temperature: 0.9
+                            temperature: 0.8,
+                            top_p: 0.8
                         }
                     })
-                });
+                };
             }
     
-            if (!response.ok) {
-                throw new Error(`API请求失败: ${response.status}`);
+            if (!this.API_KEY) {
+                throw new Error(`未配置${this.apiProvider === 'deepseek' ? 'DeepSeek' : '通义千问'} API密钥`);
             }
     
-            let welcomeMessage;
+            response = await fetch(apiUrl, requestOptions);
+    
+            let botResponse;
             if (this.apiProvider === 'deepseek') {
                 const data = await response.json();
-                welcomeMessage = data.choices[0].message.content;
+                botResponse = data.choices[0].message.content;
             } else {
+                // 通义千问响应处理
                 const data = await response.json();
-                welcomeMessage = data.output.choices[0].message.content;
+                botResponse = data.output.choices[0].message.content;
             }
     
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
             }
     
-            this.displayMessage(welcomeMessage, 'bot');
-            this.messageHistory.push({ role: "assistant", content: welcomeMessage });
+            this.displayMessage(botResponse, 'bot');
+            this.messageHistory.push({ role: "assistant", content: botResponse });
             localStorage.setItem(`chatHistory_${this.characterName}`, JSON.stringify(this.messageHistory));
         } catch (error) {
-            console.error("生成欢迎消息出错:", error);
+            console.error("发送消息出错:", error);
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
             }
-            const fallbackMessage = `（微笑）${this.userName}，你好！`;
-            this.displayMessage(fallbackMessage, 'bot');
-            this.messageHistory.push({ role: "assistant", content: fallbackMessage });
-            
-            // 显示更详细的错误信息
-            alert(`欢迎消息生成失败: ${error.message}\n请检查API密钥和网络连接`);
+            // 显示更友好的错误信息给用户
+            alert(`发送消息失败: ${error.message}`);
         }
     }
 
