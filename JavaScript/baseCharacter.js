@@ -634,7 +634,7 @@ export class BaseCharacter {
             '孟德尔': '青衣',
             '文成公主': '花都',
             '斩锋卒': '永恒之地',
-            '锦衣卫': '天上人间'
+            '锦衣卫': '青衣'
         };
         return musicMap[this.characterName] || '永恒之地';
     }
