@@ -1,10 +1,6 @@
 export class BaseCharacter {
     constructor(characterName, systemMessage) {
-        // 获取当前选择的API提供商
-        this.apiProvider = localStorage.getItem('apiProvider') || 'deepseek';
-        this.API_KEY = this.apiProvider === 'deepseek' 
-            ? localStorage.getItem('apiKey') 
-            : localStorage.getItem('qianwenApiKey');
+        this.API_KEY = localStorage.getItem('apiKey');
         this.characterName = characterName;
         
         // 获取用户信息
@@ -150,76 +146,23 @@ export class BaseCharacter {
         document.getElementById('chat-container').appendChild(loadingElement);
 
         try {
-            let response;
-            let apiUrl;
-            let requestOptions;
-            
-            if (this.apiProvider === 'deepseek') {
-                apiUrl = "https://api.deepseek.com/v1/chat/completions";
-                requestOptions = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "deepseek-chat",
-                        messages: this.messageHistory,
-                        temperature: 0.8,
-                        presence_penalty: 0.5,
-                        frequency_penalty: 0.5
-                    })
-                };
-            } else {
-                apiUrl = "/proxy/dashscope"; 
-                requestOptions = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`,
-                        "X-DashScope-Plugin": "qwen-long"
-                    },
-                    body: JSON.stringify({
-                        model: "qwen-long",
-                        input: {
-                            messages: this.messageHistory
-                        },
-                        parameters: {
-                            result_format: "message",
-                            temperature: 0.8,
-                            top_p: 0.8
-                        }
-                    })
-                };
-            }
+            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: this.messageHistory,
+                    temperature: 0.8,  // 提高创造性
+                    presence_penalty: 0.5,
+                    frequency_penalty: 0.5  // 减少重复内容
+                })
+            });
 
-            if (!this.API_KEY) {
-                throw new Error(`未配置${this.apiProvider === 'deepseek' ? 'DeepSeek' : '通义千问'} API密钥`);
-            }
-
-            response = await fetch(apiUrl, requestOptions);
-
-            if (!response.ok) {
-                throw new Error(`HTTP 请求失败，状态码: ${response.status}`);
-            }
-
-            let botResponse;
             const data = await response.json();
-            console.log('API 响应数据:', data); // 打印响应数据，方便调试
-
-            if (this.apiProvider === 'deepseek') {
-                if (data.choices && data.choices[0] && data.choices[0].message) {
-                    botResponse = data.choices[0].message.content;
-                } else {
-                    throw new Error('DeepSeek API 响应数据结构异常');
-                }
-            } else {
-                if (data.output && data.output.choices && data.output.choices[0] && data.output.choices[0].message) {
-                    botResponse = data.output.choices[0].message.content;
-                } else {
-                    throw new Error('通义千问 API 响应数据结构异常');
-                }
-            }
+            const botResponse = data.choices[0].message.content;
 
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
@@ -228,76 +171,40 @@ export class BaseCharacter {
             this.displayMessage(botResponse, 'bot', isRephrase);
             this.messageHistory.push({ role: "assistant", content: botResponse });
             localStorage.setItem(`chatHistory_${this.characterName}`, JSON.stringify(this.messageHistory));
+
         } catch (error) {
             console.error("发送消息出错:", error);
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
             }
-            // 显示更友好的错误信息给用户
-            alert(`发送消息失败: ${error.message}`);
         }
     }
 
     async getPresetResponse() {
         try {
-            let response;
-            if (this.apiProvider === 'deepseek') {
-                response = await fetch("https://api.deepseek.com/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "deepseek-chat",
-                        messages: [
-                            ...this.messageHistory,  // 使用全部历史记录
-                            {
-                                role: "user",
-                                content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过80字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
-                            }
-                        ],
-                        temperature: 1
-                    })
-                });
-            } else {
-                // 通义千问API调用
-                response = await fetch("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`,
-                        "X-DashScope-Plugin": "qwen-long"
-                    },
-                    body: JSON.stringify({
-                        model: "qwen-long",
-                        input: {
-                            messages: [
-                                ...this.messageHistory,
-                                {
-                                    role: "user",
-                                    content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过80字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
-                                }
-                            ]
-                        },
-                        parameters: {
-                            result_format: "message",
-                            temperature: 1
+            // 修改这里：使用全部聊天记录而不是.slice(-4)
+            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: [
+                        ...this.messageHistory,  // 使用全部历史记录
+                        {
+                            role: "user",
+                            content: `请基于以上对话，生成3个适合我回复${this.characterName}的选项，每个选项不超过80字，动作神态描写用括号括起来，格式为：1.选项1 2.选项2 3.选项3`
                         }
-                    })
-                });
-            }
+                    ],
+                    temperature: 1
+                })
+            });
 
-            let responseContent;
-            if (this.apiProvider === 'deepseek') {
-                const data = await response.json();
-                responseContent = data.choices[0].message.content;
-            } else {
-                const data = await response.json();
-                responseContent = data.output.choices[0].message.content;
-            }
-
-            const options = responseContent.split('\n')
+            const data = await response.json();
+            const content = data.choices[0].message.content;
+            const options = content.split('\n')
                 .filter(line => line.match(/^\d\./))
                 .map(line => line.replace(/^\d\.\s*/, '').trim())
                 .slice(0, 3);
@@ -438,87 +345,45 @@ export class BaseCharacter {
     }
 
     async sendWelcomeMessage() {
-        // 创建 loadingElement
         const loadingElement = document.createElement('div');
         loadingElement.className = 'loading-spinner';
-        loadingElement.style.margin = '10px 0 10px 10px';
         document.getElementById('chat-container').appendChild(loadingElement);
-    
+
         try {
-            let response;
-            let apiUrl;
-            let requestOptions;
-    
-            if (this.apiProvider === 'deepseek') {
-                apiUrl = "https://api.deepseek.com/v1/chat/completions";
-                requestOptions = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "deepseek-chat",
-                        messages: this.messageHistory,
-                        temperature: 0.8,
-                        presence_penalty: 0.5,
-                        frequency_penalty: 0.5
-                    })
-                };
-            } else {
-                // 使用代理地址
-                apiUrl = "/proxy/dashscope"; 
-                requestOptions = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${this.API_KEY}`,
-                        "X-DashScope-Plugin": "qwen-long"
-                    },
-                    body: JSON.stringify({
-                        model: "qwen-long",
-                        input: {
-                            messages: this.messageHistory
-                        },
-                        parameters: {
-                            result_format: "message",
-                            temperature: 0.8,
-                            top_p: 0.8
-                        }
-                    })
-                };
-            }
-    
-            if (!this.API_KEY) {
-                throw new Error(`未配置${this.apiProvider === 'deepseek' ? 'DeepSeek' : '通义千问'} API密钥`);
-            }
-    
-            response = await fetch(apiUrl, requestOptions);
-    
-            let botResponse;
-            if (this.apiProvider === 'deepseek') {
-                const data = await response.json();
-                botResponse = data.choices[0].message.content;
-            } else {
-                // 通义千问响应处理
-                const data = await response.json();
-                botResponse = data.output.choices[0].message.content;
-            }
-    
+            const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "deepseek-chat",
+                    messages: [{
+                        role: "system",
+                        content: `作为${this.characterName}，用1-2句话向${this.userName}(${this.userGender})打招呼，结合用户人设"${this.userPersona}"。包含动作描写（用括号标注，语言不要打引号），总字数100字左右。`
+                    }],
+                    temperature: 0.9
+                })
+            });
+
+            const data = await response.json();
+            const welcomeMessage = data.choices[0].message.content;
+
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
             }
-    
-            this.displayMessage(botResponse, 'bot');
-            this.messageHistory.push({ role: "assistant", content: botResponse });
+
+            this.displayMessage(welcomeMessage, 'bot');
+            this.messageHistory.push({ role: "assistant", content: welcomeMessage });
             localStorage.setItem(`chatHistory_${this.characterName}`, JSON.stringify(this.messageHistory));
         } catch (error) {
-            console.error("发送消息出错:", error);
+            console.error("生成欢迎消息出错:", error);
             if (loadingElement.parentNode) {
                 loadingElement.parentNode.removeChild(loadingElement);
             }
-            // 显示更友好的错误信息给用户
-            alert(`发送消息失败: ${error.message}`);
+            const fallbackMessage = `（微笑）${this.userName}，你好！`;
+            this.displayMessage(fallbackMessage, 'bot');
+            this.messageHistory.push({ role: "assistant", content: fallbackMessage });
         }
     }
 
@@ -767,9 +632,9 @@ export class BaseCharacter {
             '耶律阿保机': '永恒之地',
             '牛顿': '青衣',
             '孟德尔': '青衣',
-            '文成公主': '永恒之地',
+            '文成公主': '花都',
             '斩锋卒': '永恒之地',
-            '锦衣卫': '青衣'
+            '锦衣卫': '天上人间'
         };
         return musicMap[this.characterName] || '永恒之地';
     }
