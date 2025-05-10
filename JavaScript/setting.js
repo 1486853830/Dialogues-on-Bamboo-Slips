@@ -5,10 +5,19 @@ function toggleSettings() {
         modal.style.display = 'none';
     } else {
         modal.style.display = 'flex';
-        // 加载保存的设置
-        const savedApiKey = localStorage.getItem('apiKey');
-        if (savedApiKey) {
-            document.getElementById('apiKey').value = savedApiKey;
+        
+        // 加载保存的API选择
+        const savedApiProvider = localStorage.getItem('apiProvider') || 'deepseek';
+        document.getElementById('apiProvider').value = savedApiProvider;
+        toggleApiInputs();
+        
+        // 加载保存的API密钥
+        if (savedApiProvider === 'deepseek') {
+            const savedApiKey = localStorage.getItem('apiKey');
+            if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
+        } else {
+            const savedQianwenApiKey = localStorage.getItem('qianwenApiKey');
+            if (savedQianwenApiKey) document.getElementById('qianwenApiKey').value = savedQianwenApiKey;
         }
         // 加载保存的音乐设置
         const savedBgm = localStorage.getItem('bgm');
@@ -109,13 +118,26 @@ window.addEventListener('DOMContentLoaded', function() {
 
 // 修改saveSettings函数
 function saveSettings() {
-    const apiKey = document.getElementById('apiKey').value.trim();
-    if (!apiKey) {
-        alert('请输入有效的API密钥');
-        return;
-    }
+    // 保存API选择
+    const apiProvider = document.getElementById('apiProvider').value;
+    localStorage.setItem('apiProvider', apiProvider);
 
-    localStorage.setItem('apiKey', apiKey);
+    // 根据选择的API保存对应的密钥
+    if (apiProvider === 'deepseek') {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        if (!apiKey) {
+            alert('请输入有效的DeepSeek API密钥');
+            return;
+        }
+        localStorage.setItem('apiKey', apiKey);
+    } else {
+        const qianwenApiKey = document.getElementById('qianwenApiKey').value.trim();
+        if (!qianwenApiKey) {
+            alert('请输入有效的通义千问API密钥');
+            return;
+        }
+        localStorage.setItem('qianwenApiKey', qianwenApiKey);
+    }
     alert('设置已保存成功');
     toggleSettings();
     
@@ -140,4 +162,16 @@ document.getElementById('settingsModal').addEventListener('click', function (e) 
     if (e.target === this) {
         toggleSettings();
     }
+});
+
+
+function toggleApiInputs() {
+    const provider = document.getElementById('apiProvider').value;
+    document.getElementById('deepseekApiItem').style.display = provider === 'deepseek' ? 'block' : 'none';
+    document.getElementById('qianwenApiItem').style.display = provider === 'qianwen' ? 'block' : 'none';
+}
+
+// 初始化时调用一次
+document.addEventListener('DOMContentLoaded', function() {
+    toggleApiInputs();
 });

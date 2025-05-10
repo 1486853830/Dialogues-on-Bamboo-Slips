@@ -25,8 +25,19 @@
             <!-- API密钥设置 -->
             <div class="settings-group">
                 <div class="settings-item">
-                    <label for="apiKey">API密钥（仅支持DeepSeek-API）：</label>
+                    <label>API选择：</label>
+                    <select id="apiProvider" class="settings-input" onchange="toggleApiInputs()">
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="qianwen">通义千问</option>
+                    </select>
+                </div>
+                <div class="settings-item" id="deepseekApiItem">
+                    <label for="apiKey">API密钥（DeepSeek）：</label>
                     <input type="password" id="apiKey" placeholder="输入DeepSeek-API密钥" class="settings-input">
+                </div>
+                <div class="settings-item" id="qianwenApiItem" style="display:none">
+                    <label for="qianwenApiKey">API密钥（通义千问）：</label>
+                    <input type="password" id="qianwenApiKey" placeholder="输入通义千问API密钥" class="settings-input">
                 </div>
             </div>
 
