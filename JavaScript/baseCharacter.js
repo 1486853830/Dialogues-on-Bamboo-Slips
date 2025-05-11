@@ -425,12 +425,6 @@ export class BaseCharacter {
     }
 
     initBackground() {
-        const bgImg = new Image();
-        bgImg.src = `../${this.characterName}/${this.characterName.toLowerCase()}.png`;
-        bgImg.onerror = () => {
-            document.body.style.background = '';
-            console.log('背景图片加载失败，已使用备用背景');
-        };
     }
 
     initMusicControls() {
