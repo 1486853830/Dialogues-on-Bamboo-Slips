@@ -5,6 +5,7 @@ import { sendMessage as apiSendMessage, getPresetResponse, sendWelcomeMessage } 
 import { initEventListeners, createPresetButtons } from './eventListeners.js';
 
 export class BaseCharacter {
+    // 在构造函数中确保系统消息格式
     constructor(characterName, systemMessage) {
         this.API_KEY = localStorage.getItem('apiKey');
         this.characterName = characterName;
@@ -17,6 +18,9 @@ export class BaseCharacter {
         };
         this.messageHistory = [this.systemMessage];
         this.messageIdCounter = 0;
+        
+        // 强制系统消息包含标准格式
+        this.systemMessage.content = `作为${characterName}，${systemMessage?.content || ''}`;
     }
 
     sendMessageWrapper(isRephrase = false) {
@@ -58,7 +62,11 @@ export class BaseCharacter {
         return getPresetResponse(this.API_KEY, this.messageHistory, this.characterName);
     }
 
+    // 修改 sendWelcomeMessageWrapper 方法（约58行）
     async sendWelcomeMessageWrapper() {
+        // 添加首次访问检查
+        if (!localStorage.getItem(`firstVisit_${this.characterName}`)) return;
+        
         const chatContainer = document.getElementById('chat-container');
         await sendWelcomeMessage(
             this.API_KEY,
@@ -76,6 +84,9 @@ export class BaseCharacter {
                 return result;
             }
         );
+        
+        // 成功发送后移除首次访问标识
+        localStorage.removeItem(`firstVisit_${this.characterName}`);
     }
 
     initEventListenersWrapper() {
@@ -86,13 +97,28 @@ export class BaseCharacter {
         );
     }
 
+    // 修改 loadHistory 方法（约91-109行）
     loadHistory() {
-        const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`);
+        const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`); // 确保键名一致
         const chatContainer = document.getElementById('chat-container');
-        if (savedHistory) {
-            try {
-                this.messageHistory = JSON.parse(savedHistory);
+        
+        try {
+            if (savedHistory) {
+                const parsedHistory = JSON.parse(savedHistory);
+                
+                // 添加系统消息恢复逻辑
+                this.messageHistory = [
+                    this.systemMessage, 
+                    ...parsedHistory.filter(msg => 
+                        ['user', 'assistant'].includes(msg.role)
+                    )
+                ];
+                
+                chatContainer.innerHTML = '';
                 this.messageHistory.forEach(msg => {
+                    // 添加系统消息跳过逻辑
+                    if(msg.role === 'system') return;
+                    
                     if (msg.role === 'user') {
                         const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter);
                         this.messageIdCounter = messageContainer.messageIdCounter;
@@ -106,11 +132,16 @@ export class BaseCharacter {
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                     }
                 });
-            } catch (parseError) {
-                console.error('解析聊天记录失败:', parseError);
+            } else {
+                // 添加首次访问标识
+                localStorage.setItem(`firstVisit_${this.characterName}`, 'true');
+                this.sendWelcomeMessageWrapper();
             }
-        } else {
-            this.sendWelcomeMessageWrapper();
+        } catch (error) {
+            console.error('历史记录加载失败，已重置:', error);
+            localStorage.removeItem(`chatHistory_${this.characterName}`);
+            chatContainer.innerHTML = '<div class="error">历史记录损坏，已重置</div>';
+            this.messageHistory = [this.systemMessage];
         }
     }
 

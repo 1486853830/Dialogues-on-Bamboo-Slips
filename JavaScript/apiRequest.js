@@ -6,16 +6,29 @@ const getApiKey = () => {
     return provider === 'deepseek' ? localStorage.getItem('apiKey') : localStorage.getItem('qianwenApiKey');
 };
 
+const getCharacterKey = (history) => {
+    try {
+        // 添加优先使用 BaseCharacter 的 characterName
+        if (history.characterName) return `chatHistory_${history.characterName}`;
+        
+        const systemMessage = history.find(m => m.role === 'system')?.content || '';
+        const matchResult = systemMessage.match(/作为([^，,（(]+)/);
+        return `chatHistory_${matchResult?.[1]?.trim() || 'unknown'}`;
+    } catch {
+        return `chatHistory_${Date.now()}`;
+    }
+};
+
 export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, displayMessage, handleRephrase) {
     const apiProvider = getApiProvider();
     const apiKey = getApiKey();
 
     if (messageHistory.length === 1) {
         messageHistory[0].content = `你正在与${localStorage.getItem('userName') || '访客'}(${localStorage.getItem('userGender') || 'unknown'})对话。
-        用户人设: ${localStorage.getItem('userPersona') || ''}
-        请以${messageHistory[0].content.split('作为')[1].split('，')[0]}的身份和口吻进行对话。
-        你需要主动推动故事情节发展，在回复中：
-        内容简短不超过 50 字，动作神态等内容用括号括上`;
+            用户人设: ${localStorage.getItem('userPersona') || ''}
+            请以${(messageHistory[0].content.match(/作为([^，,（(]+)/) || [,''])[1].trim()}的身份和口吻进行对话。
+            你需要主动推动故事情节发展，在回复中：
+            内容简短不超过 50 字，动作神态等内容用括号括上`;
     }
 
     if (!isRephrase) {
@@ -59,6 +72,22 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
         const data = await response.json();
         const botResponse = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
 
+        // 自动保存逻辑
+        const autoSave = (history) => {
+            try {
+                const compressedHistory = history.map(msg => ({
+                    role: msg.role,
+                    content: msg.content.substring(0, 500)
+                }));
+                localStorage.setItem(getCharacterKey(history), JSON.stringify(compressedHistory));
+            } catch (e) {
+                console.error('自动保存失败:', e);
+            }
+        };
+
+        messageHistory.push({ role: "assistant", content: botResponse });
+        autoSave(messageHistory);
+
         if (loadingElement.parentNode) {
             loadingElement.parentNode.removeChild(loadingElement);
         }
@@ -66,9 +95,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
         const { messageContainer } = displayMessage(chatContainer, botResponse, 'bot', 0);
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
-        messageHistory.push({ role: "assistant", content: botResponse });
-        localStorage.setItem(`chatHistory_${messageHistory[0].content.split('作为')[1].split('，')[0]}`, JSON.stringify(messageHistory));
-
+        localStorage.setItem(getCharacterKey(messageHistory), JSON.stringify(messageHistory));
     } catch (error) {
         console.error("发送消息出错:", error);
         if (loadingElement.parentNode) {
