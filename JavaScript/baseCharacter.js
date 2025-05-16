@@ -37,8 +37,7 @@ export class BaseCharacter {
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 return result;
-            },
-            (messageHistory, chatContainer) => handleRephrase(messageHistory, chatContainer)
+            }
         );
     }
 
@@ -64,7 +63,7 @@ export class BaseCharacter {
         await sendWelcomeMessage(
             this.API_KEY,
             this.messageHistory,
-            this.characterName,
+            this.characterName, // 确保传递正确的 characterName
             chatContainer,
             (chatContainer, message, sender, messageIdCounter) => {
                 const result = displayMessage(chatContainer, message, sender, messageIdCounter);
@@ -91,21 +90,25 @@ export class BaseCharacter {
         const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`);
         const chatContainer = document.getElementById('chat-container');
         if (savedHistory) {
-            this.messageHistory = JSON.parse(savedHistory);
-            this.messageHistory.forEach(msg => {
-                if (msg.role === 'user') {
-                    const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter);
-                    this.messageIdCounter = messageContainer.messageIdCounter;
-                    chatContainer.appendChild(messageContainer);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                } else if (msg.role === 'assistant') {
-                    const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter);
-                    this.messageIdCounter = messageContainer.messageIdCounter;
-                    addRephraseButton(messageContainer, () => this.handleRephraseWrapper());
-                    chatContainer.appendChild(messageContainer);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }
-            });
+            try {
+                this.messageHistory = JSON.parse(savedHistory);
+                this.messageHistory.forEach(msg => {
+                    if (msg.role === 'user') {
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter);
+                        this.messageIdCounter = messageContainer.messageIdCounter;
+                        chatContainer.appendChild(messageContainer);
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    } else if (msg.role === 'assistant') {
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter);
+                        this.messageIdCounter = messageContainer.messageIdCounter;
+                        addRephraseButton(messageContainer, () => this.handleRephraseWrapper());
+                        chatContainer.appendChild(messageContainer);
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }
+                });
+            } catch (parseError) {
+                console.error('解析聊天记录失败:', parseError);
+            }
         } else {
             this.sendWelcomeMessageWrapper();
         }
