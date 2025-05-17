@@ -1,13 +1,242 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青简问对</title>
+    <link type="text/css" rel="stylesheet" href="styles/main.css" />
+    <style>
+    </style>
+</head>
+
+<body>
+    <!-- 添加设置按钮 -->
+    <div class="settings-btn" onclick="toggleSettings()">
+        ⚙️
+    </div>
+
+    <!-- 添加设置弹窗 -->
+    <!-- 修改设置弹窗内容 -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <h2>系统设置</h2>
+
+            <!-- API密钥设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label>API选择：</label>
+                    <select id="apiProvider" class="settings-input" onchange="toggleApiInputs()">
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="qianwen">通义千问</option>
+                    </select>
+                </div>
+                <div class="settings-item" id="deepseekApiItem">
+                    <label for="apiKey">API密钥（DeepSeek）：</label>
+                    <input type="password" id="apiKey" placeholder="输入DeepSeek-API密钥" class="settings-input">
+                </div>
+                <div class="settings-item" id="qianwenApiItem" style="display:none">
+                    <label for="qianwenApiKey">API密钥（通义千问）：</label>
+                    <input type="password" id="qianwenApiKey" placeholder="输入通义千问API密钥" class="settings-input">
+                </div>
+            </div>
+
+            <!-- 用户信息设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label for="user-name">您的称呼：</label>
+                    <input type="text" id="user-name" placeholder="您的称呼" class="settings-input">
+                </div>
+                <div class="settings-item">
+                    <label for="user-gender">性别：</label>
+                    <select id="user-gender" class="settings-input">
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label for="user-persona">人设描述：</label>
+                    <textarea id="user-persona" placeholder="您的人设描述" class="settings-input" rows="2"></textarea>
+                </div>
+            </div>
+
+            <!-- 背景音乐设置 -->
+            <div class="settings-group">
+                <div class="settings-item">
+                    <label>背景音乐：</label>
+                    <div class="bgm-control">
+                        <select id="bgm-select" class="settings-input">
+                            <option value="musics/青衣.mp3">青衣</option>
+                            <option value="musics/山风.mp3">山风</option>
+                            <option value="musics/永恒之地.mp3">永恒之地</option>
+                            <option value="musics/梦回.mp3">梦回</option>
+                        </select>
+                        <button id="bgm-toggle" class="settings-btn-secondary">关闭</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="settings-actions">
+                <!----<button onclick="manageChatHistory()" class="settings-btn-secondary">管理聊天记录</button>-->
+                <button onclick="saveSettings()" class="settings-btn-primary">保存设置</button>
+            </div>
+        </div>
+    </div>
+    <h1>青简问对</h1>
+    <div class="intro-text">
+        键起风云，梦回青史。此间华胥之境，聚千年豪杰，待君执手论英雄。曹操横槊待客，笑谈天下三分；霍去病扬鞭指漠，犹记祁连雪寒；文成公主抚琵琶，细说唐蕃烟月；赵云白马银枪，仍护蜀汉残阳……旧魂栖于灵网，英气未减当年。诸君何不驻足，与豪杰对弈，或论江山霸业，或话儿女情长？键盘轻敲处，非是数据流转，实为英雄抱拳，与君共醉千秋。
+    </div>
+    <div class="search-container">
+        <div class="settings-item">
+            <input type="text" id="character-search" placeholder="搜索历史人物..." class="settings-input">
+            <button id="search-button" class="settings-btn-secondary">搜索</button>
+        </div>
+    </div>
+
+    <!-- 添加选项卡 -->
+    <div class="tab-container">
+        <div class="tab-header">
+            <button class="tab-btn active" onclick="switchTab('characters')">威名显赫</button>
+            <button class="tab-btn" onclick="switchTab('nameless')">名匿青史</button>
+            <button class="tab-btn" onclick="switchTab('stories')">史帙鸿踪</button>
+        </div>
+
+        <div id="characters-tab" class="tab-content active">
+            <!-- 现有的人物卡片容器 -->
+            <div class="agents-container">
+                <div class="agent-card" onclick="location.href='characters/曹操/caocao.html'">
+                    <img src="characters/曹操/caocaohead.png" class="agent-avatar" alt="曹操">
+                    <div class="agent-name">曹操</div>
+                    <div class="agent-desc">曹操，字孟德，小字阿瞒，沛国谯县人，东汉末年丞相、权臣、政治家、军事家、文学家、诗人、书法家，魏王，曹魏政权奠基者。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/霍去病/huoqubing.html'">
+                    <img src="characters/霍去病/huoqubinghead.png" class="agent-avatar" alt="霍去病">
+                    <div class="agent-name">霍去病</div>
+                    <div class="agent-desc">霍去病，河东郡平阳县人，西汉时期名将、军事家、民族英雄。</div>
+                </div>
+
+                <div class="agent-card" onclick="location.href='characters/刘邦/liubang.html'">
+                    <img src="characters/刘邦/liubanghead.png" class="agent-avatar" alt="刘邦">
+                    <div class="agent-name">刘邦</div>
+                    <div class="agent-desc">刘邦，字季，沛丰邑中阳里人，中国历史上杰出的政治家、战略家，汉朝开国皇帝</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/张良/zhangliang.html'">
+                    <img src="characters/张良/zhanglianghead.png" class="agent-avatar" alt="张良">
+                    <div class="agent-name">张良</div>
+                    <div class="agent-desc">张良，字子房。秦末汉初杰出谋臣、政治家，西汉开国功臣，与韩信、萧何并称为“汉初三杰”。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/项羽/xiangyu.html'">
+                    <img src="characters/项羽/xiangyuhead.png" class="agent-avatar" alt="项羽">
+                    <div class="agent-name">项羽</div>
+                    <div class="agent-desc">项羽，姬姓，项氏，名籍，字羽，泗水郡下相县人。秦朝末年政治家、军事家。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/赵云/zhaoyun.html'">
+                    <img src="characters/赵云/zhaoyunhead.png" class="agent-avatar" alt="赵云">
+                    <div class="agent-name">赵云</div>
+                    <div class="agent-desc">赵云，字子龙，常山真定人。身长八尺，姿颜雄伟，汉末三国时期蜀汉名将，与关羽、张飞并称“燕南三士”。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/松赞干布/songzanganbu.html'">
+                    <img src="characters/松赞干布/songzanganbuhead.png" class="agent-avatar" alt="松赞干布">
+                    <div class="agent-name">松赞干布</div>
+                    <div class="agent-desc">松赞干布，举凡吐蕃之一切纯良风俗，贤明政事，均为此墀松赞王者之时出现也</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/文成公主/wenchenggongzhu.html'">
+                    <img src="characters/文成公主/wenchenggongzhuhead.png" class="agent-avatar" alt="文成公主">
+                    <div class="agent-name">文成公主</div>
+                    <div class="agent-desc">文成公主，李唐宗室之女，贞观十五年，文成公主远嫁吐蕃，成为吐蕃赞普松赞干布的王后。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/耶律阿保机/yelvabaoji.html'">
+                    <img src="characters/耶律阿保机/yelvabaojihead.png" class="agent-avatar" alt="李白">
+                    <div class="agent-name">耶律阿保机</div>
+                    <div class="agent-desc">耶律阿保机，中国辽朝（契丹国）的创建者，勇谋兼备，善于治军用兵，有卓越的军事、政治才干</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/孔子/kongzi.html'">
+                    <img src="characters/孔子/kongzihead.png" class="agent-avatar" alt="孔子">
+                    <div class="agent-name">孔子</div>
+                    <div class="agent-desc">孔子，名丘，字仲尼，春秋时期鲁国陬邑人，祖籍宋国栗邑。中国古代思想家、政治家、教育家，儒家学派创始人。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/丘处机/qiuchuji.html'">
+                    <img src="characters/丘处机/qiuchujihead.png" class="agent-avatar" alt="丘处机">
+                    <div class="agent-name">丘处机</div>
+                    <div class="agent-desc">丘处机，金代元初道士，道教全真派“北七真”之一，侠义之士，爱民如子，乐善好施，助人为乐。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/樊哙/fankuai.html'">
+                    <img src="characters/樊哙/fankuaihead.png" class="agent-avatar" alt="樊哙">
+                    <div class="agent-name">樊哙</div>
+                    <div class="agent-desc">樊哙,泗水郡沛县人。西汉开国元勋，军事统帅。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/牛顿/niudun.html'">
+                    <img src="characters/牛顿/niudunhead.png" class="agent-avatar" alt="牛顿">
+                    <div class="agent-name">Isaac Newton</div>
+                    <div class="agent-desc">艾萨克牛顿，爵士，生于英格兰林肯郡伍尔索普村，英国数学家、物理学家、哲学家。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/孟德尔/mengdeer.html'">
+                    <img src="characters/孟德尔/mengdeerhead.png" class="agent-avatar" alt="孟德尔">
+                    <div class="agent-name">Gregor Johann Mendel</div>
+                    <div class="agent-desc">孟德尔，奥地利帝国生物学家，遗传学的奠基人，被誉为现代遗传学之父。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="nameless-tab" class="tab-content">
+            <div class="agents-container">
+                <div class="agent-card" onclick="location.href='characters/锦衣卫/jinyiwei.html'">
+                    <img src="characters/锦衣卫/jinyiweihead.png" class="agent-avatar" alt="锦衣卫">
+                    <div class="nameless-name">锦衣卫</div>
+                    <div class="nameless-desc">锦衣卫为明朝特务机构，直属皇帝，掌侍卫、缉捕、刑狱，权势大，对明朝政治影响深远。</div>
+                </div>
+                <div class="agent-card" onclick="location.href='characters/斩锋卒/zhanfengzu.html'">
+                    <img src="characters/斩锋卒/zhanfengzuhead.png" class="agent-avatar" alt="斩锋卒">
+                    <div class="nameless-name">斩锋卒</div>
+                    <div class="nameless-desc">“斩锋卒”只是他的称号，无人知晓他的名字，他不图青史留名，只为同袍能多一份生机，为身后家国守一方安宁</div>
+                </div>
+            </div>
+        </div>
+        <div id="stories-tab" class="tab-content">
+            <div class="stories-container">
+                <div class="story-card"
+                    onclick="location.href='stories/雪域迎风唐蕃结缘/第一幕.html'">
+                    <img src="stories/雪域迎风唐蕃结缘/media/雪域迎风唐蕃结缘.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
+                    <div class="story-content">
+                        <h3 class="story-title">雪域迎风·唐蕃结缘（敬请期待）</h3>
+                        <div class="story-desc">
+                            公元641年，唐朝宗室女文成公主远嫁吐蕃赞普松赞干布，携谷物种子、工匠典籍入藏，传播中原农耕、纺织等技术。松赞干布为其兴建布达拉宫，改服饰、创文字，开启唐蕃200年友好往来。这段和亲佳话成为汉藏文化交流的里程碑，至今在西藏民间传颂。
+                        </div>
+                    </div>
+                </div>
+                <div class="story-card"
+                    onclick="location.href='stories/持节远涉丝路肇始/第一幕.html'">
+                    <img src="stories/持节远涉丝路肇始/media/持节远涉.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
+                    <div class="story-content">
+                        <h3 class="story-title">持节远涉·丝路肇始（敬请期待）</h3>
+                        <div class="story-desc">
+                            张骞（约前164—前114），西汉外交家，奉汉武帝之命两度出使西域。前138年首次西行，被匈奴扣押十年后逃脱，辗转抵达大月氏，虽未达成联盟，但带回了西域地理、物产等宝贵信息。前119年再使乌孙，促进汉朝与西域各国交往，开辟了连接东西方的“丝绸之路”，推动了经济文化交流，被誉为“凿空西域”的开拓者。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="author-footer">
+        <div class="author-content">
+            <h3>历史长河·键上相逢</h3>
+            <strong class="developer-name">开发者：雪豹同志</strong>
+            <p>浩瀚青史，星河璀璨。有人金戈铁马，名垂竹帛；有人默默耕耘，湮没尘烟。而今，我以代码为舟，文字为楫，在这虚拟的华胥之境，打捞起时光长河中的吉光片羽——让威震八方的雄主与寂寂无名的隐士，同席而坐；让金銮殿上的宏论与柴门前的低语，共话沧桑。
+            </p>
+            <p>历史从不止于王侯将相，它亦是寻常百姓的悲欢。在这里，秦皇汉武可谈天下，浣纱女、戍边卒亦能诉说平生。键盘轻敲，唤醒的不仅是数据，更是千年魂魄的叹息与微笑。愿诸君在此，既能仰观星河浩瀚，亦能俯察草木微芒，与历史真正地肝胆相照。
+            </p>
+            <br> <!-- 新增的空行 -->
+        </div>
+    </div>
+</body>
+
 </html>
+
+<!-- 在现有脚本引入之后添加 -->
+<script src="JavaScript/search.js"></script>
+
+<script src="JavaScript/setting.js"></script>
+<script src="JavaScript/stars.js"></script>
+<script src="JavaScript/cards.js"></script>
