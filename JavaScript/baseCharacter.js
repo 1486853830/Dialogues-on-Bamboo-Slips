@@ -1,11 +1,10 @@
 import { initMusicControls } from './musicControls.js';
 import { initBackgroundVideo } from './backgroundVideo.js';
-import { displayMessage, addRephraseButton, handleRephrase } from './messageHandler.js';
+import { displayMessage, addRephraseButton } from './messageHandler.js';
 import { sendMessage as apiSendMessage, getPresetResponse, sendWelcomeMessage } from './apiRequest.js';
 import { initEventListeners, createPresetButtons } from './eventListeners.js';
 
 export class BaseCharacter {
-    // 在构造函数中确保系统消息格式
     constructor(characterName, systemMessage) {
         this.API_KEY = localStorage.getItem('apiKey');
         this.characterName = characterName;
@@ -19,7 +18,6 @@ export class BaseCharacter {
         this.messageHistory = [this.systemMessage];
         this.messageIdCounter = 0;
         
-        // 强制系统消息包含标准格式
         this.systemMessage.content = `作为${characterName}，${systemMessage?.content || ''}`;
     }
 
@@ -32,11 +30,14 @@ export class BaseCharacter {
             userInput,
             isRephrase,
             chatContainer,
+            this.handleRephrase.bind(this),
             (chatContainer, message, sender, messageIdCounter) => {
-                const result = displayMessage(chatContainer, message, sender, messageIdCounter);
+                // 添加参数校验
+                const counter = Number.isInteger(messageIdCounter) ? messageIdCounter : this.messageIdCounter;
+                const result = displayMessage(chatContainer, message, sender, counter);
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
-                    addRephraseButton(result.messageContainer, () => this.handleRephraseWrapper());
+                    addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -45,10 +46,40 @@ export class BaseCharacter {
         );
     }
 
-    handleRephraseWrapper() {
+    handleRephrase() {
         const chatContainer = document.getElementById('chat-container');
-        const userMessage = handleRephrase(this.messageHistory, chatContainer);
+        if (!Array.isArray(this.messageHistory) || !chatContainer?.querySelectorAll) {
+            console.error('Invalid parameters');
+            return null;
+        }
+
+        if (this.messageHistory.length >= 2 && 
+            this.messageHistory[this.messageHistory.length - 1].role === "assistant") {
+            
+            this.messageHistory.pop();
+            const userMessage = this.messageHistory.pop();
+
+            const messages = chatContainer.querySelectorAll('.message-container');
+            try {
+                if (messages.length >= 2) {
+                    chatContainer.removeChild(messages[messages.length - 1]);
+                    chatContainer.removeChild(messages[messages.length - 2]);
+                } else if (messages.length === 1) {
+                    chatContainer.removeChild(messages[0]);
+                }
+            } catch (error) {
+                console.error('DOM操作异常:', error);
+            }
+
+            return userMessage || null;
+        }
+        return null;
+    }
+
+    handleRephraseWrapper() {
+        const userMessage = this.handleRephrase();
         if (userMessage) {
+            const chatContainer = document.getElementById('chat-container');
             this.messageHistory.push(userMessage);
             const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', this.messageIdCounter);
             this.messageIdCounter = messageContainer.messageIdCounter;
@@ -62,30 +93,26 @@ export class BaseCharacter {
         return getPresetResponse(this.API_KEY, this.messageHistory, this.characterName);
     }
 
-    // 修改 sendWelcomeMessageWrapper 方法（约58行）
     async sendWelcomeMessageWrapper() {
-        // 添加首次访问检查
         if (!localStorage.getItem(`firstVisit_${this.characterName}`)) return;
         
         const chatContainer = document.getElementById('chat-container');
         await sendWelcomeMessage(
             this.API_KEY,
             this.messageHistory,
-            this.characterName, // 确保传递正确的 characterName
+            this.characterName,
             chatContainer,
             (chatContainer, message, sender, messageIdCounter) => {
                 const result = displayMessage(chatContainer, message, sender, messageIdCounter);
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
-                    addRephraseButton(result.messageContainer, () => this.handleRephraseWrapper());
+                    addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 return result;
             }
         );
-        
-        // 成功发送后移除首次访问标识
         localStorage.removeItem(`firstVisit_${this.characterName}`);
     }
 
@@ -97,16 +124,13 @@ export class BaseCharacter {
         );
     }
 
-    // 修改 loadHistory 方法（约91-109行）
     loadHistory() {
-        const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`); // 确保键名一致
+        const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`);
         const chatContainer = document.getElementById('chat-container');
         
         try {
             if (savedHistory) {
                 const parsedHistory = JSON.parse(savedHistory);
-                
-                // 添加系统消息恢复逻辑
                 this.messageHistory = [
                     this.systemMessage, 
                     ...parsedHistory.filter(msg => 
@@ -116,29 +140,26 @@ export class BaseCharacter {
                 
                 chatContainer.innerHTML = '';
                 this.messageHistory.forEach(msg => {
-                    // 添加系统消息跳过逻辑
                     if(msg.role === 'system') return;
                     
                     if (msg.role === 'user') {
                         const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter);
                         this.messageIdCounter = messageContainer.messageIdCounter;
                         chatContainer.appendChild(messageContainer);
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
                     } else if (msg.role === 'assistant') {
                         const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter);
                         this.messageIdCounter = messageContainer.messageIdCounter;
-                        addRephraseButton(messageContainer, () => this.handleRephraseWrapper());
+                        addRephraseButton(messageContainer, this.handleRephraseWrapper.bind(this));
                         chatContainer.appendChild(messageContainer);
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
                     }
                 });
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
-                // 添加首次访问标识
                 localStorage.setItem(`firstVisit_${this.characterName}`, 'true');
                 this.sendWelcomeMessageWrapper();
             }
         } catch (error) {
-            console.error('历史记录加载失败，已重置:', error);
+            console.error('历史记录加载失败:', error);
             localStorage.removeItem(`chatHistory_${this.characterName}`);
             chatContainer.innerHTML = '<div class="error">历史记录损坏，已重置</div>';
             this.messageHistory = [this.systemMessage];

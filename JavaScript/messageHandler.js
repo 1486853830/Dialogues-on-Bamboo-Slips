@@ -48,30 +48,18 @@ export function addRephraseButton(messageContainer, handleRephrase) {
     const rephraseBtn = document.createElement('button');
     rephraseBtn.textContent = '重说';
     rephraseBtn.classList.add('rephrase-btn');
-    rephraseBtn.onclick = (e) => {
+    rephraseBtn.onclick = async (e) => {  // 改为异步处理
         e.stopPropagation();
-        handleRephrase();
+        try {
+            // 添加参数有效性校验
+            if (typeof handleRephrase === 'function') {
+                await handleRephrase();
+            }
+        } catch (error) {
+            console.error('重说功能异常:', error);
+        }
     };
     messageContainer.appendChild(rephraseBtn);
 }
 
-export function handleRephrase(messageHistory, chatContainer) {
-    if (messageHistory.length >= 2 && messageHistory[messageHistory.length - 1].role === "assistant") {
-        messageHistory.pop();
-        const userMessage = messageHistory.pop();
-
-        const messages = chatContainer.querySelectorAll('.message-container');
-        if (messages.length >= 2) {
-            chatContainer.removeChild(messages[messages.length - 1]);
-            chatContainer.removeChild(messages[messages.length - 2]);
-        } else if (messages.length === 1) {
-            chatContainer.removeChild(messages[0]);
-        }
-
-        if (userMessage) {
-            messageHistory.push(userMessage);
-            return userMessage;
-        }
-    }
-    return null;
-}
+// 完全移除 handleRephrase 函数

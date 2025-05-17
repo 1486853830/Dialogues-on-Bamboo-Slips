@@ -8,7 +8,6 @@ const getApiKey = () => {
 
 const getCharacterKey = (history) => {
     try {
-        // 添加优先使用 BaseCharacter 的 characterName
         if (history.characterName) return `chatHistory_${history.characterName}`;
         
         const systemMessage = history.find(m => m.role === 'system')?.content || '';
@@ -19,7 +18,9 @@ const getCharacterKey = (history) => {
     }
 };
 
-export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, displayMessage, handleRephrase) {
+import { displayMessage } from './messageHandler.js';
+
+export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, handleRephrase, callback) {
     const apiProvider = getApiProvider();
     const apiKey = getApiKey();
 
@@ -42,7 +43,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
         const existingButtons = document.querySelectorAll('.rephrase-btn');
         existingButtons.forEach(btn => btn.remove());
     } else {
-        const userMessage = handleRephrase(messageHistory, chatContainer);
+        const userMessage = handleRephrase();
         if (userMessage) {
             messageHistory.push(userMessage);
             const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', 0);
@@ -92,7 +93,15 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
             loadingElement.parentNode.removeChild(loadingElement);
         }
 
-        const { messageContainer } = displayMessage(chatContainer, botResponse, 'bot', 0);
+        // 修复messageIdCounter参数传递
+        let result;
+        if (typeof callback === 'function') {
+            result = callback(chatContainer, botResponse, 'bot', 0); // 使用固定初始值
+        } else {
+            result = displayMessage(chatContainer, botResponse, 'bot', 0);
+        }
+
+        const messageContainer = result.messageContainer;
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         localStorage.setItem(getCharacterKey(messageHistory), JSON.stringify(messageHistory));
