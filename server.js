@@ -150,6 +150,10 @@ app.post('/getPresetResponse', async (req, res) => {
     }
 });
 
+// 在现有代码中添加以下内容（通常在中间件部分）
+const path = require('path');
+app.use(express.static(path.join(__dirname)));  // 新增静态文件服务
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
