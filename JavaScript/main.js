@@ -68,15 +68,3 @@ document.addEventListener('DOMContentLoaded', () => {
         jinyiwei.init(); 
     }
 });
-
-
-function saveChatHistory(message, sender) {
-    // 判断是否是故事模式
-    if (window.location.pathname.includes('雪域迎风唐蕃结缘')) {
-        // 调用故事模式专用存储
-        saveStoryChat(message, sender);
-    } else {
-        // 原有普通聊天存储逻辑
-        saveNormalChat(message, sender); 
-    }
-}
