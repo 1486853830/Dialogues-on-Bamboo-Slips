@@ -148,17 +148,38 @@ button {
     word-wrap: break-word;
 }
 
+/* 窄屏默认样式 */
+.user-message {
+    max-width: 80%;
+}
+
+.bot-message {
+    max-width: 80%;
+}
+
+/* 添加宽屏响应式样式 */
+@media (min-width: 768px) {
+    .user-message {
+        max-width: 30%;
+        margin-left: auto !important;
+        margin-right: 10px;
+    }
+    
+    .bot-message {
+        max-width: 30%;
+        margin-right: auto !important;
+        margin-left: 10px;
+    }
+}
+
 .user-message {
     background-color: rgba(227, 242, 253, 0.7);
     margin-left: auto;
-    /* 右侧对齐关键属性 */
     margin-right: 0;
     text-align: left;
     display: block;
-    /* 改为block确保独占一行 */
     width: fit-content;
-    /* 宽度适应内容 */
-    max-width: 80%;
+    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
 }
 
 .bot-message {
@@ -167,10 +188,34 @@ button {
     margin-left: 0;
     text-align: left;
     display: block;
-    /* 改为block确保独占一行 */
     width: fit-content;
-    /* 宽度适应内容 */
-    max-width: 80%;
+    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
+}
+
+/* 将媒体查询移到所有消息定义之后 */
+@media (min-width: 768px) {
+    .user-message {
+        max-width: 30% !important;
+        margin-left: auto !important;
+        margin-right: 10px !important;
+    }
+    
+    .bot-message {
+        max-width: 30% !important;
+        margin-right: auto !important;
+        margin-left: 10px !important;
+    }
+}
+
+/* 删除下方重复的.user-message和.bot-message定义 */
+.bot-message {
+    background-color: rgba(241, 241, 241, 0.7);
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+    display: block;
+    width: fit-content;
+    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
 }
 
 /* 添加加载动画样式 */
