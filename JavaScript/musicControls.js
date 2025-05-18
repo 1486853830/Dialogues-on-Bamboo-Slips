@@ -185,7 +185,7 @@ function getMusicForCharacter(characterName) {
     const musicMap = {
         '霍去病': '华灯初上',
         '刘邦': '旧事',
-        '项羽': '国破',
+        '项羽': '旧事',
         '曹操': '旧事',
         '丘处机': '青衣',
         '孔子': '青衣',
