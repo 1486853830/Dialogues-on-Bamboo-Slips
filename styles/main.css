@@ -88,22 +88,24 @@ h1 {
 
 .agents-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 0 20px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+    .agents-container {
+        grid-template-columns: repeat(3, 1fr); /* 宽屏三列 */
+    }
 }
 
 @media (max-width: 768px) {
     .agents-container {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-}
-
-@media (max-width: 480px) {
-    .agents-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* 窄屏两列 */
     }
 }
 
@@ -415,17 +417,6 @@ body::before {
 .settings-actions button:active {
     transform: translateY(0);
     box-shadow: 0 4px 10px rgba(74, 107, 255, 0.3);
-}
-
-.agents-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    box-sizing: border-box;
 }
 
 .agent-card {
