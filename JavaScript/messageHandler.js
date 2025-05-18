@@ -16,13 +16,13 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
         chatContainer.style.position = 'fixed';
         chatContainer.style.bottom = '0';
         chatContainer.style.left = '0';
-        chatContainer.style.width = '';  // 由CSS控制宽度
+        chatContainer.style.width = '95%';  // 由CSS控制宽度
         chatContainer.style.height = '';
         chatContainer.style.overflowY = '';
         chatContainer.style.background = '';
         // 移除遮罩效果
-        chatContainer.style.maskImage = '';
-        chatContainer.style.webkitMaskImage = '';
+        chatContainer.style.maskImage = 'linear-gradient(to bottom, transparent 0%, black 20px, black 100%)';
+        chatContainer.style.webkitMaskImage = 'linear-gradient(to bottom, transparent 0%, black 20px, black 100%)';
     }
 
     const messageContainer = document.createElement('div');
