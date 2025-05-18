@@ -5,8 +5,15 @@ color 0B
 REM 进入项目目录
 cd /d "%~dp0"
 
+REM 验证Node.js可执行文件存在
+if not exist ".\node\node-v20.14.0-win-x64\node.exe" (
+    echo error: Node.js executable not found.
+    pause
+    exit /b 1
+)
+
 REM 启动Node.js后端服务
-start "API_Server" cmd /c "node server.js && pause"
+start "API_Server" cmd /c ".\node\node-v20.14.0-win-x64\node.exe server.js && pause"
 
 REM 等待3秒确保后端就绪
 timeout /t 3 /nobreak >nul
