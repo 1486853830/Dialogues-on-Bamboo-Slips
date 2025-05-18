@@ -18,5 +18,5 @@ REM 如果使用Vite前端服务则取消下面两行注释
 REM start "Frontend_Server" cmd /c "npm run dev"
 REM start http://localhost:5173
 
-echo 启动完成！按任意键退出...
+echo finished
 pause >nul
