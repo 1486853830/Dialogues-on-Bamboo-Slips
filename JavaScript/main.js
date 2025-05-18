@@ -14,6 +14,7 @@ import { Mengdeer } from '../characters/孟德尔/mengdeer.js';
 import { Yelvabaoji } from '../characters/耶律阿保机/yelvabaoji.js';
 import { Zhanfengzu } from '../characters/斩锋卒/zhanfengzu.js';
 import { JinYiWei } from '../characters/锦衣卫/jinyiwei.js';
+import { ZhangQian } from '../characters/张骞/zhangqian.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -66,5 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('jinyiwei')) {
         const jinyiwei = new JinYiWei();
         jinyiwei.init(); 
+    } else if (path.includes('zhangqian')) {
+        const zhangqian = new ZhangQian();
+        zhangqian.init(); 
     }
 });
