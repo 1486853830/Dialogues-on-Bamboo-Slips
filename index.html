@@ -88,13 +88,13 @@
     <div class="intro-text">
         键起风云，梦回青史。此间华胥之境，聚千年豪杰，待君执手论英雄。曹操横槊待客，笑谈天下三分；霍去病扬鞭指漠，犹记祁连雪寒；文成公主抚琵琶，细说唐蕃烟月；赵云白马银枪，仍护蜀汉残阳……旧魂栖于灵网，英气未减当年。诸君何不驻足，与豪杰对弈，或论江山霸业，或话儿女情长？键盘轻敲处，非是数据流转，实为英雄抱拳，与君共醉千秋。
     </div>
-    
-    <!---<div class="search-container">
+
+    <div class="search-container">
         <div class="settings-item">
             <input type="text" id="character-search" placeholder="搜索历史人物..." class="settings-input">
             <button id="search-button" class="settings-btn-secondary">搜索</button>
         </div>
-    </div>-->
+    </div>
 
     <!-- 添加选项卡 -->
     <div class="tab-container">
@@ -110,79 +110,149 @@
                 <div class="agent-card" onclick="location.href='characters/曹操/caocao.html'">
                     <img src="characters/曹操/caocaohead.png" class="agent-avatar" alt="曹操">
                     <div class="agent-name">曹操</div>
-                    <div class="agent-desc">曹操，字孟德，小字阿瞒，沛国谯县人，东汉末年丞相、权臣、政治家、军事家、文学家、诗人、书法家，魏王，曹魏政权奠基者。</div>
+                    <div class="agent-desc">
+                        字孟德，小字阿瞒。东汉末年杰出的政治家、军事家、文学家、书法家。<br>
+                        ✔️ 政治成就：挟天子以令诸侯，统一中国北方<br>
+                        ✔️ 军事才能：官渡之战以少胜多，创立虎豹骑精锐<br>
+                        ✔️ 文学造诣：开创建安文学，《短歌行》《观沧海》流传千古<br>
+                        ✔️ 历史争议："治世之能臣，乱世之奸雄"的复杂评价
+                    </div>
                 </div>
+
                 <div class="agent-card" onclick="location.href='characters/霍去病/huoqubing.html'">
                     <img src="characters/霍去病/huoqubinghead.png" class="agent-avatar" alt="霍去病">
                     <div class="agent-name">霍去病</div>
-                    <div class="agent-desc">霍去病，河东郡平阳县人，西汉时期名将、军事家、民族英雄。</div>
+                    <div class="agent-desc">
+                        西汉战神，民族英雄，官至大司马骠骑将军。<br>
+                        🏹 军事奇迹：19岁统帅骑兵，六击匈奴皆胜<br>
+                        🏆 经典战役：漠南之战、河西受降、封狼居胥<br>
+                        🔥 战术特点：长途奔袭、大纵深迂回<br>
+                        ⚡ 历史遗憾：24岁英年早逝，谥封"景桓侯"
+                    </div>
                 </div>
 
-                <div class="agent-card" onclick="location.href='characters/刘邦/liubang.html'">
-                    <img src="characters/刘邦/liubanghead.png" class="agent-avatar" alt="刘邦">
-                    <div class="agent-name">刘邦</div>
-                    <div class="agent-desc">刘邦，字季，沛丰邑中阳里人，中国历史上杰出的政治家、战略家，汉朝开国皇帝</div>
-                </div>
+                <!-- 张骞卡片修正示例 -->
                 <div class="agent-card" onclick="location.href='characters/张骞/zhangqian.html'">
                     <img src="characters/张骞/zhangqianhead.png" class="agent-avatar" alt="张骞">
                     <div class="agent-name">张骞</div>
-                    <div class="agent-desc">张骞，字子谦，沛国谯县人，东汉末年政治家、军事家、文学家，西汉开国功臣。</div>
+                    <div class="agent-desc">
+                        字子文，西汉著名外交家、探险家。<br>
+                        🌏 历史功绩：两通西域，开辟丝绸之路<br>
+                        🐫 传奇经历：被匈奴扣押13年不忘使命<br>
+                        🎖️ 后世尊称："第一个睁开眼睛看世界的中国人"<br>
+                        📚 文化影响：引进葡萄、苜蓿等作物至中原
+                    </div>
                 </div>
-                <!--<div class="agent-card" onclick="location.href='characters/张良/zhangliang.html'">
+                <!-- 张良 -->
+                <div class="agent-card" onclick="location.href='characters/张良/zhangliang.html'">
                     <img src="characters/张良/zhanglianghead.png" class="agent-avatar" alt="张良">
                     <div class="agent-name">张良</div>
-                    <div class="agent-desc">张良，字子房。秦末汉初杰出谋臣、政治家，西汉开国功臣，与韩信、萧何并称为“汉初三杰”。</div>
-                </div>-->
+                    <div class="agent-desc">
+                        字子房，汉初杰出战略家，"汉初三杰"之首<br>
+                        🎯 经典谋略：鸿门斗智、明修栈道暗度陈仓<br>
+                        📜 学术传承：得黄石公《太公兵法》真传<br>
+                        🕊️ 处世智慧：功成身退拒三万户封邑<br>
+                        🌟 历史评价："运筹帷幄之中，决胜千里之外"
+                    </div>
+                </div>
+
+                <!-- 项羽 -->
                 <div class="agent-card" onclick="location.href='characters/项羽/xiangyu.html'">
                     <img src="characters/项羽/xiangyuhead.png" class="agent-avatar" alt="项羽">
                     <div class="agent-name">项羽</div>
-                    <div class="agent-desc">项羽，姬姓，项氏，名籍，字羽，泗水郡下相县人。秦朝末年政治家、军事家。</div>
+                    <div class="agent-desc">
+                        名籍字羽，秦末起义军领袖，西楚霸王<br>
+                        💥 经典战役：巨鹿之战破釜沉舟<br>
+                        🐎 军事天赋：彭城之战3万破56万<br>
+                        🎭 性格矛盾：刚愎自用与"不肯过江东"的悲壮<br>
+                        🎼 文化影响：《霸王别姬》成千古绝唱
+                    </div>
                 </div>
+
+                <!-- 赵云 -->
                 <div class="agent-card" onclick="location.href='characters/赵云/zhaoyun.html'">
                     <img src="characters/赵云/zhaoyunhead.png" class="agent-avatar" alt="赵云">
                     <div class="agent-name">赵云</div>
-                    <div class="agent-desc">赵云，字子龙，常山真定人。身长八尺，姿颜雄伟，汉末三国时期蜀汉名将，与关羽、张飞并称“燕南三士”。</div>
+                    <div class="agent-desc">
+                        字子龙，三国时期蜀汉名将<br>
+                        🛡️ 单骑救主：长坂坡七进七出<br>
+                        🎯 汉水之战：空营计智退曹军<br>
+                        📜 为将之道：谏阻分田宅，深明大义<br>
+                        🌟 历史形象："浑身是胆"的完美武将化身
+                    </div>
                 </div>
-                <div class="agent-card" onclick="location.href='characters/松赞干布/songzanganbu.html'">
-                    <img src="characters/松赞干布/songzanganbuhead.png" class="agent-avatar" alt="松赞干布">
-                    <div class="agent-name">松赞干布</div>
-                    <div class="agent-desc">松赞干布，举凡吐蕃之一切纯良风俗，贤明政事，均为此墀松赞王者之时出现也</div>
-                </div>
-                <div class="agent-card" onclick="location.href='characters/文成公主/wenchenggongzhu.html'">
-                    <img src="characters/文成公主/wenchenggongzhuhead.png" class="agent-avatar" alt="文成公主">
-                    <div class="agent-name">文成公主</div>
-                    <div class="agent-desc">文成公主，李唐宗室之女，贞观十五年，文成公主远嫁吐蕃，成为吐蕃赞普松赞干布的王后。</div>
-                </div>
+
+                <!-- 耶律阿保机修正 -->
                 <div class="agent-card" onclick="location.href='characters/耶律阿保机/yelvabaoji.html'">
-                    <img src="characters/耶律阿保机/yelvabaojihead.png" class="agent-avatar" alt="李白">
+                    <img src="characters/耶律阿保机/yelvabaojihead.png" class="agent-avatar" alt="耶律阿保机">
                     <div class="agent-name">耶律阿保机</div>
-                    <div class="agent-desc">耶律阿保机，中国辽朝（契丹国）的创建者，勇谋兼备，善于治军用兵，有卓越的军事、政治才干</div>
+                    <div class="agent-desc">
+                        契丹名啜里只，辽朝开国皇帝<br>
+                        🏹 军事改革：创斡鲁朵宫帐军制<br>
+                        📜 文化融合：建孔庙、定法律<br>
+                        🌏 疆域扩张：东灭渤海国，西征突厥<br>
+                        🔥 历史首创：四时捺钵制度的创立者
+                    </div>
                 </div>
-                
+
                 <div class="agent-card" onclick="location.href='characters/孔子/kongzi.html'">
                     <img src="characters/孔子/kongzihead.png" class="agent-avatar" alt="孔子">
                     <div class="agent-name">孔子</div>
-                    <div class="agent-desc">孔子，名丘，字仲尼，春秋时期鲁国陬邑人，祖籍宋国栗邑。中国古代思想家、政治家、教育家，儒家学派创始人。</div>
+                    <div class="agent-desc">春秋末期思想家、教育家<br>
+                        📜 传世经典：编撰《六经》传世<br>
+                        🎓 教育革命：首创私学，"有教无类"打破贵族垄断<br>
+                        🌍 国际影响：全球首家孔子学院达500+所<br>
+                        🔖 核心思想："仁者爱人""克己复礼"</div>
                 </div>
+
+                <!-- 丘处机 -->
                 <div class="agent-card" onclick="location.href='characters/丘处机/qiuchuji.html'">
                     <img src="characters/丘处机/qiuchujihead.png" class="agent-avatar" alt="丘处机">
                     <div class="agent-name">丘处机</div>
-                    <div class="agent-desc">丘处机，金代元初道士，道教全真派“北七真”之一，侠义之士，爱民如子，乐善好施，助人为乐。</div>
+                    <div class="agent-desc">
+                        道号长春子，全真道掌教<br>
+                        🏔️ 西行壮举：73岁高龄远赴中亚谒见成吉思汗<br>
+                        ✋ 止杀谏言："欲一天下者，必不嗜杀人"<br>
+                        🌿 医学贡献：创导引术《摄生消息论》<br>
+                        🖋️ 文学造诣：《磻溪集》诗词现存150余首
+                    </div>
                 </div>
+                <!-- 樊哙 -->
                 <div class="agent-card" onclick="location.href='characters/樊哙/fankuai.html'">
                     <img src="characters/樊哙/fankuaihead.png" class="agent-avatar" alt="樊哙">
                     <div class="agent-name">樊哙</div>
-                    <div class="agent-desc">樊哙,泗水郡沛县人。西汉开国元勋，军事统帅。</div>
+
+                    <div class="agent-desc">
+                        西汉开国第一猛将<br>
+                        🗡️ 鸿门救主：持盾闯宴震慑项羽<br>
+                        🐗 出身传奇：原为沛县屠狗之辈<br>
+                        🏹 战功赫赫：历战54场未尝败绩<br>
+                        📜 政治智慧：劝谏刘邦勿贪宫室
+                    </div>
                 </div>
+
                 <div class="agent-card" onclick="location.href='characters/牛顿/niudun.html'">
                     <img src="characters/牛顿/niudunhead.png" class="agent-avatar" alt="牛顿">
                     <div class="agent-name">Isaac Newton</div>
-                    <div class="agent-desc">艾萨克牛顿，爵士，生于英格兰林肯郡伍尔索普村，英国数学家、物理学家、哲学家。</div>
+                    <div class="agent-desc">
+                        近代物理学之父<br>
+                        🍎 科学革命：万有引力定律<br>
+                        📐 数学突破：独立发明微积分<br>
+                        🔭 光学成就：棱镜分光实验<br>
+                        📚 旷世巨著：《自然哲学的数学原理》
+                    </div>
                 </div>
+
                 <div class="agent-card" onclick="location.href='characters/孟德尔/mengdeer.html'">
                     <img src="characters/孟德尔/mengdeerhead.png" class="agent-avatar" alt="孟德尔">
                     <div class="agent-name">Gregor Johann Mendel</div>
-                    <div class="agent-desc">孟德尔，奥地利帝国生物学家，遗传学的奠基人，被誉为现代遗传学之父。</div>
+                    <div class="agent-desc">
+                        遗传学之父<br>
+                        🌱 实验材料：8年种植29000株豌豆<br>
+                        📊 发现规律：分离定律与自由组合定律<br>
+                        📅 历史巧合：论文沉寂34年后被重新发现<br>
+                        🔬 科学遗产：奠定现代遗传学基础
+                    </div>
                 </div>
             </div>
         </div>
@@ -191,25 +261,37 @@
             <div class="agents-container">
                 <div class="agent-card" onclick="location.href='characters/锦衣卫/jinyiwei.html'">
                     <img src="characters/锦衣卫/jinyiweihead.png" class="agent-avatar" alt="锦衣卫">
-                    <div class="nameless-name">锦衣卫</div>
-                    <div class="nameless-desc">锦衣卫为明朝特务机构，直属皇帝，掌侍卫、缉捕、刑狱，权势大，对明朝政治影响深远。</div>
+                    <div class="agent-name">锦衣卫</div>
+                    <div class="agent-desc">明朝皇帝直属情报机构<br>
+                        🕵️ 组织结构：14所+南北镇抚司<br>
+                        📜 特殊权限：诏狱审判绕过三法司<br>
+                        🎭 双重身份：仪仗队与秘密警察<br>
+                        🔥 历史终结：康熙年间最终裁撤
+                    </div>
                 </div>
                 <div class="agent-card" onclick="location.href='characters/斩锋卒/zhanfengzu.html'">
                     <img src="characters/斩锋卒/zhanfengzuhead.png" class="agent-avatar" alt="斩锋卒">
-                    <div class="nameless-name">斩锋卒</div>
-                    <div class="nameless-desc">“斩锋卒”只是他的称号，无人知晓他的名字，他不图青史留名，只为同袍能多一份生机，为身后家国守一方安宁</div>
+                    <div class="agent-name">斩锋卒</div>
+                    <div class="agent-desc">边军精锐的代称<br>
+                        ⚔️ 战术定位：专克敌军先锋部队<br>
+                        💀 伤亡概率：每战阵亡率超七成<br>
+                        🎖️ 特殊荣誉：斩三锋者可获"跳荡"勋号<br>
+                        🕊️ 历史留白：千万无名者的集体象征</div>
                 </div>
                 <div class="agent-card" onclick="location.href='characters/腾格里骑兵/tenggeliqibing.html'">
                     <img src="characters/腾格里骑兵/tenggeliqibinghead.png" class="agent-avatar" alt="腾格里骑兵">
                     <div class="agent-name">腾格里骑兵</div>
-                    <div class="agent-desc">来自草原游牧民族的骑兵战士，参加过1218年西征。回答时，动作神态环境等描写内容用括号括起来</div>
+                    <div class="agent-desc">13世纪蒙古帝国精锐部队<br>
+                        🏹 战术特点：一人五马，日行百里<br>
+                        🌪️ 著名战例：横扫花剌子模帝国<br>
+                        🔥 武器配置：复合弓+波斯弯刀<br>
+                        📜 作战信条：服从命令高于生命</div>
                 </div>
             </div>
         </div>
         <div id="stories-tab" class="tab-content">
             <div class="stories-container">
-                <div class="story-card"
-                    onclick="location.href='stories/雪域迎风唐蕃结缘/第一幕.html'">
+                <div class="story-card" onclick="location.href='stories/雪域迎风唐蕃结缘/第一幕.html'">
                     <img src="stories/雪域迎风唐蕃结缘/media/雪域迎风唐蕃结缘.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
                     <div class="story-content">
                         <h3 class="story-title">雪域迎风·唐蕃结缘（敬请期待）</h3>
@@ -218,13 +300,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="story-card"
-                    onclick="location.href='stories/持节远涉丝路肇始/第一幕.html'">
+                <div class="story-card" onclick="location.href='stories/持节远涉丝路肇始/第一幕.html'">
                     <img src="stories/持节远涉丝路肇始/media/持节远涉.png" class="story-cover" alt="雪域迎凤·唐蕃结缘">
                     <div class="story-content">
                         <h3 class="story-title">持节远涉·丝路肇始（敬请期待）</h3>
                         <div class="story-desc">
-                            张骞（约前164—前114），西汉外交家，奉汉武帝之命两度出使西域。前138年首次西行，被匈奴扣押十年后逃脱，辗转抵达大月氏，虽未达成联盟，但带回了西域地理、物产等宝贵信息。前119年再使乌孙，促进汉朝与西域各国交往，开辟了连接东西方的“丝绸之路”，推动了经济文化交流，被誉为“凿空西域”的开拓者。
+                            张骞（约前164—前114），西汉外交家，奉汉武帝之命两度出使西域。前138年首次西行，被匈奴扣押十年后逃脱，抵达大月氏，虽未达成联盟，但带回了西域地理、物产等宝贵信息。前119年再使乌孙，促进汉朝与西域各国交往，开辟了连接东西方的“丝绸之路”，推动了经济文化交流，被誉为“凿空西域”的开拓者。
                         </div>
                     </div>
                 </div>
@@ -237,7 +318,7 @@
             <strong class="developer-name">开发者：雪豹同志</strong>
             <p>浩瀚青史，星河璀璨。有人金戈铁马，名垂竹帛；有人默默耕耘，湮没尘烟。而今，我以代码为舟，文字为楫，在这虚拟的华胥之境，打捞起时光长河中的吉光片羽——让威震八方的雄主与寂寂无名的隐士，同席而坐；让金銮殿上的宏论与柴门前的低语，共话沧桑。
             </p>
-            <p>历史从不止于王侯将相，它亦是寻常百姓的悲欢。在这里，秦皇汉武可谈天下，浣纱女、戍边卒亦能诉说平生。键盘轻敲，唤醒的不仅是数据，更是千年魂魄的叹息与微笑。愿诸君在此，既能仰观星河浩瀚，亦能俯察草木微芒，与历史真正地肝胆相照。
+            <p>历史从不止于王侯将相，它亦然寻常百姓的悲欢。在这里，秦皇汉武可谈天下，浣纱女、戍边卒亦能诉说平生。键盘轻敲，唤醒的不仅是数据，更是千年魂魄的叹息与微笑。愿诸君在此，既能仰观星河浩瀚，亦能俯察草木微芒，与历史真正地肝胆相照。
             </p>
             <br> <!-- 新增的空行 -->
         </div>
