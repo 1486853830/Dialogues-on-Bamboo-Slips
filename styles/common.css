@@ -527,6 +527,28 @@ button {
     /* 标准语法 */
 }
 
+.play-btn {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.play-btn:hover {
+    opacity: 1;
+}
+
+.message-container.bot {
+    position: relative;
+    padding-left: 30px;
+}
+
 
 
 

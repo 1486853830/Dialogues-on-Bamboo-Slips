@@ -1,4 +1,14 @@
 export function initEventListeners(sendMessage, getPresetResponse, createPresetButtons) {
+    // 添加语音控制开关
+    const voiceToggle = document.getElementById('voice-toggle');
+    if (voiceToggle) {
+        voiceToggle.addEventListener('click', () => {
+            const enabled = localStorage.getItem('voiceEnabled') !== 'true';
+            localStorage.setItem('voiceEnabled', enabled);
+            voiceToggle.textContent = enabled ? '🔊 关闭语音' : '🔈 开启语音';
+        });
+    }
+
     document.getElementById('user-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();

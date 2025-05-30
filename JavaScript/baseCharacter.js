@@ -3,6 +3,7 @@ import { initBackgroundVideo } from './backgroundVideo.js';
 import { displayMessage, addRephraseButton } from './messageHandler.js';
 import { sendMessage as apiSendMessage, getPresetResponse, sendWelcomeMessage } from './apiRequest.js';
 import { initEventListeners, createPresetButtons } from './eventListeners.js';
+import { synthesizeSpeech } from './speechSynthesis.js';
 
 export class BaseCharacter {
     constructor(characterName, systemMessage) {
@@ -38,6 +39,10 @@ export class BaseCharacter {
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
                     addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
+                    // 自动播放逻辑
+                    if (localStorage.getItem('voiceEnabled') === 'true') {
+                        synthesizeSpeech(message);
+                    }
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;

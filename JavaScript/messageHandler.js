@@ -1,3 +1,5 @@
+import { synthesizeSpeech } from './speechSynthesis.js';
+
 export function displayMessage(chatContainer, message, sender, messageIdCounter) {
     const halfScreen = localStorage.getItem('halfScreen') === 'true';
     if (halfScreen) {
@@ -40,6 +42,21 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
     messageElement.innerHTML = processedMessage;
     messageContainer.appendChild(messageElement);
 
+    // 添加播放按钮（仅对机器人消息）
+    if (sender === 'bot') {
+        const playBtn = document.createElement('button');
+        playBtn.className = 'play-btn';
+        playBtn.innerHTML = '▶';
+        playBtn.onclick = () => {
+            try {
+                synthesizeSpeech(message);
+            } catch (error) {
+                console.error('语音播放失败:', error);
+            }
+        };
+        messageContainer.appendChild(playBtn);
+    }
+
     return { messageContainer, messageIdCounter };
 }
 
@@ -63,5 +80,3 @@ export function addRephraseButton(messageContainer, handleRephrase) {
     };
     messageContainer.appendChild(rephraseBtn);
 }
-
-// 完全移除 handleRephrase 函数

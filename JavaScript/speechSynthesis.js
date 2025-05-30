@@ -9,7 +9,7 @@ export async function synthesizeSpeech(text) {
             currentAudio = null;
         }
 
-        // 通过代理服务器调用通义千问语音合成API
+        // 修正请求路径为原始有效路径
         const response = await fetch('http://localhost:3000/synthesize-speech', {
             method: 'POST',
             headers: {
@@ -17,25 +17,30 @@ export async function synthesizeSpeech(text) {
                 'Authorization': `Bearer ${localStorage.getItem('qianwenApiKey')}`
             },
             body: JSON.stringify({
-                text: text.substring(0, 300), // 限制文本长度
-                voice_type: 'female' // 可选项: female/male
+                text: text.substring(0, 300),
+                voice_type: 'female'
             })
         });
 
-        // 获取音频流
-        const audioStream = await response.arrayBuffer();
+        // 添加响应状态检查
+        if (!response.ok) {
+            throw new Error(`请求失败，状态码：${response.status}`);
+        }
+
+        // 修改音频数据处理方式
+        const audioBlob = await response.blob();
+        const arrayBuffer = await audioBlob.arrayBuffer();
         
-        // 使用Web Audio API播放
+        // 确保解码前重置音频上下文
         audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-        const source = audioContext.createBufferSource();
-        source.buffer = await audioContext.decodeAudioData(audioStream);
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
         
         source.connect(audioContext.destination);
         source.start(0);
         currentAudio = source;
     } catch (error) {
         console.error('语音合成失败:', error);
-        alert('语音播放功能暂时不可用');
+        alert(`语音合成失败: ${error.message}`); // 恢复使用alert
     }
 }
 
