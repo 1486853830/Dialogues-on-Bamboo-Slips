@@ -34,7 +34,8 @@ export async function synthesizeSpeech(text) {
         // 确保解码前重置音频上下文
         audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
         source.connect(audioContext.destination);
         source.start(0);
         currentAudio = source;

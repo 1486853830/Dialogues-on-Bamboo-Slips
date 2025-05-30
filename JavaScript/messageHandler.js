@@ -42,11 +42,13 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
     messageElement.innerHTML = processedMessage;
     messageContainer.appendChild(messageElement);
 
-    // 添加播放按钮（仅对机器人消息）
+    // 嘿！为机器消息添加一个超酷的播放按钮，点击就能听消息啦😎
     if (sender === 'bot') {
         const playBtn = document.createElement('button');
         playBtn.className = 'play-btn';
         playBtn.innerHTML = '▶';
+        playBtn.style.position = 'absolute';
+        playBtn.style.left = '0';
         playBtn.onclick = () => {
             try {
                 synthesizeSpeech(message);
@@ -54,7 +56,7 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
                 console.error('语音播放失败:', error);
             }
         };
-        messageContainer.appendChild(playBtn);
+        messageElement.prepend(playBtn);
     }
 
     return { messageContainer, messageIdCounter };

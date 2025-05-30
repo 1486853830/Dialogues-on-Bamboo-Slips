@@ -195,6 +195,8 @@ app.use(express.static(path.join(__dirname)));
 // 在现有路由之后添加语音合成路由
 // 修改/synthesize-speech路由处理
 app.post('/synthesize-speech', async (req, res) => {
+    console.log('收到的请求体:', req.body);
+    console.log('收到的 Authorization 头:', req.headers.authorization); // 新增日志
     try {
         const response = await axios.post('https://dashscope.aliyuncs.com/api/v1/services/aigc/tts/1shot-tts', {
             model: "qwen-tts",
