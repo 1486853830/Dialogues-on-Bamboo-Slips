@@ -449,7 +449,6 @@ body::before {
 .tab-header {
     display: flex;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 20px;
     max-width: 100%;
     overflow-x: hidden;
     /* 修改为hidden移除滚动条 */
@@ -474,12 +473,12 @@ body::before {
 .tab-header {
     display: flex;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 20px;
     max-width: 100%;
     overflow-x: auto;
 }
 
 .tab-content {
+    margin-top: 30px;
     display: none;
     width: 100%;
     box-sizing: border-box;
@@ -512,49 +511,49 @@ body::before {
     background: #007bff;
 }
 
+
+
+/* 修复后的选项卡动画样式 */
 .tab-content {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
 
-    /* 修复后的选项卡动画样式 */
-    .tab-content {
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease, opacity 0.3s ease;
+.tab-content.active {
+    display: block;
+    animation: slideIn 0.3s ease forwards;
+}
+
+.tab-content:not(.active) {
+    display: none;
+    animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
     }
 
-    .tab-content.active {
-        display: block;
-        animation: slideIn 0.3s ease forwards;
-    }
-
-    .tab-content:not(.active) {
-        display: none;
-        animation: slideOut 0.3s ease forwards;
-    }
-
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        to {
-            transform: translateX(-100%);
-            opacity: 0;
-        }
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
 
 .tab-content.active {
     display: block;
@@ -902,12 +901,3 @@ textarea.settings-input {
     cursor: default;
 }
 
-/* 修改容器间距 */
-.agents-container, .stories-container {
-    gap: 3rem; /* 从2rem增加到3rem */
-}
-/* 增加卡片间距 */
-.story-card, .agent-card {
-    margin: 1rem; /* 新增外边距 */
-
-}

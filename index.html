@@ -106,7 +106,7 @@
 
         <div id="characters-tab" class="tab-content active">
             <!-- 现有的人物卡片容器 -->
-            <div class="story-container">
+            <div class="stories-container">
                 <div class="story-card" onclick="location.href='characters/曹操/caocao.html'">
                     <img src="characters/曹操/caocao.png" class="story-cover" alt="曹操">
                     <div class="story-content">
@@ -278,38 +278,51 @@
             </div>
         </div>
 
+        <!-- 名匿青史选项卡 -->
         <div id="nameless-tab" class="tab-content">
-            <div class="agents-container">
-                <div class="agent-card" onclick="location.href='characters/锦衣卫/jinyiwei.html'">
-                    <img src="characters/锦衣卫/jinyiweihead.png" class="agent-avatar" alt="锦衣卫">
-                    <div class="agent-name">锦衣卫</div>
-                    <div class="agent-desc">明朝皇帝直属情报机构<br>
-                        🕵️ 组织结构：14所+南北镇抚司<br>
-                        📜 特殊权限：诏狱审判绕过三法司<br>
-                        🎭 双重身份：仪仗队与秘密警察<br>
-                        🔥 历史终结：康熙年间最终裁撤
+            <div class="stories-container"> <!-- 容器类名改为 stories-container -->
+                <div class="story-card" onclick="location.href='characters/锦衣卫/jinyiwei.html'">
+                    <img src="characters/锦衣卫/jinyiwei.png" class="story-cover" alt="锦衣卫">
+                    <div class="story-content">
+                        <h3 class="story-title">锦衣卫</h3>
+                        <div class="story-desc">
+                            🕵️ 组织结构：14所+南北镇抚司<br>
+                            📜 特殊权限：诏狱审判绕过三法司<br>
+                            🎭 双重身份：仪仗队与秘密警察<br>
+                            🔥 历史终结：康熙年间最终裁撤
+                        </div>
                     </div>
                 </div>
-                <div class="agent-card" onclick="location.href='characters/斩锋卒/zhanfengzu.html'">
-                    <img src="characters/斩锋卒/zhanfengzuhead.png" class="agent-avatar" alt="斩锋卒">
-                    <div class="agent-name">斩锋卒</div>
-                    <div class="agent-desc">边军精锐的代称<br>
-                        ⚔️ 战术定位：专克敌军先锋部队<br>
-                        💀 伤亡概率：每战阵亡率超七成<br>
-                        🎖️ 特殊荣誉：斩三锋者可获"跳荡"勋号<br>
-                        🕊️ 历史留白：千万无名者的集体象征</div>
+
+                <div class="story-card" onclick="location.href='characters/斩锋卒/zhanfengzu.html'">
+                    <img src="characters/斩锋卒/zhanfengzu.png" class="story-cover" alt="斩锋卒">
+                    <div class="story-content">
+                        <h3 class="story-title">斩锋卒</h3>
+                        <div class="story-desc">
+                            ⚔️ 战术定位：专克敌军先锋部队<br>
+                            💀 伤亡概率：每战阵亡率超七成<br>
+                            🎖️ 特殊荣誉：斩三锋者可获"跳荡"勋号<br>
+                            🕊️ 历史留白：千万无名者的集体象征
+                        </div>
+                    </div>
                 </div>
-                <div class="agent-card" onclick="location.href='characters/腾格里骑兵/tenggeliqibing.html'">
-                    <img src="characters/腾格里骑兵/tenggeliqibinghead.png" class="agent-avatar" alt="腾格里骑兵">
-                    <div class="agent-name">腾格里骑兵</div>
-                    <div class="agent-desc">13世纪蒙古帝国精锐部队<br>
-                        🏹 战术特点：一人五马，日行百里<br>
-                        🌪️ 著名战例：横扫花剌子模帝国<br>
-                        🔥 武器配置：复合弓+波斯弯刀<br>
-                        📜 作战信条：服从命令高于生命</div>
+
+                <div class="story-card" onclick="location.href='characters/腾格里骑兵/tenggeliqibing.html'">
+                    <img src="characters/腾格里骑兵/tenggeliqibing.png" class="story-cover" alt="腾格里骑兵">
+                    <div class="story-content">
+                        <h3 class="story-title">腾格里骑兵</h3>
+                        <div class="story-desc">
+                            🏹 战术特点：一人五马，日行百里<br>
+                            🌪️ 著名战例：横扫花剌子模帝国<br>
+                            🔥 武器配置：复合弓+波斯弯刀<br>
+                            📜 作战信条：服从命令高于生命
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+
         <div id="stories-tab" class="tab-content">
             <div class="stories-container">
                 <div class="story-card" onclick="location.href='stories/雪域迎风唐蕃结缘/第一幕.html'">
