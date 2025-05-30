@@ -901,3 +901,13 @@ textarea.settings-input {
     user-select: none;
     cursor: default;
 }
+
+/* 修改容器间距 */
+.agents-container, .stories-container {
+    gap: 3rem; /* 从2rem增加到3rem */
+}
+/* 增加卡片间距 */
+.story-card, .agent-card {
+    margin: 1rem; /* 新增外边距 */
+
+}
