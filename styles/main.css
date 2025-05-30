@@ -21,6 +21,7 @@
     /* 悬停时稍微加深 */
     transform: translateY(-2px);
 }
+
 .settings-content {
     max-height: 80vh;
     overflow-y: auto;
@@ -32,8 +33,10 @@
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     /* 隐藏滚动条 */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
 }
 
 /* 隐藏Chrome/Safari的滚动条 */
@@ -65,6 +68,14 @@ body {
     align-items: center;
     min-height: 100vh;
     position: relative;
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    user-select: none;
+    cursor: default;
 }
 
 /* 添加毛玻璃遮罩层 */
@@ -99,13 +110,15 @@ h1 {
 
 @media (min-width: 1200px) {
     .agents-container {
-        grid-template-columns: repeat(3, 1fr); /* 宽屏三列 */
+        grid-template-columns: repeat(3, 1fr);
+        /* 宽屏三列 */
     }
 }
 
 @media (max-width: 768px) {
     .agents-container {
-        grid-template-columns: repeat(2, 1fr); /* 窄屏两列 */
+        grid-template-columns: repeat(2, 1fr);
+        /* 窄屏两列 */
     }
 }
 
@@ -116,22 +129,26 @@ h1 {
     backdrop-filter: blur(10px);
     color: white;
     text-align: center;
-    margin-top: 40px; /* 增加与上方内容的间距 */
+    margin-top: 40px;
+    /* 增加与上方内容的间距 */
     position: relative;
-    bottom: 0; /* 新增：紧贴底部 */
+    bottom: 0;
+    /* 新增：紧贴底部 */
 }
 
 /* 修改body样式 */
 body {
     /* ... 其他样式不变 ... */
-    padding-bottom: 0; /* 确保底部没有内边距 */
+    padding-bottom: 0;
+    /* 确保底部没有内边距 */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
 .author-content p {
-    margin: 0 0 15px 0; /* 增加段落间距 */
+    margin: 0 0 15px 0;
+    /* 增加段落间距 */
     line-height: 1.8;
     text-align: justify;
     text-indent: 2em;
@@ -496,39 +513,42 @@ body::before {
 }
 
 .tab-content {
+
     /* 修复后的选项卡动画样式 */
     .tab-content {
         position: relative;
         overflow: hidden;
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
-    
+
     .tab-content.active {
         display: block;
         animation: slideIn 0.3s ease forwards;
     }
-    
+
     .tab-content:not(.active) {
         display: none;
         animation: slideOut 0.3s ease forwards;
     }
-    
+
     @keyframes slideIn {
         from {
             transform: translateX(100%);
             opacity: 0;
         }
+
         to {
             transform: translateX(0);
             opacity: 1;
         }
     }
-    
+
     @keyframes slideOut {
         from {
             transform: translateX(0);
             opacity: 1;
         }
+
         to {
             transform: translateX(-100%);
             opacity: 0;
@@ -687,15 +707,15 @@ select.settings-input:hover {
 .settings-input {
     padding: 8px 12px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
     color: white;
     font-size: 14px;
 }
 
 .settings-btn-secondary {
     padding: 8px 16px;
-    background: rgba(0,123,255,0.5);
+    background: rgba(0, 123, 255, 0.5);
     color: white;
     border: none;
     border-radius: 8px;
@@ -705,7 +725,7 @@ select.settings-input:hover {
 }
 
 .settings-btn-secondary:hover {
-    background: rgba(0,123,255,0.7);
+    background: rgba(0, 123, 255, 0.7);
 }
 
 select.settings-input:focus {
@@ -796,13 +816,25 @@ textarea.settings-input {
     border-radius: 20px;
     border: none;
     cursor: pointer;
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    user-select: none;
+    cursor: default;
 }
 
 .settings-btn-secondary {
-    height: 40px; /* 固定高度 */
-    padding: 0 15px; /* 调整内边距 */
-    line-height: 40px; /* 确保文字垂直居中 */
-    box-sizing: border-box; /* 包含内边距和边框 */
+    height: 40px;
+    /* 固定高度 */
+    padding: 0 15px;
+    /* 调整内边距 */
+    line-height: 40px;
+    /* 确保文字垂直居中 */
+    box-sizing: border-box;
+    /* 包含内边距和边框 */
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
@@ -822,9 +854,12 @@ textarea.settings-input {
 
 /* 对于textarea类型的settings-input需要特殊处理 */
 textarea.settings-input {
-    height: auto; /* 恢复自动高度 */
-    line-height: normal; /* 恢复默认行高 */
-    padding: 10px 15px; /* 调整内边距 */
+    height: auto;
+    /* 恢复自动高度 */
+    line-height: normal;
+    /* 恢复默认行高 */
+    padding: 10px 15px;
+    /* 调整内边距 */
 }
 
 .intro-text {
@@ -839,9 +874,30 @@ textarea.settings-input {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.intro-text {
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    user-select: none;
+    cursor: default;
+}
+
 .developer-name {
     display: block;
-    margin-bottom: 15px; /* 调整这个值可以改变间距大小 */
+    margin-bottom: 15px;
+    /* 调整这个值可以改变间距大小 */
     font-size: 16px;
     color: rgba(255, 255, 255, 0.85);
+
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    user-select: none;
+    cursor: default;
 }

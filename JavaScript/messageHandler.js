@@ -29,6 +29,7 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
 
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('message-container');
+    messageContainer.style.position = 'relative';  // 新增相对定位
 
     const messageElement = document.createElement('div');
     const currentMessageId = `msg-${messageIdCounter++}`;
@@ -48,7 +49,22 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
         playBtn.className = 'play-btn';
         playBtn.innerHTML = '▶';
         playBtn.style.position = 'absolute';
+        playBtn.style.top = '-36px';
         playBtn.style.left = '0';
+        playBtn.style.width = '36px';
+        playBtn.style.height = '36px';
+        playBtn.style.background = 'linear-gradient(145deg, #6B8DD6, #8E37D7)';
+        playBtn.style.color = 'white';
+        playBtn.style.borderRadius = '8px';
+        playBtn.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+        playBtn.style.fontSize = '16px';
+        playBtn.style.display = 'flex';
+        playBtn.style.alignItems = 'center';
+        playBtn.style.justifyContent = 'center';
+        playBtn.style.transition = 'all 0.2s';
+        playBtn.style.zIndex = '1000';
+        playBtn.onmouseover = () => playBtn.style.transform = 'scale(1.1)';
+        playBtn.onmouseout = () => playBtn.style.transform = 'scale(1)';
         playBtn.onclick = () => {
             try {
                 synthesizeSpeech(message);
@@ -56,7 +72,7 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
                 console.error('语音播放失败:', error);
             }
         };
-        messageElement.prepend(playBtn);
+        messageContainer.appendChild(playBtn);  // 修改为添加到容器而非消息元素
     }
 
     return { messageContainer, messageIdCounter };
