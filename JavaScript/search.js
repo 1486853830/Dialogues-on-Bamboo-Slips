@@ -1,20 +1,17 @@
-// 智能体搜索功能实现
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('character-search');
     const searchButton = document.getElementById('search-button');
-    const agentCards = document.querySelectorAll('.agent-card');
+    const storyCards = document.querySelectorAll('.story-card'); // 更新选择器
     
-    // 搜索功能
     function performSearch() {
         const searchTerm = searchInput.value.trim().toLowerCase();
         
-        agentCards.forEach(card => {
-            const name = card.querySelector('.agent-name').textContent.toLowerCase();
-            const desc = card.querySelector('.agent-desc').textContent.toLowerCase();
+        storyCards.forEach(card => {
+            const title = card.querySelector('.story-title').textContent.toLowerCase(); // 更新标题选择器
+            const desc = card.querySelector('.story-desc').textContent.toLowerCase(); // 更新描述选择器
             
-            if (name.includes(searchTerm) || desc.includes(searchTerm)) {
+            if (title.includes(searchTerm) || desc.includes(searchTerm)) {
                 card.style.display = 'block';
-                // 添加高亮动画效果
                 card.style.animation = 'highlight 0.5s ease';
                 setTimeout(() => card.style.animation = '', 500);
             } else {
@@ -22,23 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // 绑定搜索按钮点击事件
+
+    // 保持原有事件绑定不变
     if (searchButton) {
         searchButton.addEventListener('click', performSearch);
     }
     
-    // 绑定输入框回车事件
     if (searchInput) {
         searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
+            if (e.key === 'Enter') performSearch();
         });
     }
 });
 
-// 添加高亮动画样式
 const style = document.createElement('style');
 style.textContent = `
     @keyframes highlight {
