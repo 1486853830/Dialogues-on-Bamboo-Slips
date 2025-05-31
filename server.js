@@ -196,40 +196,57 @@ app.use(express.static(path.join(__dirname)));
 // 修改/synthesize-speech路由处理
 app.post('/synthesize-speech', async (req, res) => {
     try {
-        const response = await axios.post('https://dashscope.aliyuncs.com/api/v1/services/aigc/tts/1shot-tts', {
-            model: "tts-1",
+        // 修正为POST请求并调整参数结构
+        const response = await axios.post('wss://dashscope.aliyuncs.com/api-ws/v1/inference/tts', {
+            model: "cosyvoice-v1",
             input: {
                 text: req.body.text
             },
-            parameters: {  // 修正参数层级
+            parameters: {
                 voice: req.body.voice_type || 'zhitian_emo',
                 format: 'mp3',
                 sample_rate: 48000
             }
         }, {
             headers: {
-                'Authorization': `Bearer ${req.headers.authorization.split(' ')[1]}`,
-                'Content-Type': 'application/json',
-                'X-DashScope-Async': 'enable'
+                'Authorization': `Bearer ${req.headers.authorization?.split(' ')[1] || ''}`,
+                'Content-Type': 'application/json'
             },
-            responseType: 'arraybuffer'
+            responseType: 'stream'
         });
+
+        // 添加响应头验证
+        if (!response.headers['content-type']?.includes('audio/mpeg')) {
+            throw new Error('无效的音频响应格式');
+        }
 
         res.set({
             'Content-Type': 'audio/mpeg',
-            'Content-Length': response.headers['content-length']
+            'Cache-Control': 'no-cache',
+            'X-Request-ID': response.headers['x-request-id'] || ''
         });
-        res.send(response.data);
+
+        // 添加超时处理
+        response.data.on('error', (err) => {
+            console.error('流数据错误:', err);
+            res.status(500).end();
+        });
+
+        response.data.pipe(res);
+
     } catch (error) {
-        // 增强错误日志
-        console.error('阿里云API错误详情:', 
-            error.response?.status,
-            error.response?.statusText,
-            Buffer.from(error.response?.data).toString('utf-8')
-        );
+        // 改进错误日志
+        console.error('语音合成失败详情:', {
+            errorCode: error.code,
+            config: {
+                url: error.config?.url,
+                method: error.config?.method
+            },
+            stack: error.stack
+        });
         
         res.status(500).json({
-            error: error.response?.data?.message || '语音合成服务内部错误'
+            error: error.response?.data?.message || '语音合成服务连接失败'
         });
     }
 });
