@@ -195,19 +195,22 @@ app.use(express.static(path.join(__dirname)));
 // 在现有路由之后添加语音合成路由
 // 修改/synthesize-speech路由处理
 app.post('/synthesize-speech', async (req, res) => {
-    console.log('收到的请求体:', req.body);
-    console.log('收到的 Authorization 头:', req.headers.authorization); // 新增日志
     try {
         const response = await axios.post('https://dashscope.aliyuncs.com/api/v1/services/aigc/tts/1shot-tts', {
-            model: "qwen-tts",
+            model: "tts-1",
             input: {
-                text: req.body.text,
-                voice: req.body.voice_type || 'Chelsie' // 默认使用Chelsie音色
+                text: req.body.text
+            },
+            parameters: {  // 修正参数层级
+                voice: req.body.voice_type || 'zhitian_emo',
+                format: 'mp3',
+                sample_rate: 48000
             }
         }, {
             headers: {
                 'Authorization': `Bearer ${req.headers.authorization.split(' ')[1]}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-DashScope-Async': 'enable'
             },
             responseType: 'arraybuffer'
         });
@@ -218,9 +221,15 @@ app.post('/synthesize-speech', async (req, res) => {
         });
         res.send(response.data);
     } catch (error) {
-        console.error('语音合成失败:', error);
-        res.status(500).json({ 
-            error: error.response?.data?.message || '语音合成服务错误'
+        // 增强错误日志
+        console.error('阿里云API错误详情:', 
+            error.response?.status,
+            error.response?.statusText,
+            Buffer.from(error.response?.data).toString('utf-8')
+        );
+        
+        res.status(500).json({
+            error: error.response?.data?.message || '语音合成服务内部错误'
         });
     }
 });

@@ -18,7 +18,7 @@ export async function synthesizeSpeech(text) {
             },
             body: JSON.stringify({
                 text: text.substring(0, 300),
-                voice_type: 'female'
+                voice_type: 'zhitian_emo'  // 确保使用阿里云支持的音色
             })
         });
 
@@ -40,8 +40,17 @@ export async function synthesizeSpeech(text) {
         source.start(0);
         currentAudio = source;
     } catch (error) {
-        console.error('语音合成失败:', error);
-        alert(`语音合成失败: ${error.message}`); // 恢复使用alert
+        // 增强错误处理
+        let errorMsg = error.message;
+        if (error.response) {
+            try {
+                const errorData = await error.response.json();
+                errorMsg = errorData.message || errorData.code || '未知错误';
+            } catch (e) {
+                errorMsg = `服务返回异常：${error.response.status}`;
+            }
+        }
+        alert(`语音合成失败: ${errorMsg}`);
     }
 }
 
