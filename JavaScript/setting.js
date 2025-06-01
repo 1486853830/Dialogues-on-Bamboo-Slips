@@ -130,7 +130,7 @@ function saveSettings() {
             return;
         }
         localStorage.setItem('apiKey', apiKey);
-    } else {
+    } else if (apiProvider === 'qianwen') {
         const qianwenApiKey = document.getElementById('qianwenApiKey').value.trim();
         if (!qianwenApiKey) {
             alert('请输入有效的通义千问API密钥');
@@ -140,16 +140,16 @@ function saveSettings() {
     }
     alert('设置已保存成功');
     toggleSettings();
-    
+
     // 保存音乐设置
     const bgmSelect = document.getElementById('bgm-select');
     localStorage.setItem('bgm', bgmSelect.value);
-    
+
     // 保存用户信息
     localStorage.setItem('userName', document.getElementById('user-name').value.trim());
     localStorage.setItem('userGender', document.getElementById('user-gender').value);
     localStorage.setItem('userPersona', document.getElementById('user-persona').value.trim());
-    
+
     // 保存半屏显示设置
     const halfScreenToggle = document.getElementById('halfScreen-toggle');
     if (halfScreenToggle) {

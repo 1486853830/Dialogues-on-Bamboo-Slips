@@ -10,7 +10,7 @@ export async function synthesizeSpeech(text) {
         }
 
         // 修正请求路径为原始有效路径
-        const response = await fetch('http://localhost:3000/synthesize-speech', {
+        const response = await fetch('http://localhost:3000/ws-tts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,17 +1,25 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path');
+const zlib = require('zlib'); // 顶部引入
+const WebSocket = require('ws'); // 顶部引入
 
 const app = express();
-app.use(cors()); // 允许所有跨域请求
+app.use(cors());
 app.use(express.json());
 
-// 设置 CORS 头，允许前端跨域访问
+// 中间件 - 设置CORS头
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
+});
+
+// 健康检查路由
+app.get('/health-check', (req, res) => {
+    res.send('服务运行正常');
 });
 
 // 代理发送消息请求
@@ -151,13 +159,9 @@ app.post('/getPresetResponse', async (req, res) => {
     }
 });
 
-// 在现有代码中添加以下内容（通常在中间件部分）
-const path = require('path');
-app.use(express.static(path.join(__dirname)));  // 新增静态文件服务
-
+// 语音合成路由 - 阿里云接口
 app.post('/api/speech/synthesize', async (req, res) => {
     try {
-        // 调用真实的语音合成API（示例使用阿里云语音合成）
         const result = await axios.post('https://nls-gateway.cn-shanghai.aliyuncs.com/stream/v1/tts', {
             text: req.body.content,
             voice: req.body.voice_type,
@@ -170,7 +174,6 @@ app.post('/api/speech/synthesize', async (req, res) => {
             responseType: 'arraybuffer'
         });
 
-        // 设置正确的响应头
         res.set({
             'Content-Type': 'audio/mpeg',
             'Content-Length': result.headers['content-length'],
@@ -183,39 +186,40 @@ app.post('/api/speech/synthesize', async (req, res) => {
     }
 });
 
-// 在express.static之前添加健康检查路由
-// 调整路由顺序（将健康检查路由移动到最前面）
-app.get('/health-check', (req, res) => {
-    res.send('服务运行正常');
-});
-
-// 静态文件服务放在路由之后
-app.use(express.static(path.join(__dirname)));
-
-// 在现有路由之后添加语音合成路由
-// 修改/synthesize-speech路由处理
+// 语音合成路由 - DashScope接口
 app.post('/synthesize-speech', async (req, res) => {
+    console.log('收到语音合成请求', {
+        headers: req.headers,
+        body: { 
+            text: req.body.text ? req.body.text.substring(0, 10) + '...' : '',
+            voice_type: req.body.voice_type
+        }
+    });
+
     try {
-        // 修正为POST请求并调整参数结构
-        const response = await axios.post('wss://dashscope.aliyuncs.com/api-ws/v1/inference/tts', {
+        const url = 'https://dashscope.aliyuncs.com/api/v1/services/tts/text-to-speech';
+        const text = typeof req.body.text === 'string' ? req.body.text.substring(0, 300) : '';
+        const postData = {
             model: "cosyvoice-v1",
-            input: {
-                text: req.body.text
-            },
+            input: { text },
             parameters: {
                 voice: req.body.voice_type || 'zhitian_emo',
+                sample_rate: 48000,
                 format: 'mp3',
-                sample_rate: 48000
+                text_type: "plain"
             }
-        }, {
+        };
+        console.log('DashScope请求体:', JSON.stringify(postData));
+        const response = await axios.post(url, postData, {
             headers: {
-                'Authorization': `Bearer ${req.headers.authorization?.split(' ')[1] || ''}`,
-                'Content-Type': 'application/json'
+                'Authorization': req.headers.authorization || '',
+                'Content-Type': 'application/json',
+                'X-DashScope-Async': 'enable',
+                'X-DashScope-DataInspection': 'enable'
             },
             responseType: 'stream'
         });
 
-        // 添加响应头验证
         if (!response.headers['content-type']?.includes('audio/mpeg')) {
             throw new Error('无效的音频响应格式');
         }
@@ -226,7 +230,6 @@ app.post('/synthesize-speech', async (req, res) => {
             'X-Request-ID': response.headers['x-request-id'] || ''
         });
 
-        // 添加超时处理
         response.data.on('error', (err) => {
             console.error('流数据错误:', err);
             res.status(500).end();
@@ -235,27 +238,213 @@ app.post('/synthesize-speech', async (req, res) => {
         response.data.pipe(res);
 
     } catch (error) {
-        // 改进错误日志
+        // 判断是否有压缩的响应体
+        if (
+            error.response &&
+            error.response.data &&
+            typeof error.response.data.pipe === 'function'
+        ) {
+            const encoding = error.response.headers['content-encoding'];
+            let rawData = [];
+            if (encoding === 'gzip') {
+                error.response.data
+                    .pipe(zlib.createGunzip())
+                    .on('data', (chunk) => rawData.push(chunk))
+                    .on('end', () => {
+                        try {
+                            const resStr = Buffer.concat(rawData).toString('utf-8');
+                            console.error('DashScope详细错误内容:', resStr);
+                            res.status(500).json({ error: resStr });
+                        } catch (e) {
+                            console.error('解压DashScope错误内容失败:', e);
+                            res.status(500).json({ error: 'DashScope错误内容解压失败' });
+                        }
+                    })
+                    .on('error', (e) => {
+                        console.error('解压DashScope响应流失败:', e);
+                        res.status(500).json({ error: 'DashScope响应流解压失败' });
+                    });
+            } else {
+                // 非gzip，直接收集数据
+                error.response.data
+                    .on('data', (chunk) => rawData.push(chunk))
+                    .on('end', () => {
+                        try {
+                            const resStr = Buffer.concat(rawData).toString('utf-8');
+                            console.error('DashScope详细错误内容:', resStr);
+                            res.status(500).json({ error: resStr });
+                        } catch (e) {
+                            console.error('读取DashScope错误内容失败:', e);
+                            res.status(500).json({ error: 'DashScope错误内容读取失败' });
+                        }
+                    })
+                    .on('error', (e) => {
+                        console.error('读取DashScope响应流失败:', e);
+                        res.status(500).json({ error: 'DashScope响应流读取失败' });
+                    });
+            }
+            return; // 避免后续重复响应
+        } else if (
+            error.response &&
+            error.response.data &&
+            typeof error.response.data.pipe !== 'function'
+        ) {
+            // 解析错误内容
+            let errMsg = '';
+            try {
+                errMsg = typeof error.response.data === 'string'
+                    ? error.response.data
+                    : JSON.stringify(error.response.data);
+            } catch {}
+            if (errMsg.includes('task can not be null')) {
+                console.error('你的 DashScope key 没有 TTS 权限，请在控制台新建带语音合成权限的 key');
+            }
+        }
+        // 普通错误处理
         console.error('语音合成失败详情:', {
             errorCode: error.code,
             config: {
                 url: error.config?.url,
                 method: error.config?.method
             },
-            stack: error.stack
+            stack: error.stack,
+            dashscopeResponse: error.response?.data
         });
-        
+
         res.status(500).json({
             error: error.response?.data?.message || '语音合成服务连接失败'
         });
     }
 });
 
-// 在文件顶部添加端口定义
-const port = process.env.PORT || 3000;
+// 阿里云TTS合成路由
+app.post('/ali-tts', async (req, res) => {
+    try {
+        const result = await axios.post(
+            'https://nls-gateway.cn-shanghai.aliyuncs.com/stream/v1/tts',
+            {
+                appkey: '你的AppKey',
+                token: '你的Token',   
+                text: req.body.text,
+                format: 'mp3',
+                voice: req.body.voice_type || 'aiqing',
+                sample_rate: 16000
+            },
+            {
+                headers: { 'Content-Type': 'application/json' },
+                responseType: 'arraybuffer'
+            }
+        );
+        res.set({
+            'Content-Type': 'audio/mpeg',
+            'Content-Length': result.headers['content-length'],
+            'Cache-Control': 'no-cache'
+        });
+        res.send(result.data);
+    } catch (error) {
+        console.error('阿里云TTS错误:', error);
+        res.status(500).json({ error: '阿里云TTS服务不可用' });
+    }
+});
 
-// 在文件底部修改监听部分
+// 静态文件服务
+app.use(express.static(path.join(__dirname)));
+
+// 启动服务器
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`服务器已启动，监听端口 ${port}`);
     console.log(`尝试访问：http://localhost:${port}/synthesize-speech`);
+});
+
+app.post('/ws-tts', async (req, res) => {
+    const DASHSCOPE_WS_URL = 'wss://dashscope.aliyuncs.com/api-ws/v1/inference/';
+    const apiKey = req.headers.authorization?.replace(/^Bearer\s+/i, '') || '';
+    const text = typeof req.body.text === 'string' ? req.body.text.substring(0, 300) : '';
+    const voice = req.body.voice_type || 'zhitian_emo';
+
+    // 打印关键参数
+    console.log('DashScope WS TTS 调用参数：', {
+        DASHSCOPE_WS_URL,
+        apiKey,
+        text,
+        voice
+    });
+
+    if (!apiKey) {
+        return res.status(400).json({ error: '缺少 DashScope API Key' });
+    }
+    if (!text) {
+        return res.status(400).json({ error: '缺少文本内容' });
+    }
+
+    res.set({
+        'Content-Type': 'audio/mpeg',
+        'Cache-Control': 'no-cache'
+    });
+
+    let ws;
+    let closed = false;
+    try {
+        ws = new WebSocket(DASHSCOPE_WS_URL, {
+            headers: {
+                Authorization: `Bearer ${apiKey}`,
+                'X-DashScope-DataInspection': 'enable'
+            }
+        });
+    } catch (err) {
+        console.error('WebSocket 连接失败:', err);
+        if (!res.headersSent) res.status(500).json({ error: 'WebSocket 连接失败' });
+        return;
+    }
+
+    ws.on('open', () => {
+        console.log('WebSocket已连接，发送TTS请求...');
+        ws.send(JSON.stringify({
+            header: { task_type: "tts" },
+            parameter: {
+                tts: {
+                    model: "cosyvoice-v1",
+                    voice,
+                    sample_rate: 48000,
+                    format: "mp3",
+                    text_type: "plain"
+                }
+            },
+            payload: {
+                input: { text }
+            }
+        }));
+    });
+
+    ws.on('message', (data, isBinary) => {
+        if (closed) return;
+        if (isBinary || Buffer.isBuffer(data)) {
+            res.write(data);
+        } else {
+            // 打印文本消息，便于调试
+            console.log('WS收到文本消息:', data.toString());
+            // 不要写入 res，否则前端会解码失败
+        }
+    });
+
+    ws.on('close', () => {
+        if (!closed) {
+            closed = true;
+            res.end();
+        }
+    });
+
+    ws.on('error', (err) => {
+        console.error('DashScope WebSocket TTS 错误:', err);
+        if (!closed) {
+            closed = true;
+            if (!res.headersSent) res.status(500).end();
+            else res.end();
+        }
+    });
+
+    req.on('close', () => {
+        if (ws && ws.readyState === WebSocket.OPEN) ws.close();
+    });
 });
