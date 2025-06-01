@@ -4,7 +4,7 @@ let isSynthesizing = false;
 
 // 历史人物语音参数表，可自行扩展
 const characterTTSParams = {
-    "霍去病":   { voice_type: "longcheng", rate: 1.15, pitch: 1.1, volume: 60 },
+    "霍去病":   { voice_type: "longcheng", rate: 1.0, pitch: 1.0 ,volume: 60 },
     "刘邦":     { voice_type: "aiqing",    rate: 1.05, pitch: 1.0, volume: 55 },
     "项羽":     { voice_type: "zhitian_emo", rate: 0.95, pitch: 0.95, volume: 65 },
     "曹操":     { voice_type: "zhitian_emo", rate: 1.0, pitch: 1.0, volume: 60 },
@@ -127,7 +127,6 @@ export async function synthesizeSpeechStream(text, character = "默认") {
         audio.onended = () => {
             setMusicVolume(1);
             isSynthesizing = false;
-            // 播放结束后显示 audio 控件（如需）
         };
     } catch (e) {
         setMusicVolume(1); // 出错也恢复
