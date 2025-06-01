@@ -31,6 +31,9 @@ export function initMusicControls(characterName) {
     audio.loop = true;
     audio.id = 'music-audio'; // 新增
     
+    // 添加音量设置 (默认设为0.3)
+    audio.volume = 0.3;
+    
     // 修改这里：添加自动播放
     audio.play().catch(e => {
         console.log('自动播放被阻止:', e);

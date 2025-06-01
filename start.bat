@@ -12,13 +12,8 @@ if not exist ".\node\node-v20.14.0-win-x64\node.exe" (
     exit /b 1
 )
 
-REM 启动Node.js后端服务（在当前窗口运行，防止自动关闭）
-echo 正在启动后端服务...
-.\node\node-v20.14.0-win-x64\node.exe server.js
-if %errorlevel% neq 0 (
-    echo 后端服务启动失败，错误代码：%errorlevel%
-    pause
-)
+REM 启动Node.js后端服务
+start "API_Server" cmd /c ".\node\node-v20.14.0-win-x64\node.exe server.js && pause"
 
 REM 等待3秒确保后端就绪
 timeout /t 3 /nobreak >nul
@@ -30,5 +25,5 @@ REM 如果使用Vite前端服务则取消下面两行注释
 REM start "Frontend_Server" cmd /c "npm run dev"
 REM start http://localhost:5173
 
-echo 程序已结束，请按任意键退出...
+echo finished
 pause >nul
