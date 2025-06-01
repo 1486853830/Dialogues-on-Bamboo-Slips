@@ -361,22 +361,16 @@ app.post('/ws-tts', async (req, res) => {
     const DASHSCOPE_WS_URL = 'wss://dashscope.aliyuncs.com/api-ws/v1/inference/';
     const apiKey = req.headers.authorization?.replace(/^Bearer\s+/i, '') || '';
     const text = typeof req.body.text === 'string' ? req.body.text.substring(0, 300) : '';
-    const voice = req.body.voice_type || 'zhitian_emo';
+    // 关键：参数名映射
+    const voice = req.body.voice_type || 'longcheng';
+    const rate = req.body.rate || 1;
+    const pitch = req.body.pitch || 1;
+    const volume = req.body.volume || 50;
+    const taskId = `task-${Date.now()}`;
+    let closed = false;
 
-    // 打印关键参数
-    console.log('DashScope WS TTS 调用参数：', {
-        DASHSCOPE_WS_URL,
-        apiKey,
-        text,
-        voice
-    });
-
-    if (!apiKey) {
-        return res.status(400).json({ error: '缺少 DashScope API Key' });
-    }
-    if (!text) {
-        return res.status(400).json({ error: '缺少文本内容' });
-    }
+    if (!apiKey) return res.status(400).json({ error: '缺少 DashScope API Key' });
+    if (!text) return res.status(400).json({ error: '缺少文本内容' });
 
     res.set({
         'Content-Type': 'audio/mpeg',
@@ -384,12 +378,10 @@ app.post('/ws-tts', async (req, res) => {
     });
 
     let ws;
-    let closed = false;
     try {
         ws = new WebSocket(DASHSCOPE_WS_URL, {
             headers: {
-                Authorization: `Bearer ${apiKey}`,
-                'X-DashScope-DataInspection': 'enable'
+                Authorization: `Bearer ${apiKey}`
             }
         });
     } catch (err) {
@@ -398,36 +390,76 @@ app.post('/ws-tts', async (req, res) => {
         return;
     }
 
+    const TIMEOUT_MS = 25000;
+    const timeout = setTimeout(() => {
+        if (!closed && !res.headersSent) {
+            closed = true;
+            res.status(504).json({ error: 'TTS服务超时，请稍后重试' });
+            if (ws && ws.readyState === WebSocket.OPEN) ws.close();
+        }
+    }, TIMEOUT_MS);
+
     ws.on('open', () => {
-        console.log('WebSocket已连接，发送TTS请求...');
         ws.send(JSON.stringify({
-            header: { task_type: "tts" },
-            parameter: {
-                tts: {
-                    model: "cosyvoice-v1",
-                    voice,
-                    sample_rate: 48000,
-                    format: "mp3",
-                    text_type: "plain"
-                }
+            header: {
+                action: 'run-task',
+                task_id: taskId,
+                streaming: 'duplex'
             },
             payload: {
-                input: { text }
+                task_group: 'audio',
+                task: 'tts',
+                function: 'SpeechSynthesizer',
+                model: "cosyvoice-v1",
+                parameters: {
+                    text_type: 'plain',
+                    voice: voice,      // 注意这里用 voice
+                    format: 'mp3',
+                    sample_rate: 48000,
+                    rate: rate,
+                    pitch: pitch,
+                    volume: volume
+                },
+                input: {}
             }
         }));
     });
 
     ws.on('message', (data, isBinary) => {
         if (closed) return;
-        if (isBinary || Buffer.isBuffer(data)) {
-            res.write(data);
+        if (isBinary) {
+            if (!closed) res.write(data);
         } else {
-            // 打印所有文本消息
-            console.log('WS收到文本消息:', data.toString());
+            const message = JSON.parse(data);
+            console.log('WS收到文本消息:', message);
+
+            if (message.header.event === 'task-started') {
+                ws.send(JSON.stringify({
+                    header: {
+                        action: 'continue-task',
+                        task_id: taskId,
+                        streaming: 'duplex'
+                    },
+                    payload: {
+                        input: { text }
+                    }
+                }));
+            } else if (message.header.event === 'task-finished') {
+                if (!closed && !res.headersSent) {
+                    res.end();
+                    closed = true;
+                }
+            } else if (message.header.event === 'task-failed') {
+                if (!closed && !res.headersSent) {
+                    res.status(500).json({ error: message.header.error_message });
+                    closed = true;
+                }
+            }
         }
     });
 
     ws.on('close', () => {
+        clearTimeout(timeout);
         if (!closed) {
             closed = true;
             res.end();
@@ -435,6 +467,7 @@ app.post('/ws-tts', async (req, res) => {
     });
 
     ws.on('error', (err) => {
+        clearTimeout(timeout);
         console.error('DashScope WebSocket TTS 错误:', err);
         if (!closed) {
             closed = true;
