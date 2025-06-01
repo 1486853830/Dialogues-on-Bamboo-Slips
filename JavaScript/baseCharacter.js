@@ -177,5 +177,15 @@ export class BaseCharacter {
         initBackgroundVideo();
         this.initBackground();
         initMusicControls(this.characterName);
+
+        document.body.addEventListener('click', () => {
+            let audio = document.getElementById('tts-audio');
+            if (!audio) {
+                audio = document.createElement('audio');
+                audio.id = 'tts-audio';
+                document.body.appendChild(audio);
+            }
+            audio.play().catch(() => {});
+        }, { once: true });
     }
 }
