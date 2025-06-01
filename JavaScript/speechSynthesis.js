@@ -21,12 +21,13 @@ const characterTTSParams = {
 };
 
 // 新增参数 character，默认“李白”
-export async function synthesizeSpeech(text, character = "李白") {
+export async function synthesizeSpeech(text, character = "默认") {
     if (isSynthesizing) return;
     isSynthesizing = true;
     try {
         const apiKey = localStorage.getItem('qianwenApiKey');
         const ttsParams = characterTTSParams[character] || characterTTSParams["默认"];
+        console.log('前端传递的角色:', character, ttsParams);
         const response = await fetch('/ws-tts', {
             method: 'POST',
             headers: { 
@@ -35,7 +36,7 @@ export async function synthesizeSpeech(text, character = "李白") {
             },
             body: JSON.stringify({ 
                 text,
-                ...ttsParams // 展开语音参数
+                ...ttsParams
             })
         });
         if (!response.ok) {

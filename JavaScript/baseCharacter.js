@@ -41,7 +41,7 @@ export class BaseCharacter {
                     addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
                     // 自动播放逻辑
                     if (localStorage.getItem('voiceEnabled') === 'true') {
-                        synthesizeSpeech(message);
+                        synthesizeSpeech(message, this.characterName);
                     }
                 }
                 chatContainer.appendChild(result.messageContainer);

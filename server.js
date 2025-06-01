@@ -361,11 +361,18 @@ app.post('/ws-tts', async (req, res) => {
     const DASHSCOPE_WS_URL = 'wss://dashscope.aliyuncs.com/api-ws/v1/inference/';
     const apiKey = req.headers.authorization?.replace(/^Bearer\s+/i, '') || '';
     const text = typeof req.body.text === 'string' ? req.body.text.substring(0, 300) : '';
-    // 关键：参数名映射
     const voice = req.body.voice_type || 'longcheng';
     const rate = req.body.rate || 1;
     const pitch = req.body.pitch || 1;
     const volume = req.body.volume || 50;
+    // 打印收到的参数
+    console.log('收到TTS参数:', {
+        text,
+        voice_type: req.body.voice_type,
+        rate,
+        pitch,
+        volume
+    });
     const taskId = `task-${Date.now()}`;
     let closed = false;
 
@@ -400,6 +407,13 @@ app.post('/ws-tts', async (req, res) => {
     }, TIMEOUT_MS);
 
     ws.on('open', () => {
+        // 打印实际发送给 DashScope 的参数
+        console.log('发送给DashScope的参数:', {
+            voice,
+            rate,
+            pitch,
+            volume
+        });
         ws.send(JSON.stringify({
             header: {
                 action: 'run-task',
@@ -413,7 +427,7 @@ app.post('/ws-tts', async (req, res) => {
                 model: "cosyvoice-v1",
                 parameters: {
                     text_type: 'plain',
-                    voice: voice,      // 注意这里用 voice
+                    voice: voice,
                     format: 'mp3',
                     sample_rate: 48000,
                     rate: rate,
