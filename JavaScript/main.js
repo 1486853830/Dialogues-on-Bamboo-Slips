@@ -25,6 +25,7 @@ import { TiemuZhen } from '../characters/铁木真/tiemuzhen.js';
 import { YingZheng } from '../characters/嬴政/yingzheng.js';
 import { LinghuChong } from '../characters/令狐冲/linghuchong.js';
 import { SunQuan } from '../characters/孙权/sunquan.js';
+import { YueFei } from '../characters/岳飞/yuefei.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -110,5 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('sunquan')) {
         const sunquan = new SunQuan();
         sunquan.init();  
+    } else if (path.includes('yuefei')) {
+        const yuefei = new YueFei();
+        yuefei.init();   
     }
 });
