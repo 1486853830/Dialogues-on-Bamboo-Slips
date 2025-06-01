@@ -29,6 +29,7 @@ export function initMusicControls(characterName) {
     const audio = new Audio();
     audio.src = `../../musics/${getMusicForCharacter(characterName)}.mp3`;
     audio.loop = true;
+    audio.id = 'music-audio'; // 新增
     
     // 修改这里：添加自动播放
     audio.play().catch(e => {

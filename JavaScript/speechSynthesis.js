@@ -25,12 +25,20 @@ function stripBrackets(text) {
     return text.replace(/（[^）]*）|\([^)]*\)/g, '');
 }
 
+function setMusicVolume(percentage) {
+    const musicAudio = document.getElementById('music-audio');
+    if (musicAudio) {
+        musicAudio.volume = percentage;
+    }
+}
+
 // 新增参数 character，默认“李白”
 export async function synthesizeSpeech(text, character = "默认") {
     if (isSynthesizing) return;
     isSynthesizing = true;
     try {
-        text = stripBrackets(text); // 新增：去除括号内容
+        text = stripBrackets(text);
+        setMusicVolume(0.5);
         const apiKey = localStorage.getItem('qianwenApiKey');
         const ttsParams = characterTTSParams[character] || characterTTSParams["默认"];
         console.log('前端传递的角色:', character, ttsParams);
@@ -56,6 +64,7 @@ export async function synthesizeSpeech(text, character = "默认") {
         source.buffer = audioBuffer;
         source.connect(audioContext.destination);
         source.start(0);
+        source.onended = () => setMusicVolume(1);
     } finally {
         isSynthesizing = false;
     }
@@ -66,6 +75,8 @@ export async function synthesizeSpeechStream(text, character = "默认") {
     if (isSynthesizing) return;
     isSynthesizing = true;
     try {
+        text = stripBrackets(text);
+        setMusicVolume(0.5); // 语音播放前降低音量
         const apiKey = localStorage.getItem('qianwenApiKey');
         const ttsParams = characterTTSParams[character.trim()] || characterTTSParams["默认"];
         const response = await fetch('/ws-tts', {
@@ -142,10 +153,11 @@ export async function synthesizeSpeechStream(text, character = "默认") {
         });
 
         audio.onended = () => {
+            setMusicVolume(1); // 播放结束恢复
             isSynthesizing = false;
         };
     } catch (e) {
-        alert('语音合成失败');
+        setMusicVolume(1); // 出错也恢复
         isSynthesizing = false;
     }
 }
