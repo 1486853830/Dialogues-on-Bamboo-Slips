@@ -1,0 +1,4 @@
+body {
+    background: url('liubei.png') center/cover no-repeat fixed;
+    background-color: #000; /* 添加背景色填充空白区域 */
+}
