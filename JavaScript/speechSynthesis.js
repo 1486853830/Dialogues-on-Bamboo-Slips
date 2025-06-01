@@ -72,6 +72,9 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             audio.id = 'tts-audio';
             audio.controls = true;
             document.body.appendChild(audio);
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
         }
         audio.src = '';
         audio.pause();
