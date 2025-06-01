@@ -422,9 +422,8 @@ app.post('/ws-tts', async (req, res) => {
         if (isBinary || Buffer.isBuffer(data)) {
             res.write(data);
         } else {
-            // 打印文本消息，便于调试
+            // 打印所有文本消息
             console.log('WS收到文本消息:', data.toString());
-            // 不要写入 res，否则前端会解码失败
         }
     });
 
