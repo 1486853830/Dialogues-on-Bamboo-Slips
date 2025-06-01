@@ -1,6 +1,7 @@
 let audioContext;
 let currentAudio;
 let isSynthesizing = false;
+let currentPlayId = 0; // 全局唯一播放标记
 
 // 历史人物语音参数表，可自行扩展
 const characterTTSParams = {
@@ -40,6 +41,7 @@ export async function synthesizeSpeech(text, character = "默认") {
 
 // 流式语音合成
 export async function synthesizeSpeechStream(text, character = "默认") {
+    const playId = ++currentPlayId;
     try {
         text = stripBrackets(text);
         setMusicVolume(0.5); // 语音播放前降低音量
@@ -90,7 +92,10 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             let started = false;
 
             function feed() {
+                // 如果不是本次播放，直接终止
+                if (playId !== currentPlayId) return;
                 reader.read().then(({ done, value }) => {
+                    if (playId !== currentPlayId) return; // 再次判断
                     if (done) {
                         if (!sourceBuffer.updating) {
                             if (mediaSource.readyState === 'open') {
@@ -115,6 +120,7 @@ export async function synthesizeSpeechStream(text, character = "默认") {
                         feed();
                     } else {
                         sourceBuffer.addEventListener('updateend', () => {
+                            if (playId !== currentPlayId) return; // 防止异步append
                             sourceBuffer.appendBuffer(value);
                             if (!started) {
                                 audio.play();
