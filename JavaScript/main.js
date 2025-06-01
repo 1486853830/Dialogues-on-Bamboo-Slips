@@ -22,6 +22,7 @@ import { ZhuYijun } from '../characters/朱翊钧/zhuyijun.js';
 import { SimaGuang } from '../characters/司马光/simaguang.js';
 import { WangAnshi } from '../characters/王安石/wanganshi.js';
 import { TiemuZhen } from '../characters/铁木真/tiemuzhen.js';
+import { YingZheng } from '../characters/嬴政/yingzheng.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -98,5 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('tiemuzhen')) {
         const tiemuzhen = new TiemuZhen();
         tiemuzhen.init(); 
+    } else if (path.includes('yingzheng')) {
+        const yingzheng = new YingZheng();
+        yingzheng.init(); 
     }
 });
