@@ -34,40 +34,8 @@ function setMusicVolume(percentage) {
 
 // 新增参数 character，默认“李白”
 export async function synthesizeSpeech(text, character = "默认") {
-    if (isSynthesizing) return;
-    isSynthesizing = true;
-    try {
-        text = stripBrackets(text);
-        setMusicVolume(0.5);
-        const apiKey = localStorage.getItem('qianwenApiKey');
-        const ttsParams = characterTTSParams[character] || characterTTSParams["默认"];
-        console.log('前端传递的角色:', character, ttsParams);
-        const response = await fetch('/ws-tts', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({ 
-                text,
-                ...ttsParams
-            })
-        });
-        if (!response.ok) {
-            alert('语音合成失败');
-            return;
-        }
-        const arrayBuffer = await response.arrayBuffer();
-        audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
-        source.start(0);
-        source.onended = () => setMusicVolume(1);
-    } finally {
-        isSynthesizing = false;
-    }
+    // 直接用流式播放
+    return synthesizeSpeechStream(text, character);
 }
 
 // 流式语音合成
