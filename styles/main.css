@@ -21,7 +21,16 @@
     /* 悬停时稍微加深 */
     transform: translateY(-2px);
 }
-
+.background-mask {
+    position: fixed;
+    left: 0; top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: rgba(0,0,0,0.40); /* 降低亮度 */
+    backdrop-filter: blur(12px) saturate(1.2); /* 毛玻璃+微微提亮 */
+    pointer-events: none; /* 不影响交互 */
+}
 .settings-content {
     max-height: 80vh;
     overflow-y: auto;
@@ -155,15 +164,12 @@ body {
 }
 
 .agent-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    /* 更平滑的过渡曲线 */
-    will-change: transform, box-shadow;
-    /* 优化性能 */
+    background: rgba(255, 255, 255, 0.92); /* 更不透明，原来可能是0.7~0.85 */
+    backdrop-filter: blur(8px) saturate(1.1);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    transition: box-shadow 0.2s;
+    /* 其它原有样式... */
 }
 
 /* 添加发光边缘效果 */
