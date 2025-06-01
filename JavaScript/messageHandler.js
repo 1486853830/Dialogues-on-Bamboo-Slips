@@ -1,6 +1,6 @@
 import { synthesizeSpeech } from './speechSynthesis.js';
 
-export function displayMessage(chatContainer, message, sender, messageIdCounter) {
+export function displayMessage(chatContainer, message, sender, messageIdCounter, characterName = "默认") {
     const halfScreen = localStorage.getItem('halfScreen') === 'true';
     if (halfScreen) {
         chatContainer.style.position = 'fixed';
@@ -67,12 +67,12 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter)
         playBtn.onmouseout = () => playBtn.style.transform = 'scale(1)';
         playBtn.onclick = () => {
             try {
-                synthesizeSpeech(message);
+                synthesizeSpeech(message, characterName); // 传递角色名
             } catch (error) {
                 console.error('语音播放失败:', error);
             }
         };
-        messageContainer.appendChild(playBtn);  // 修改为添加到容器而非消息元素
+        messageContainer.appendChild(playBtn);
     }
 
     return { messageContainer, messageIdCounter };

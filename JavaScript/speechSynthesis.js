@@ -40,8 +40,6 @@ export async function synthesizeSpeech(text, character = "默认") {
 
 // 流式语音合成
 export async function synthesizeSpeechStream(text, character = "默认") {
-    if (isSynthesizing) return;
-    isSynthesizing = true;
     try {
         text = stripBrackets(text);
         setMusicVolume(0.5); // 语音播放前降低音量
@@ -61,7 +59,7 @@ export async function synthesizeSpeechStream(text, character = "默认") {
 
         if (!response.body) {
             alert('语音合成失败');
-            isSynthesizing = false;
+            setMusicVolume(1);
             return;
         }
 
@@ -76,7 +74,6 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             // 打断上一次播放
             audio.pause();
             audio.currentTime = 0;
-            // 彻底重置音频流，防止残留
             audio.src = '';
         }
 
@@ -96,16 +93,19 @@ export async function synthesizeSpeechStream(text, character = "默认") {
                 reader.read().then(({ done, value }) => {
                     if (done) {
                         if (!sourceBuffer.updating) {
-                            mediaSource.endOfStream();
+                            if (mediaSource.readyState === 'open') {
+                                mediaSource.endOfStream();
+                            }
                         } else {
                             sourceBuffer.addEventListener('updateend', () => {
-                                mediaSource.endOfStream();
+                                if (mediaSource.readyState === 'open') {
+                                    mediaSource.endOfStream();
+                                }
                             }, { once: true });
                         }
-                        isSynthesizing = false;
+                        setMusicVolume(1);
                         return;
                     }
-                    // 关键：等待sourceBuffer空闲再append
                     if (!sourceBuffer.updating) {
                         sourceBuffer.appendBuffer(value);
                         if (!started) {
@@ -130,11 +130,9 @@ export async function synthesizeSpeechStream(text, character = "默认") {
 
         audio.onended = () => {
             setMusicVolume(1);
-            isSynthesizing = false;
         };
     } catch (e) {
-        setMusicVolume(1); // 出错也恢复
-        isSynthesizing = false;
+        setMusicVolume(1);
     }
 }
 

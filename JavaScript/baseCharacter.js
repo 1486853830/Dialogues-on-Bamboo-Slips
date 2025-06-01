@@ -35,7 +35,7 @@ export class BaseCharacter {
             (chatContainer, message, sender, messageIdCounter) => {
                 // 添加参数校验
                 const counter = Number.isInteger(messageIdCounter) ? messageIdCounter : this.messageIdCounter;
-                const result = displayMessage(chatContainer, message, sender, counter);
+                const result = displayMessage(chatContainer, message, sender, counter, this.characterName);
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
                     addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
