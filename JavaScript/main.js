@@ -19,6 +19,7 @@ import { TengGeliQiBing } from '../characters/腾格里骑兵/tenggeliqibing.js'
 import { ZhangJuzheng } from '../characters/张居正/zhangjuzheng.js';
 import { ZhangFei } from '../characters/张飞/zhangfei.js';
 import { ZhuYijun } from '../characters/朱翊钧/zhuyijun.js';
+import { SimaGuang } from '../characters/司马光/simaguang.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -86,5 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('zhuyijun')) {
         const zhuyijun = new ZhuYijun();
         zhuyijun.init();
+    } else if (path.includes('simaguang')) {
+        const simaguang = new SimaGuang();
+        simaguang.init(); 
     }
 });
