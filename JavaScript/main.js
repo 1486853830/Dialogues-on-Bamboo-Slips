@@ -20,6 +20,7 @@ import { ZhangJuzheng } from '../characters/张居正/zhangjuzheng.js';
 import { ZhangFei } from '../characters/张飞/zhangfei.js';
 import { ZhuYijun } from '../characters/朱翊钧/zhuyijun.js';
 import { SimaGuang } from '../characters/司马光/simaguang.js';
+import { WangAnshi } from '../characters/王安石/wanganshi.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname.toLowerCase();
@@ -90,5 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (path.includes('simaguang')) {
         const simaguang = new SimaGuang();
         simaguang.init(); 
+    } else if (path.includes('wanganshi')) {
+        const wanganshi = new WangAnshi();
+        wanganshi.init(); 
     }
 });
