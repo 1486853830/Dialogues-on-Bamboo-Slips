@@ -73,11 +73,12 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             audio.controls = true;
             document.body.appendChild(audio);
         } else {
+            // 打断上一次播放
             audio.pause();
             audio.currentTime = 0;
+            // 彻底重置音频流，防止残留
+            audio.src = '';
         }
-        audio.src = '';
-        audio.pause();
 
         // 隐藏 audio 控件
         audio.controls = false;
