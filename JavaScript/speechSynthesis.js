@@ -76,6 +76,10 @@ export async function synthesizeSpeechStream(text, character = "默认") {
         audio.src = '';
         audio.pause();
 
+        // 隐藏 audio 控件
+        audio.controls = false;
+        audio.style.display = 'none';
+
         const mediaSource = new MediaSource();
         audio.src = URL.createObjectURL(mediaSource);
 
@@ -121,8 +125,9 @@ export async function synthesizeSpeechStream(text, character = "默认") {
         });
 
         audio.onended = () => {
-            setMusicVolume(1); // 播放结束恢复
+            setMusicVolume(1);
             isSynthesizing = false;
+            // 播放结束后显示 audio 控件（如需）
         };
     } catch (e) {
         setMusicVolume(1); // 出错也恢复
