@@ -212,6 +212,7 @@ function getMusicForCharacter(characterName) {
         '司马光': '青衣',
         '孙权': '永恒之地',
         '张飞': '华灯初上',
+        '嬴政': '天地之悠悠'
     };
     return musicMap[characterName] || '永恒之地';
 }
