@@ -1,5 +1,5 @@
 @echo off
-title 青简问对启动器
+title Dialogues-on-Bamboo-Slips
 color 0B
 
 REM 进入项目目录
