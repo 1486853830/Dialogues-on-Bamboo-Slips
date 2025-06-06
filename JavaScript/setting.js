@@ -165,6 +165,11 @@ function saveSettings() {
     if (halfScreenToggle) {
         localStorage.setItem('halfScreen', halfScreenToggle.checked);
     }
+
+    // 保存设置时加上
+    if (document.getElementById('apiProvider').value === 'moliark') {
+        localStorage.setItem('moliarkModel', document.getElementById('moliarkModel').value);
+    }
 }
 
 // 点击弹窗外部关闭
@@ -177,9 +182,10 @@ document.getElementById('settingsModal').addEventListener('click', function (e) 
 
 function toggleApiInputs() {
     const provider = document.getElementById('apiProvider').value;
-    document.getElementById('deepseekApiItem').style.display = provider === 'deepseek' ? 'block' : 'none';
-    document.getElementById('qianwenApiItem').style.display = provider === 'qianwen' ? 'block' : 'none';
-    document.getElementById('moliarkApiItem').style.display = provider === 'moliark' ? 'block' : 'none';
+    document.getElementById('deepseekApiItem').style.display = provider === 'deepseek' ? '' : 'none';
+    document.getElementById('qianwenApiItem').style.display = provider === 'qianwen' ? '' : 'none';
+    document.getElementById('moliarkApiItem').style.display = provider === 'moliark' ? '' : 'none';
+    document.getElementById('moliarkModelItem').style.display = provider === 'moliark' ? '' : 'none';
 }
 
 // 初始化时调用一次

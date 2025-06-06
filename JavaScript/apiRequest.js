@@ -83,7 +83,8 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
             data = await response.json();
             botResponse = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
         } else if (apiProvider === 'moliark') {
-            // 用新版官方API地址
+            // 读取下拉框选中的模型名
+            const model = localStorage.getItem('moliarkModel') || "deepseek-v3";
             response = await fetch("https://ai.gitee.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
@@ -91,7 +92,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
                     "Authorization": `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "deepseek-v3", // ← 改成你控制台实际可用的模型名
+                    model: model,
                     messages: messageHistory.map(msg => ({
                         role: msg.role,
                         content: msg.content
