@@ -5,6 +5,7 @@ import { sendMessage as apiSendMessage, getPresetResponse, sendWelcomeMessage } 
 import { initEventListeners, createPresetButtons } from './eventListeners.js';
 import { autoPlaySpeech, synthesizeSpeech } from './speechSynthesis.js';
 
+// 角色基类，所有历史人物都靠它
 export class BaseCharacter {
     constructor(characterName, systemMessage) {
         this.API_KEY = localStorage.getItem('apiKey');
@@ -20,9 +21,11 @@ export class BaseCharacter {
         this.messageHistory = [this.systemMessage];
         this.messageIdCounter = 0;
         
+        // 系统消息内容，反正每次都得拼
         this.systemMessage.content = `作为${characterName}，${systemMessage?.content || ''}`;
     }
 
+    // 发送消息的壳子，参数一堆，写着头疼
     sendMessageWrapper(isRephrase = false) {
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input').value;
@@ -45,7 +48,7 @@ export class BaseCharacter {
                         this.messageHistory,
                         this.messageHistory.length - 1 // 当前AI消息在历史中的下标
                     );
-                    synthesizeSpeech(message, this.name);
+                    synthesizeSpeech(message, this.name); // 让AI说话，写到这都快背下来了
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -54,6 +57,7 @@ export class BaseCharacter {
         );
     }
 
+    // “重说”功能，用户点了就把最后两条删了再发
     handleRephrase() {
         const chatContainer = document.getElementById('chat-container');
         if (!Array.isArray(this.messageHistory) || !chatContainer?.querySelectorAll) {
@@ -84,6 +88,7 @@ export class BaseCharacter {
         return null;
     }
 
+    // “重说”按钮点了之后的处理，写着写着都快晕了
     handleRephraseWrapper() {
         const userMessage = this.handleRephrase();
         if (userMessage) {
@@ -97,10 +102,12 @@ export class BaseCharacter {
         }
     }
 
+    // 获取AI预设回复，反正每次都得调
     async getPresetResponseWrapper() {
         return getPresetResponse(this.API_KEY, this.messageHistory, this.name);
     }
 
+    // 发送开场白，第一次进来才会触发
     async sendWelcomeMessageWrapper() {
         if (!localStorage.getItem(`firstVisit_${this.name}`)) return;
         
@@ -124,6 +131,7 @@ export class BaseCharacter {
         localStorage.removeItem(`firstVisit_${this.name}`);
     }
 
+    // 事件监听全都丢这，省得main.js太乱
     initEventListenersWrapper() {
         initEventListeners(
             (isRephrase) => this.sendMessageWrapper(isRephrase),
@@ -132,6 +140,7 @@ export class BaseCharacter {
         );
     }
 
+    // 加载历史消息，没历史就发开场白
     loadHistory() {
         const savedHistory = localStorage.getItem(`chatHistory_${this.name}`);
         const chatContainer = document.getElementById('chat-container');
@@ -175,9 +184,11 @@ export class BaseCharacter {
         }
     }
 
+    // 背景初始化，留个壳以后扩展
     initBackground() {
     }
 
+    // 初始化，啥都在这调一遍
     init() {
         this.initEventListenersWrapper();
         this.loadHistory();
@@ -185,6 +196,7 @@ export class BaseCharacter {
         this.initBackground();
         initMusicControls(this.name);
 
+        // 下面这段是让浏览器自动解锁音频，不然有些浏览器不让自动播
         document.body.addEventListener('click', () => {
             let audio = document.getElementById('tts-audio');
             if (!audio) {

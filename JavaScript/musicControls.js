@@ -1,3 +1,4 @@
+// 初始化音乐和清空按钮，点一下就能听歌，点一下就能清空历史，写着写着都快背下来了
 export function initMusicControls(characterName) {
     const musicBtn = document.createElement('button');
     musicBtn.textContent = '🔊';
@@ -30,16 +31,16 @@ export function initMusicControls(characterName) {
     audio.src = `../../musics/${getMusicForCharacter(characterName)}.mp3`;
     audio.loop = true;
     audio.id = 'music-audio'; // 新增
-    
+
     // 添加音量设置 (默认设为0.3)
     audio.volume = 0.3;
-    
-    // 修改这里：添加自动播放
+
+    // 自动播放，浏览器不让就算了
     audio.play().catch(e => {
         console.log('自动播放被阻止:', e);
         musicBtn.textContent = '🔇';
     });
-    
+
     musicBtn.onclick = () => {
         if (audio.paused) {
             audio.play();
@@ -51,6 +52,7 @@ export function initMusicControls(characterName) {
     };
     document.body.appendChild(musicBtn);
 
+    // 清空历史按钮，点了就弹窗确认
     const clearBtn = document.createElement('button');
     clearBtn.textContent = '🗑️';
     clearBtn.id = 'clear-history';
@@ -79,8 +81,8 @@ export function initMusicControls(characterName) {
     `;
     clearBtn.onclick = (e) => {
         e.stopPropagation();
-        
-        // 创建确认弹窗
+
+        // 创建确认弹窗，怕你手滑
         const confirmDialog = document.createElement('div');
         confirmDialog.style.cssText = `
             position: fixed;
@@ -99,7 +101,7 @@ export function initMusicControls(characterName) {
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.15);
         `;
-        
+
         confirmDialog.innerHTML = `
             <h3 style="margin-top: 0; color: white;">确认清除聊天记录？</h3>
             <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
@@ -123,16 +125,16 @@ export function initMusicControls(characterName) {
                 ">确认</button>
             </div>
         `;
-        
+
         document.body.appendChild(confirmDialog);
-        
-        // 添加动画效果
+
+        // 弹窗动画，装个样子
         setTimeout(() => {
             confirmDialog.style.opacity = '1';
             confirmDialog.style.transform = 'translate(-50%, -50%) scale(1)';
         }, 10);
-        
-        // 按钮悬停效果
+
+        // 按钮悬停效果，写着写着都快背下来了
         document.getElementById('confirm-clear').onmouseenter = function() {
             this.style.transform = 'translateY(-2px)';
             this.style.boxShadow = '0 4px 8px rgba(255, 68, 68, 0.3)';
@@ -149,15 +151,15 @@ export function initMusicControls(characterName) {
             this.style.transform = 'none';
             this.style.boxShadow = 'none';
         };
-        
-        // 确认按钮事件
+
+        // 点确认就真的清空
         document.getElementById('confirm-clear').onclick = () => {
             localStorage.removeItem(`chatHistory_${characterName}`);
             document.getElementById('chat-container').innerHTML = '';
             document.body.removeChild(confirmDialog);
         };
-        
-        // 取消按钮事件
+
+        // 点取消就啥也不干
         document.getElementById('cancel-clear').onclick = () => {
             confirmDialog.style.opacity = '0';
             confirmDialog.style.transform = 'translate(-50%, -50%) scale(0.9)';
@@ -167,8 +169,8 @@ export function initMusicControls(characterName) {
                 }
             }, 300);
         };
-        
-        // 点击弹窗外部关闭
+
+        // 点弹窗外面也能关掉，怕你点错
         document.addEventListener('click', function handleOutsideClick(e) {
             if (!confirmDialog.contains(e.target) && e.target !== clearBtn) {
                 confirmDialog.style.opacity = '0';
@@ -185,6 +187,7 @@ export function initMusicControls(characterName) {
     document.body.appendChild(clearBtn);
 }
 
+// 根据角色名选BGM，没配的就用默认
 function getMusicForCharacter(characterName) {
     const musicMap = {
         '霍去病': '华灯初上',

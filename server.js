@@ -1,15 +1,16 @@
+// 引入各种库，express是服务器，axios用来发请求，cors解决跨域，path处理路径，zlib解压缩，WebSocket搞TTS流式
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
-const zlib = require('zlib'); // 顶部引入
-const WebSocket = require('ws'); // 顶部引入
+const zlib = require('zlib'); // 处理压缩数据
+const WebSocket = require('ws'); // 用来搞DashScope流式TTS
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 中间件 - 设置CORS头
+// 统一加CORS头，前端才不会报错
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -17,17 +18,18 @@ app.use((req, res, next) => {
     next();
 });
 
-// 健康检查路由
+// 健康检查接口，看看服务活着没
 app.get('/health-check', (req, res) => {
     res.send('服务运行正常');
 });
 
-// 代理发送消息请求
+// 代理前端发来的消息请求，帮忙转发到大模型API
 app.post('/sendMessage', async (req, res) => {
     const { apiProvider, apiKey, messageHistory } = req.body;
     try {
         let response;
         if (apiProvider === 'deepseek') {
+            // deepseek的API，参数写死了，懒得动
             response = await axios.post("https://api.deepseek.com/v1/chat/completions", {
                 model: "deepseek-chat",
                 messages: messageHistory,
@@ -41,6 +43,7 @@ app.post('/sendMessage', async (req, res) => {
                 }
             });
         } else {
+            // 千问的API，参数也差不多
             response = await axios.post("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", {
                 model: "qwen-max",
                 input: {
@@ -63,7 +66,7 @@ app.post('/sendMessage', async (req, res) => {
     }
 });
 
-// 代理发送欢迎消息请求
+// 代理欢迎消息，和上面差不多，就是内容不一样
 app.post('/sendWelcomeMessage', async (req, res) => {
     const { apiProvider, apiKey, characterName, userName, userGender, userPersona } = req.body;
     try {
@@ -108,7 +111,7 @@ app.post('/sendWelcomeMessage', async (req, res) => {
     }
 });
 
-// 代理获取预设回复请求
+// 代理获取预设回复，还是那一套
 app.post('/getPresetResponse', async (req, res) => {
     const { apiProvider, apiKey, messageHistory, characterName } = req.body;
     try {
@@ -159,7 +162,7 @@ app.post('/getPresetResponse', async (req, res) => {
     }
 });
 
-// 语音合成路由 - 阿里云接口
+// 下面是语音合成相关的接口，阿里云和DashScope都支持，写得有点长
 app.post('/api/speech/synthesize', async (req, res) => {
     try {
         const result = await axios.post('https://nls-gateway.cn-shanghai.aliyuncs.com/stream/v1/tts', {
@@ -186,7 +189,7 @@ app.post('/api/speech/synthesize', async (req, res) => {
     }
 });
 
-// 语音合成路由 - DashScope接口
+// DashScope的TTS接口，支持流式，参数一堆
 app.post('/synthesize-speech', async (req, res) => {
     console.log('收到语音合成请求', {
         headers: req.headers,
@@ -238,7 +241,7 @@ app.post('/synthesize-speech', async (req, res) => {
         response.data.pipe(res);
 
     } catch (error) {
-        // 判断是否有压缩的响应体
+        // 下面是处理各种奇怪的错误和压缩响应，写得有点啰嗦
         if (
             error.response &&
             error.response.data &&
@@ -317,7 +320,7 @@ app.post('/synthesize-speech', async (req, res) => {
     }
 });
 
-// 阿里云TTS合成路由
+// 阿里云TTS合成接口，参数写死了，记得换成你自己的key和token
 app.post('/ali-tts', async (req, res) => {
     try {
         const result = await axios.post(
@@ -347,16 +350,17 @@ app.post('/ali-tts', async (req, res) => {
     }
 });
 
-// 静态文件服务
+// 静态文件服务，前端页面啥的都靠它
 app.use(express.static(path.join(__dirname)));
 
-// 启动服务器
+// 启动服务器，默认3000端口，启动后会有提示
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`服务器已启动，监听端口 ${port}`);
     console.log(`尝试访问：http://localhost:${port}/synthesize-speech`);
 });
 
+// DashScope WebSocket流式TTS接口，写得有点复杂，主要是为了支持流式语音
 app.post('/ws-tts', async (req, res) => {
     const DASHSCOPE_WS_URL = 'wss://dashscope.aliyuncs.com/api-ws/v1/inference/';
     const apiKey = req.headers.authorization?.replace(/^Bearer\s+/i, '') || '';
@@ -365,7 +369,7 @@ app.post('/ws-tts', async (req, res) => {
     const rate = req.body.rate || 1;
     const pitch = req.body.pitch || 1;
     const volume = req.body.volume || 50;
-    // 打印收到的参数
+    // 打印收到的参数，方便调试
     console.log('收到TTS参数:', {
         text,
         voice_type: req.body.voice_type,
@@ -407,7 +411,7 @@ app.post('/ws-tts', async (req, res) => {
     }, TIMEOUT_MS);
 
     ws.on('open', () => {
-        // 打印实际发送给 DashScope 的参数
+        // 连接上了，发参数过去
         console.log('发送给DashScope的参数:', {
             voice,
             rate,

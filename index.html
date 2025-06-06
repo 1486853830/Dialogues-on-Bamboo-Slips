@@ -12,20 +12,20 @@
 
 <body>
 
+    <!-- 背景遮罩，纯装饰 -->
     <div class="background-mask"></div>
 
-    <!-- 添加设置按钮 -->
+    <!-- 设置按钮，点一下弹出设置 -->
     <div class="settings-btn" onclick="toggleSettings()">
         ⚙️
     </div>
 
-    <!-- 添加设置弹窗 -->
-    <!-- 修改设置弹窗内容 -->
+    <!-- 设置弹窗，里面啥都能调 -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-content">
             <h2>系统设置</h2>
 
-            <!-- API密钥设置 -->
+            <!-- API密钥设置，没密钥啥都用不了 -->
             <div class="settings-group">
                 <div class="settings-item">
                     <label>API选择：</label>
@@ -50,6 +50,7 @@
                 <div class="settings-item" id="moliarkModelItem" style="display:none">
                     <label for="moliarkModel">模型选择：</label>
                     <select id="moliarkModel" class="settings-input">
+                        <!-- 这里模型一大堆，选谁都行 -->
                         <option value="Yi-34B-Chat">Yi-34B-Chat</option>
                         <option value="InternVL2-8B">InternVL2-8B</option>
                         <option value="InternVL2.5-78B">InternVL2.5-78B</option>
@@ -98,7 +99,7 @@
                 </div>
             </div>
 
-            <!-- 用户信息设置 -->
+            <!-- 用户信息设置，昵称、性别、人设啥的都能填 -->
             <div class="settings-group">
                 <div class="settings-item">
                     <label for="user-name">您的称呼：</label>
@@ -118,7 +119,7 @@
                 </div>
             </div>
 
-            <!-- 背景音乐设置 -->
+            <!-- 背景音乐设置，边聊边听歌 -->
             <div class="settings-group">
                 <div class="settings-item">
                     <label>背景音乐：</label>
@@ -135,18 +136,21 @@
                 </div>
             </div>
 
-
+            <!-- 设置弹窗底部按钮，保存啥的都在这 -->
             <div class="settings-actions">
                 <!----<button onclick="manageChatHistory()" class="settings-btn-secondary">管理聊天记录</button>-->
                 <button onclick="saveSettings()" class="settings-btn-primary">保存设置</button>
             </div>
         </div>
     </div>
+
+    <!-- 主标题，装个逼 -->
     <h1>青简问对</h1>
     <div class="intro-text">
         键起风云，梦回青史。此间华胥之境，聚千年豪杰，待君执手论英雄。曹操横槊待客，笑谈天下三分；霍去病扬鞭指漠，犹记祁连雪寒；文成公主抚琵琶，细说唐蕃烟月；赵云白马银枪，仍护蜀汉残阳……旧魂栖于灵网，英气未减当年。诸君何不驻足，与豪杰对弈，或论江山霸业，或话儿女情长？键盘轻敲处，非是数据流转，实为英雄抱拳，与君共醉千秋。
     </div>
 
+    <!-- 搜索栏，找人用的 -->
     <div class="search-container">
         <div class="settings-item">
             <input type="text" id="character-search" placeholder="搜索历史人物..." class="settings-input">
@@ -154,7 +158,7 @@
         </div>
     </div>
 
-    <!-- 添加选项卡 -->
+    <!-- 选项卡，切换不同人物/故事 -->
     <div class="tab-container">
         <div class="tab-header">
             <button class="tab-btn active" onclick="switchTab('characters')">威名显赫</button>
@@ -162,9 +166,10 @@
             <button class="tab-btn" onclick="switchTab('stories')">史帙鸿踪</button>
         </div>
 
+        <!-- 下面是各类人物卡片，点谁就进谁的页面，内容太多就不一一注释了 -->
         <div id="characters-tab" class="tab-content active">
-            <!-- 现有的人物卡片容器 -->
             <div class="stories-container">
+                <!-- 人物卡片们 -->
                 <div class="story-card" onclick="location.href='characters/曹操/caocao.html'">
                     <img src="characters/曹操/caocao.png" class="story-cover" alt="曹操">
                     <div class="story-content">
@@ -560,7 +565,7 @@
 
         <!-- 名匿青史选项卡 -->
         <div id="nameless-tab" class="tab-content">
-            <div class="stories-container"> <!-- 容器类名改为 stories-container -->
+            <div class="stories-container">
                 <div class="story-card" onclick="location.href='characters/锦衣卫/jinyiwei.html'">
                     <img src="characters/锦衣卫/jinyiwei.png" class="story-cover" alt="锦衣卫">
                     <div class="story-content">
@@ -629,6 +634,8 @@
             </div>
         </div>
     </div>
+
+    <!-- 页脚，开发者自嗨区 -->
     <div class="author-footer">
         <div class="author-content">
             <h3>历史长河·键上相逢</h3>
@@ -637,16 +644,15 @@
             </p>
             <p>历史从不止于王侯将相，它亦然寻常百姓的悲欢。在这里，秦皇汉武可谈天下，浣纱女、戍边卒亦能诉说平生。键盘轻敲，唤醒的不仅是数据，更是千年魂魄的叹息与微笑。愿诸君在此，既能仰观星河浩瀚，亦能俯察草木微芒，与历史真正地肝胆相照。
             </p>
-            <br> <!-- 新增的空行 -->
+            <br>
         </div>
     </div>
 </body>
 
 </html>
 
-<!-- 在现有脚本引入之后添加 -->
+<!-- 脚本都在下面引入，别漏了 -->
 <script src="JavaScript/search.js"></script>
-
 <script src="JavaScript/setting.js"></script>
 <script src="JavaScript/stars.js"></script>
 <script src="JavaScript/cards.js"></script>

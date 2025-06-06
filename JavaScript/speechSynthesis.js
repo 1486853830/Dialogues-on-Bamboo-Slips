@@ -1,9 +1,9 @@
 let audioContext;
 let currentAudio;
 let isSynthesizing = false;
-let currentPlayId = 0; // 全局唯一播放标记
+let currentPlayId = 0; // 全局唯一播放标记，防止多段语音乱套
 
-// 历史人物语音参数表，可自行扩展
+// 历史人物语音参数表，可自行扩展，配音啥的都在这
 const characterTTSParams = {
     "曹操":     { voice_type: "longshu", rate: 0.9, pitch: 0.95, volume: 100 },
     "樊哙":     { voice_type: "longshu", rate: 1.0, pitch: 0.9, volume: 100 },
@@ -37,13 +37,13 @@ const characterTTSParams = {
     "默认":     { voice_type: "longcheng", rate: 1, pitch: 1, volume: 100 }
 };
 
-// 更健壮的参数获取函数
+// 更健壮的参数获取函数，名字对不上就用默认
 function getTTSParams(character) {
     if (!character) return characterTTSParams["默认"];
     let name = character.trim().replace(/（.*?）|\(.*?\)/g, ""); // 去括号
     name = name.replace(/\s/g, ""); // 去空白
     if (characterTTSParams[name]) return characterTTSParams[name];
-    // 尝试用 includes 匹配
+    // 实在找不到就模糊匹配一下
     for (const key of Object.keys(characterTTSParams)) {
         if (name.includes(key) || key.includes(name)) {
             return characterTTSParams[key];
@@ -52,11 +52,13 @@ function getTTSParams(character) {
     return characterTTSParams["默认"];
 }
 
+// 去掉括号内容，AI老喜欢加动作
 function stripBrackets(text) {
     // 去除所有中英文括号及其内容
     return text.replace(/（[^）]*）|\([^)]*\)/g, '');
 }
 
+// 播放语音时把BGM音量调低，播完再调回来
 function setMusicVolume(percentage) {
     const musicAudio = document.getElementById('music-audio');
     if (musicAudio) {
@@ -64,12 +66,12 @@ function setMusicVolume(percentage) {
     }
 }
 
-// 新增参数 character，默认“默认”
+// 新增参数 character，默认“默认”，其实就是谁说话
 export async function synthesizeSpeech(text, character = "默认") {
     return synthesizeSpeechStream(text, character);
 }
 
-// 流式语音合成
+// 真正的流式语音合成，写得有点长
 export async function synthesizeSpeechStream(text, character = "默认") {
     const playId = ++currentPlayId;
     try {
@@ -101,7 +103,7 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             return;
         }
 
-        // 复用或创建audio元素
+        // 复用或创建audio元素，省得每次都造一个
         let audio = document.getElementById('tts-audio');
         if (!audio) {
             audio = document.createElement('audio');
@@ -115,7 +117,7 @@ export async function synthesizeSpeechStream(text, character = "默认") {
             audio.src = '';
         }
 
-        // 隐藏 audio 控件
+        // 隐藏 audio 控件，别让页面太乱
         audio.controls = false;
         audio.style.display = 'none';
 
@@ -178,7 +180,7 @@ export async function synthesizeSpeechStream(text, character = "默认") {
     }
 }
 
-// 自动播放逻辑
+// 自动播放逻辑，默认关着，得手动开
 let autoPlayEnabled = false;
 
 export function toggleAutoPlay() {
