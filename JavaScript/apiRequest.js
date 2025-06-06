@@ -25,6 +25,7 @@ const getCharacterKey = (history) => {
 };
 
 import { displayMessage } from './messageHandler.js';
+import { synthesizeSpeech } from './speechSynthesis.js'; // 确保顶部已引入
 
 export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, handleRephrase, callback) {
     const apiProvider = getApiProvider();
@@ -204,6 +205,9 @@ export async function sendWelcomeMessage(API_KEY, messageHistory, characterName,
         chatContainer.scrollTop = chatContainer.scrollHeight;
         messageHistory.push({ role: "assistant", content: welcomeMessage });
         localStorage.setItem(`chatHistory_${characterName}`, JSON.stringify(messageHistory));
+
+        // 自动朗读开场白
+        synthesizeSpeech(welcomeMessage, characterName);
     } catch (error) {
         console.error("生成欢迎消息出错:", error);
         if (loadingElement.parentNode) {

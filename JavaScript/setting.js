@@ -170,6 +170,12 @@ function saveSettings() {
     if (document.getElementById('apiProvider').value === 'moliark') {
         localStorage.setItem('moliarkModel', document.getElementById('moliarkModel').value);
     }
+
+    // 保存模型选择（无论当前API是什么，都保存）
+    const moliarkModelSelect = document.getElementById('moliarkModel');
+    if (moliarkModelSelect) {
+        localStorage.setItem('moliarkModel', moliarkModelSelect.value);
+    }
 }
 
 // 点击弹窗外部关闭
@@ -191,4 +197,10 @@ function toggleApiInputs() {
 // 初始化时调用一次
 document.addEventListener('DOMContentLoaded', function() {
     toggleApiInputs();
+    
+    // 加载保存的模型选择
+    const savedMoliarkModel = localStorage.getItem('moliarkModel');
+    if (savedMoliarkModel && document.getElementById('moliarkModel')) {
+        document.getElementById('moliarkModel').value = savedMoliarkModel;
+    }
 });
