@@ -2,12 +2,26 @@
 
 ## 项目简介
 
-**青简问对**是一个沉浸式历史人物对话体验平台。用户可以与三十余位历史人物（如霍去病、曹操、孔子等）进行多轮对话，体验不同角色的语言风格、思维方式和历史背景。项目集成了AI对话、语音合成、角色扮演等多种功能，支持多角色切换和丰富的互动体验，适用于历史教育、兴趣交流、AI体验等多种场景。
+**青简问对**，乃沉浸式历史人物对话体验之平台也。君可与三十余位古今英杰（如霍去病、曹操、孔子等）畅谈古今，领略各家风采，感受千年智慧。平台集AI对话、语音合成、角色扮演于一体，支持多角色切换与花样互动，堪称历史爱好者与AI体验者之乐园。  
+> “与古人对话，何须青灯黄卷？一键唤醒，诸贤齐聚！” 😎📜
+
+---
+
+## 项目愿景
+
+![主页展示](Technical-documentation/主页展示.png)
+
+青简在手，千载如昨。我们希望用AI之力，复现历史人物的风采，让每一位用户都能与古人对话、与先贤论道。无论你是历史迷、文学控，还是AI技术爱好者，都能在此平台中找到属于自己的乐趣。  
+> “青简一展，风云再起。与诸君共赏盛世繁华！”
+
+---
 
 ## 主要功能
 
-- **多角色扮演**：支持与三十余位历史人物对话，每位角色有独特的语言风格和人设，支持随时切换。
+![主页展示](Technical-documentation/聊天页面展示.png)
 
+- **多角色扮演**：三十余位历史人物，皆有独特人设与语言风格，随时切换，体验“群英荟萃”。
+  
   ```js
   // filepath: JavaScript/main.js
   if (path.includes('huoqubing')) {
@@ -15,38 +29,42 @@
       huoqubing.init();
       window.currentCharacter = huoqubing;
   }
+  // “大汉冠军侯，已就位！”
   ```
 
-- **AI智能对话**：集成DeepSeek、通义千问等大模型API，实现自然流畅的多轮对话，支持上下文记忆。
-
+- **AI智能对话**：集成DeepSeek、通义千问等大模型API，妙语连珠，知无不言，支持上下文记忆。无论是问兵法、论诗词、谈人生，皆可对答如流。
+  
   ```js
   // filepath: JavaScript/apiRequest.js
   export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, handleRephrase, callback) {
       // ...AI对话请求与回调...
   }
+  // “AI小生，愿闻其详！”
   ```
 
-- **语音合成**：为每个角色定制专属语音参数，支持阿里云TTS等服务，提升沉浸感和趣味性。
-
+- **语音合成**：每位角色皆有专属语音参数，阿里云TTS加持，闭眼聆听，仿佛古人亲临。曹操之雄浑、孔子之温雅、霍去病之英气，皆可耳闻。
+  
   ```js
   // filepath: JavaScript/speechSynthesis.js
   export async function synthesizeSpeech(text, character = "默认") {
       // ...语音合成逻辑...
   }
+  // “听君一席话，如闻古人声。”
   ```
 
-- **历史对话记录**：自动保存每个角色的对话历史，支持断点续聊和历史回溯。
-
+- **历史对话记录**：自动保存每位角色的对话历史，断点续聊，往事如烟，随时翻阅。昨日之语，今日可续，前尘旧梦，一键重温。
+  
   ```js
   // filepath: JavaScript/baseCharacter.js
   loadHistory() {
       const savedHistory = localStorage.getItem(`chatHistory_${this.name}`);
       // ...历史记录加载与恢复...
   }
+  // “前尘旧梦，一键重温。”
   ```
 
-- **界面自适应**：支持半屏/全屏切换，适配PC、平板、手机等多种终端。
-
+- **界面自适应**：半屏/全屏随心切换，Windows端小窗大屏皆可畅聊，古今无界。无论案头小憩，还是夜深独坐，皆可与古人共话桑麻。
+  
   ```js
   // filepath: JavaScript/messageHandler.js
   const halfScreen = localStorage.getItem('halfScreen') === 'true';
@@ -55,10 +73,11 @@
       chatContainer.style.height = '50vh';
       // ...
   }
+  // “小屏大屏，皆可容我三千言。”
   ```
 
-- **丰富的交互体验**：支持对AI回复的重述、预设选项、背景音乐、视频等多模态互动。
-
+- **丰富的交互体验**：AI回复可重述，预设选项、背景音乐、视频等多模态互动，花样百出，乐趣无穷。可一键重述AI回复，亦可随心切换古风BGM，仿佛置身盛世长安、江南水乡。
+  
   ```js
   // filepath: JavaScript/messageHandler.js
   export function addRephraseButton(messageContainer, handleRephrase) { /* ... */ }
@@ -68,10 +87,13 @@
 
   // filepath: JavaScript/eventListeners.js
   export function createPresetButtons(pullUpMenu, options) { /* ... */ }
+  // “一键重述，妙语连珠；乐声悠扬，古今同乐。”
   ```
 
-- **自定义用户人设**：用户可自定义昵称、性别、人物设定，提升个性化体验。
-- **多语言/多模态扩展**：支持后续扩展多语言、多模态输入输出。
+- **自定义用户人设**：昵称、性别、人物设定随心定制，做自己的主角。你可化身少年游侠，亦可扮作巾帼英雌，与古人共书新篇。
+- **多语言/多模态扩展**：后续可支持多语言、多模态输入输出，海纳百川，兼容并包。
+
+---
 
 ## 文件结构
 
@@ -94,14 +116,20 @@
 └─ ...                        # 其它资源与文档
 ```
 
+---
+
 ## 快速开始
 
-1. **克隆本项目到本地**
+1. **克隆本项目到本地**  
+   `git clone <your-repo-url>`
 2. **配置API密钥**  
    - 在浏览器`localStorage`中设置`apiKey`（DeepSeek/通义千问等）和`ttsKey`（阿里云语音等）
-   - 也可在代码中直接配置（如测试环境）
+   - 亦可在运行的端口中直接输入
 3. **启动本地后端服务**（如有，详见Technical-documentation）
-4. **用浏览器打开`index.html`**，选择角色即可体验沉浸式对话
+4. **用浏览器打开服务器端口**，选择角色即可体验沉浸式对话  
+   > “一键穿越，古今同席！” 🕰️
+
+---
 
 ## 主要依赖
 
@@ -110,30 +138,52 @@
 - 原生JavaScript/ES6，无需第三方前端框架
 - 可选：Node.js本地后端（如需自定义API代理）
 
+---
+
 ## 角色扩展说明
 
 - 在`characters/`目录下新增角色文件（如`李白/libai.js`），继承`BaseCharacter`并自定义人设、语音参数、风格等。
 - 在`main.js`中引入新角色，并注册到角色切换逻辑中。
 - 可为新角色配置专属TTS参数，实现个性化语音合成。
+-  
+  > “欲穷千里目，更上一层楼。——角色扩展，随心所欲！”
+
+---
 
 ## 技术文档与开发说明
 
 - `Technical-documentation/`目录下包含详细的开发计划、API对接说明、角色提示词工程、语音合成集成方案等文档。
 - 推荐开发者先阅读相关文档，了解整体架构与扩展方式。
+- 若有疑难，可翻阅文档，亦可“召唤”AI助手，答疑解惑。
+
+---
 
 ## 常见问题
 
-- **Q：为什么语音合成声音相似？**  
-  A：可在`speechSynthesis.js`中为每个角色分配不同的`voice_type`和参数，提升区分度。
+- **Q：为何语音合成声音相似？**  
+  A：可在`speechSynthesis.js`中为每个角色分配不同的`voice_type`和参数，提升区分度。  
+  > “一人千面，声声不同。”
 - **Q：如何保存和恢复历史对话？**  
   A：项目自动将每个角色的对话历史保存在`localStorage`，切换角色时自动恢复。
 - **Q：如何自定义用户人设？**  
   A：可在界面或`localStorage`中设置`userName`、`userGender`、`userPersona`等字段。
+- **Q：为何AI偶有“失忆”？**  
+  A：如遇上下文丢失，可刷新页面或重新加载历史，AI自会“忆起前尘”。
+- **Q：能否让AI吟诗作对？**  
+  A：当然！无论五言绝句、七律长歌，皆可一试，AI自会“出口成章”。
+
+---
 
 ## 联系与贡献
 
-如有建议、Bug反馈或希望参与开发，请联系项目维护者，或提交Issue/PR。
+如有建议、Bug反馈或希望参与开发，请联系项目维护者，或提交Issue/PR。  
+亦欢迎各路豪杰共襄盛举，携手再现盛世风华！
 
 ---
 
 > 本项目仅供学习与交流，严禁用于商业用途。
+>
+> “青简在手，古今任我游！”  
+
+[![陈卓/青简问对](https://gitee.com/cnt-code/Dialogues-on-Bamboo-Slips/widgets/widget_card.svg?colors=ffffff,000000,000000,000000,ffffff,ababab)](https://gitee.com/cnt-code/Dialogues-on-Bamboo-Slips)
+> 若有一言不合，莫怪AI“穿越”失灵，且待诸君指正！😄📜
