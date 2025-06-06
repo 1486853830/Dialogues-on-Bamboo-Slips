@@ -34,13 +34,18 @@ export class BaseCharacter {
             chatContainer,
             this.handleRephrase.bind(this),
             (chatContainer, message, sender, messageIdCounter) => {
-                // 添加参数校验
                 const counter = Number.isInteger(messageIdCounter) ? messageIdCounter : this.messageIdCounter;
-                const result = displayMessage(chatContainer, message, sender, counter, this.name); // 传递角色名
+                const result = displayMessage(chatContainer, message, sender, counter, this.name);
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
-                    addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
-                    synthesizeSpeech(message, this.name); // 自动流式播放
+                    // 关键：传递当前历史和AI消息下标
+                    addRephraseButton(
+                        result.messageContainer,
+                        this.handleRephraseWrapper.bind(this),
+                        this.messageHistory,
+                        this.messageHistory.length - 1 // 当前AI消息在历史中的下标
+                    );
+                    synthesizeSpeech(message, this.name);
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -142,17 +147,18 @@ export class BaseCharacter {
                 ];
                 
                 chatContainer.innerHTML = '';
-                this.messageHistory.forEach(msg => {
-                    if(msg.role === 'system') return;
-                    
+                this.messageHistory.forEach((msg, idx) => {
+                    if (msg.role === 'system') return;
+
                     if (msg.role === 'user') {
-                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter, this.name); // 传递角色名
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter, this.name);
                         this.messageIdCounter = messageContainer.messageIdCounter;
                         chatContainer.appendChild(messageContainer);
                     } else if (msg.role === 'assistant') {
-                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter, this.name); // 传递角色名
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter, this.name);
                         this.messageIdCounter = messageContainer.messageIdCounter;
-                        addRephraseButton(messageContainer, this.handleRephraseWrapper.bind(this));
+                        // 关键：传递完整参数
+                        addRephraseButton(messageContainer, this.handleRephraseWrapper.bind(this), this.messageHistory, idx);
                         chatContainer.appendChild(messageContainer);
                     }
                 });

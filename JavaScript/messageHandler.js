@@ -51,8 +51,8 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter,
         playBtn.className = 'play-btn';
         playBtn.innerHTML = '▶';
         playBtn.style.position = 'absolute';
-        playBtn.style.top = '-36px';
-        playBtn.style.left = '0';
+        playBtn.style.top = '-15px'; // 向下移动5px
+        playBtn.style.left = '-6px';
         playBtn.style.width = '36px';
         playBtn.style.height = '36px';
         playBtn.style.background = 'linear-gradient(145deg, #6B8DD6, #8E37D7)';
@@ -80,19 +80,33 @@ export function displayMessage(chatContainer, message, sender, messageIdCounter,
     return { messageContainer, messageIdCounter };
 }
 
-export function addRephraseButton(messageContainer, handleRephrase) {
+export function addRephraseButton(messageContainer, handleRephrase, messageHistory, msgIndex) {
+    // 只给“有用户输入的AI回复”加重说按钮
+    if (
+        !Array.isArray(messageHistory) ||
+        msgIndex === undefined ||
+        msgIndex < 1 ||
+        messageHistory[msgIndex].role !== 'assistant' ||
+        messageHistory[msgIndex - 1].role !== 'user'
+    ) {
+        // 不是“用户输入+AI回复”结构，不加重说按钮
+        return;
+    }
+
     const existingButtons = document.querySelectorAll('.rephrase-btn');
     existingButtons.forEach(btn => btn.remove());
 
     const rephraseBtn = document.createElement('button');
     rephraseBtn.textContent = '重说';
     rephraseBtn.classList.add('rephrase-btn');
-    rephraseBtn.onclick = async (e) => {  // 改为异步处理
+    rephraseBtn.onclick = async (e) => {
         e.stopPropagation();
         try {
-            // 添加参数有效性校验
             if (typeof handleRephrase === 'function') {
-                await handleRephrase();
+                const result = await handleRephrase();
+                if (result === null) {
+                    return;
+                }
             }
         } catch (error) {
             console.error('重说功能异常:', error);
