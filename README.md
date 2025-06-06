@@ -129,7 +129,7 @@
    > “一键穿越，古今同席！” 🕰️
 #### 用户环境 ✔
 
-1. **双击打开”start.bat“**
+1. **下载解压后双击打开”start.bat“**
 2. **输入API密钥**右上角设置按钮
 
 ![API设置](Technical-documentation/设置API.png)
