@@ -464,6 +464,7 @@ app.post('/ws-tts', async (req, res) => {
                     closed = true;
                 }
             } else if (message.header.event === 'task-failed') {
+                console.error('TTS任务失败:', message.header.error_message); // 新增日志
                 if (!closed && !res.headersSent) {
                     res.status(500).json({ error: message.header.error_message });
                     closed = true;

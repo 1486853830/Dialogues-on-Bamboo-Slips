@@ -5,21 +5,53 @@ let currentPlayId = 0; // 全局唯一播放标记
 
 // 历史人物语音参数表，可自行扩展
 const characterTTSParams = {
-    "霍去病":   { voice_type: "longcheng", rate: 1.0, pitch: 1.0 ,volume: 60 },
-    "刘邦":     { voice_type: "aiqing",    rate: 1.05, pitch: 1.0, volume: 55 },
-    "项羽":     { voice_type: "zhitian_emo", rate: 0.95, pitch: 0.95, volume: 65 },
-    "曹操":     { voice_type: "zhitian_emo", rate: 1.0, pitch: 1.0, volume: 60 },
-    "张良":     { voice_type: "longcheng", rate: 1.0, pitch: 1.1, volume: 55 },
-    "丘处机":   { voice_type: "longcheng", rate: 0.9, pitch: 1.2, volume: 50 },
-    "孔子":     { voice_type: "aiqing",    rate: 1.0, pitch: 1.1, volume: 55 },
-    "赵云":     { voice_type: "longcheng", rate: 1.1, pitch: 1.15, volume: 60 },
-    "松赞干布": { voice_type: "aiqing",    rate: 1.0, pitch: 1.0, volume: 55 },
-    "文成公主": { voice_type: "aiqing",    rate: 1.05, pitch: 1.2, volume: 60 },
-    "牛顿":     { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 50 },
-    "孟德尔":   { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 50 },
-    "耶律阿保机": { voice_type: "zhitian_emo", rate: 1.0, pitch: 1.0, volume: 60 },
+    "曹操":     { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "樊哙":     { voice_type: "longhua", rate: 1.0, pitch: 1.0, volume: 60 },
+    "霍去病":   { voice_type: "longwan", rate: 1.0, pitch: 1.0, volume: 60 },
+    "锦衣卫":   { voice_type: "longxiaocheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "孔子":     { voice_type: "longshu", rate: 1.0, pitch: 1.0, volume: 60 },
+    "令狐冲":   { voice_type: "longxiaobai", rate: 1.0, pitch: 1.0, volume: 60 },
+    "刘邦":     { voice_type: "longxiaochun", rate: 1.0, pitch: 1.0, volume: 60 },
+    "刘备":     { voice_type: "longxiaoxia", rate: 1.0, pitch: 1.0, volume: 60 },
+    "孟德尔":   { voice_type: "loongstella", rate: 1.0, pitch: 1.0, volume: 60 },
+    "牛顿":     { voice_type: "loongbella", rate: 1.0, pitch: 1.0, volume: 60 },
+    "丘处机":   { voice_type: "longjing", rate: 1.0, pitch: 1.0, volume: 60 },
+    "司马光":   { voice_type: "longmiao", rate: 1.0, pitch: 1.0, volume: 60 },
+    "松赞干布": { voice_type: "longyuan", rate: 1.0, pitch: 1.0, volume: 60 },
+    "孙权":     { voice_type: "longfei", rate: 1.0, pitch: 1.0, volume: 60 },
+    "腾格里骑兵": { voice_type: "longlaotie", rate: 1.0, pitch: 1.0, volume: 60 },
+    "铁木真":   { voice_type: "longshuo", rate: 1.0, pitch: 1.0, volume: 60 },
+    "王安石":   { voice_type: "longtong", rate: 1.0, pitch: 1.0, volume: 60 },
+    "文成公主": { voice_type: "longmiao", rate: 1.0, pitch: 1.0, volume: 60 },
+    "项羽":     { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "耶律阿保机": { voice_type: "longlaotie", rate: 1.0, pitch: 1.0, volume: 60 },
+    "嬴政":     { voice_type: "longxiang", rate: 1.0, pitch: 1.0, volume: 60 },
+    "岳飞":     { voice_type: "longwan", rate: 1.0, pitch: 1.0, volume: 60 },
+    "斩锋卒":   { voice_type: "longxiaobai", rate: 1.0, pitch: 1.0, volume: 60 },
+    "张飞":     { voice_type: "longxiaocheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "张居正":   { voice_type: "longhua", rate: 1.0, pitch: 1.0, volume: 60 },
+    "张良":     { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "张骞":     { voice_type: "longxiaochun", rate: 1.0, pitch: 1.0, volume: 60 },
+    "赵云":     { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 60 },
+    "朱翊钧":   { voice_type: "longjing", rate: 1.0, pitch: 1.0, volume: 60 },
+    "李白":     { voice_type: "longxiaobai", rate: 1.0, pitch: 1.1, volume: 55 },
     "默认":     { voice_type: "longcheng", rate: 1, pitch: 1, volume: 50 }
 };
+
+// 更健壮的参数获取函数
+function getTTSParams(character) {
+    if (!character) return characterTTSParams["默认"];
+    let name = character.trim().replace(/（.*?）|\(.*?\)/g, ""); // 去括号
+    name = name.replace(/\s/g, ""); // 去空白
+    if (characterTTSParams[name]) return characterTTSParams[name];
+    // 尝试用 includes 匹配
+    for (const key of Object.keys(characterTTSParams)) {
+        if (name.includes(key) || key.includes(name)) {
+            return characterTTSParams[key];
+        }
+    }
+    return characterTTSParams["默认"];
+}
 
 function stripBrackets(text) {
     // 去除所有中英文括号及其内容
@@ -33,9 +65,8 @@ function setMusicVolume(percentage) {
     }
 }
 
-// 新增参数 character，默认“李白”
+// 新增参数 character，默认“默认”
 export async function synthesizeSpeech(text, character = "默认") {
-    // 直接用流式播放
     return synthesizeSpeechStream(text, character);
 }
 
@@ -46,7 +77,9 @@ export async function synthesizeSpeechStream(text, character = "默认") {
         text = stripBrackets(text);
         setMusicVolume(0.5); // 语音播放前降低音量
         const apiKey = localStorage.getItem('qianwenApiKey');
-        const ttsParams = characterTTSParams[character.trim()] || characterTTSParams["默认"];
+        const ttsParams = getTTSParams(character);
+        console.log('传入角色名:', JSON.stringify(character));
+        console.log('可用角色名:', Object.keys(characterTTSParams));
         const response = await fetch('/ws-tts', {
             method: 'POST',
             headers: {
@@ -150,8 +183,9 @@ export function toggleAutoPlay() {
     return autoPlayEnabled;
 }
 
-export function autoPlaySpeech(text, character = "李白") {
-    if (autoPlayEnabled) {
-        synthesizeSpeechStream(text, character); // 改为流式自动播放
+// 建议：自动播放也不设默认，强制传角色名
+export function autoPlaySpeech(text, character) {
+    if (autoPlayEnabled && character) {
+        synthesizeSpeechStream(text, character);
     }
 }
