@@ -7,8 +7,6 @@
 ## 主要功能
 
 - **多角色扮演**：支持与三十余位历史人物对话，每位角色有独特的语言风格和人设，支持随时切换。
-  <details>
-  <summary>关键代码：main.js 角色切换</summary>
 
   ```js
   // filepath: JavaScript/main.js
@@ -18,11 +16,8 @@
       window.currentCharacter = huoqubing;
   }
   ```
-  </details>
 
 - **AI智能对话**：集成DeepSeek、通义千问等大模型API，实现自然流畅的多轮对话，支持上下文记忆。
-  <details>
-  <summary>关键代码：apiRequest.js 消息发送</summary>
 
   ```js
   // filepath: JavaScript/apiRequest.js
@@ -30,11 +25,8 @@
       // ...AI对话请求与回调...
   }
   ```
-  </details>
 
 - **语音合成**：为每个角色定制专属语音参数，支持阿里云TTS等服务，提升沉浸感和趣味性。
-  <details>
-  <summary>关键代码：speechSynthesis.js 语音合成</summary>
 
   ```js
   // filepath: JavaScript/speechSynthesis.js
@@ -42,11 +34,8 @@
       // ...语音合成逻辑...
   }
   ```
-  </details>
 
 - **历史对话记录**：自动保存每个角色的对话历史，支持断点续聊和历史回溯。
-  <details>
-  <summary>关键代码：baseCharacter.js 历史记录</summary>
 
   ```js
   // filepath: JavaScript/baseCharacter.js
@@ -55,11 +44,8 @@
       // ...历史记录加载与恢复...
   }
   ```
-  </details>
 
 - **界面自适应**：支持半屏/全屏切换，适配PC、平板、手机等多种终端。
-  <details>
-  <summary>关键代码：messageHandler.js 自适应布局</summary>
 
   ```js
   // filepath: JavaScript/messageHandler.js
@@ -70,11 +56,8 @@
       // ...
   }
   ```
-  </details>
 
 - **丰富的交互体验**：支持对AI回复的重述、预设选项、背景音乐、视频等多模态互动。
-  <details>
-  <summary>关键代码：messageHandler.js、musicControls.js、eventListeners.js</summary>
 
   ```js
   // filepath: JavaScript/messageHandler.js
@@ -86,7 +69,6 @@
   // filepath: JavaScript/eventListeners.js
   export function createPresetButtons(pullUpMenu, options) { /* ... */ }
   ```
-  </details>
 
 - **自定义用户人设**：用户可自定义昵称、性别、人物设定，提升个性化体验。
 - **多语言/多模态扩展**：支持后续扩展多语言、多模态输入输出。
