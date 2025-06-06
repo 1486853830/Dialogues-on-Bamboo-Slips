@@ -83,15 +83,15 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
             data = await response.json();
             botResponse = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
         } else if (apiProvider === 'moliark') {
-            // 用官方文档的API地址
-            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+            // 用新版官方API地址
+            response = await fetch("https://ai.gitee.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "moli-chat", // 或你在模力方舟控制台实际可用的模型名
+                    model: "deepseek-v3", // ← 改成你控制台实际可用的模型名
                     messages: messageHistory.map(msg => ({
                         role: msg.role,
                         content: msg.content
@@ -99,6 +99,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
                 })
             });
             data = await response.json();
+            console.log('模力方舟返回：', data);
             botResponse = data.choices?.[0]?.message?.content || "（模力方舟API返回异常）";
         } else {
             botResponse = "暂不支持的API类型";
@@ -171,14 +172,14 @@ export async function sendWelcomeMessage(API_KEY, messageHistory, characterName,
             data = await response.json();
             welcomeMessage = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
         } else if (apiProvider === 'moliark') {
-            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+            response = await fetch("https://ai.gitee.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "moli-chat",
+                    model: "deepseek-v3", // ← 同上
                     messages: [
                         {
                             role: "system",
@@ -236,14 +237,14 @@ export async function getPresetResponse(API_KEY, messageHistory, characterName) 
             data = await response.json();
             content = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
         } else if (apiProvider === 'moliark') {
-            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+            response = await fetch("https://ai.gitee.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "moli-chat",
+                    model: "deepseek-v3", // ← 同上
                     messages: [
                         ...messageHistory,
                         {
