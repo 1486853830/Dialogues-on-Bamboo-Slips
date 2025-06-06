@@ -3,13 +3,19 @@ const getApiProvider = () => localStorage.getItem('apiProvider') || 'deepseek';
 // 获取对应 API 密钥
 const getApiKey = () => {
     const provider = getApiProvider();
-    return provider === 'deepseek' ? localStorage.getItem('apiKey') : localStorage.getItem('qianwenApiKey');
+    if (provider === 'deepseek') {
+        return localStorage.getItem('apiKey');
+    } else if (provider === 'qianwen') {
+        return localStorage.getItem('qianwenApiKey');
+    } else if (provider === 'moliark') {
+        return localStorage.getItem('moliarkApiKey');
+    }
+    return '';
 };
 
 const getCharacterKey = (history) => {
     try {
         if (history.characterName) return `chatHistory_${history.characterName}`;
-        
         const systemMessage = history.find(m => m.role === 'system')?.content || '';
         const matchResult = systemMessage.match(/作为([^，,（(]+)/);
         return `chatHistory_${matchResult?.[1]?.trim() || 'unknown'}`;
@@ -60,20 +66,43 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
     chatContainer.appendChild(loadingElement);
 
     try {
-        const response = await fetch("http://localhost:3000/sendMessage", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                apiProvider,
-                apiKey,
-                messageHistory
-            })
-        });
-
-        const data = await response.json();
-        const botResponse = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
+        let response, data, botResponse;
+        if (apiProvider === 'deepseek' || apiProvider === 'qianwen') {
+            // 你的本地后端代理
+            response = await fetch("http://localhost:3000/sendMessage", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    apiProvider,
+                    apiKey,
+                    messageHistory
+                })
+            });
+            data = await response.json();
+            botResponse = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
+        } else if (apiProvider === 'moliark') {
+            // 用官方文档的API地址
+            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "moli-chat", // 或你在模力方舟控制台实际可用的模型名
+                    messages: messageHistory.map(msg => ({
+                        role: msg.role,
+                        content: msg.content
+                    }))
+                })
+            });
+            data = await response.json();
+            botResponse = data.choices?.[0]?.message?.content || "（模力方舟API返回异常）";
+        } else {
+            botResponse = "暂不支持的API类型";
+        }
 
         // 自动保存逻辑
         const autoSave = (history) => {
@@ -123,23 +152,46 @@ export async function sendWelcomeMessage(API_KEY, messageHistory, characterName,
     chatContainer.appendChild(loadingElement);
 
     try {
-        const response = await fetch("http://localhost:3000/sendWelcomeMessage", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                apiProvider,
-                apiKey,
-                characterName,
-                userName: localStorage.getItem('userName'),
-                userGender: localStorage.getItem('userGender'),
-                userPersona: localStorage.getItem('userPersona')
-            })
-        });
-
-        const data = await response.json();
-        const welcomeMessage = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
+        let response, data, welcomeMessage;
+        if (apiProvider === 'deepseek' || apiProvider === 'qianwen') {
+            response = await fetch("http://localhost:3000/sendWelcomeMessage", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    apiProvider,
+                    apiKey,
+                    characterName,
+                    userName: localStorage.getItem('userName'),
+                    userGender: localStorage.getItem('userGender'),
+                    userPersona: localStorage.getItem('userPersona')
+                })
+            });
+            data = await response.json();
+            welcomeMessage = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
+        } else if (apiProvider === 'moliark') {
+            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "moli-chat",
+                    messages: [
+                        {
+                            role: "system",
+                            content: `你是${characterName}，请用角色身份欢迎用户：${localStorage.getItem('userName') || '访客'}，性别：${localStorage.getItem('userGender') || ''}，人设：${localStorage.getItem('userPersona') || ''}`
+                        }
+                    ]
+                })
+            });
+            data = await response.json();
+            welcomeMessage = data.choices?.[0]?.message?.content || data.output?.text || "（模力方舟API返回异常）";
+        } else {
+            welcomeMessage = "暂不支持的API类型";
+        }
 
         if (loadingElement.parentNode) {
             loadingElement.parentNode.removeChild(loadingElement);
@@ -167,21 +219,46 @@ export async function getPresetResponse(API_KEY, messageHistory, characterName) 
     const apiProvider = getApiProvider();
     const apiKey = getApiKey();
     try {
-        const response = await fetch("http://localhost:3000/getPresetResponse", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                apiProvider,
-                apiKey,
-                messageHistory,
-                characterName
-            })
-        });
+        let response, data, content;
+        if (apiProvider === 'deepseek' || apiProvider === 'qianwen') {
+            response = await fetch("http://localhost:3000/getPresetResponse", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    apiProvider,
+                    apiKey,
+                    messageHistory,
+                    characterName
+                })
+            });
+            data = await response.json();
+            content = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
+        } else if (apiProvider === 'moliark') {
+            response = await fetch("https://api.moli-ai.cn/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "moli-chat",
+                    messages: [
+                        ...messageHistory,
+                        {
+                            role: "user",
+                            content: "请给出3个简短的下一步对话建议，每条建议前加序号。"
+                        }
+                    ]
+                })
+            });
+            data = await response.json();
+            content = data.choices?.[0]?.message?.content || data.output?.text || "";
+        } else {
+            content = "";
+        }
 
-        const data = await response.json();
-        const content = apiProvider === 'deepseek' ? data.choices[0].message.content : data.output.text;
         const options = content.split('\n')
             .filter(line => line.match(/^\d\./))
             .map(line => line.replace(/^\d\.\s*/, '').trim())

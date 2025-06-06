@@ -15,9 +15,12 @@ function toggleSettings() {
         if (savedApiProvider === 'deepseek') {
             const savedApiKey = localStorage.getItem('apiKey');
             if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
-        } else {
+        } else if (savedApiProvider === 'qianwen') {
             const savedQianwenApiKey = localStorage.getItem('qianwenApiKey');
             if (savedQianwenApiKey) document.getElementById('qianwenApiKey').value = savedQianwenApiKey;
+        } else if (savedApiProvider === 'moliark') {
+            const savedMoliarkApiKey = localStorage.getItem('moliarkApiKey');
+            if (savedMoliarkApiKey) document.getElementById('moliarkApiKey').value = savedMoliarkApiKey;
         }
         // 加载保存的音乐设置
         const savedBgm = localStorage.getItem('bgm');
@@ -137,6 +140,13 @@ function saveSettings() {
             return;
         }
         localStorage.setItem('qianwenApiKey', qianwenApiKey);
+    } else if (apiProvider === 'moliark') {
+        const moliarkApiKey = document.getElementById('moliarkApiKey').value.trim();
+        if (!moliarkApiKey) {
+            alert('请输入有效的模力方舟API密钥');
+            return;
+        }
+        localStorage.setItem('moliarkApiKey', moliarkApiKey);
     }
     alert('设置已保存成功');
     toggleSettings();
@@ -169,6 +179,7 @@ function toggleApiInputs() {
     const provider = document.getElementById('apiProvider').value;
     document.getElementById('deepseekApiItem').style.display = provider === 'deepseek' ? 'block' : 'none';
     document.getElementById('qianwenApiItem').style.display = provider === 'qianwen' ? 'block' : 'none';
+    document.getElementById('moliarkApiItem').style.display = provider === 'moliark' ? 'block' : 'none';
 }
 
 // 初始化时调用一次

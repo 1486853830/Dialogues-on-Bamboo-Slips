@@ -32,6 +32,7 @@
                     <select id="apiProvider" class="settings-input" onchange="toggleApiInputs()">
                         <option value="deepseek">DeepSeek</option>
                         <option value="qianwen">通义千问</option>
+                        <option value="moliark">模力方舟</option>
                     </select>
                 </div>
                 <div class="settings-item" id="deepseekApiItem">
@@ -41,6 +42,11 @@
                 <div class="settings-item" id="qianwenApiItem" style="display:none">
                     <label for="qianwenApiKey">API密钥（通义千问）：</label>
                     <input type="password" id="qianwenApiKey" placeholder="输入通义千问API密钥（部分语音支持）" class="settings-input">
+                </div>
+                <!-- 新增模力方舟API密钥输入项 -->
+                <div class="settings-item" id="moliarkApiItem" style="display:none">
+                    <label for="moliarkApiKey">API密钥（模力方舟）：</label>
+                    <input type="password" id="moliarkApiKey" placeholder="输入模力方舟API密钥" class="settings-input">
                 </div>
             </div>
 
