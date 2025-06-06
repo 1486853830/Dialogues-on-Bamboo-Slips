@@ -1,6 +1,6 @@
 import { BaseCharacter } from '../../JavaScript/baseCharacter.js';
 
-export class WangAnshi extends BaseCharacter {
+export class WangAnShi extends BaseCharacter {
     constructor() {
         super('王安石', {
             role: "system",

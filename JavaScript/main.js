@@ -20,7 +20,7 @@ import { ZhangJuzheng } from '../characters/张居正/zhangjuzheng.js';
 import { ZhangFei } from '../characters/张飞/zhangfei.js';
 import { ZhuYijun } from '../characters/朱翊钧/zhuyijun.js';
 import { SimaGuang } from '../characters/司马光/simaguang.js';
-import { WangAnshi } from '../characters/王安石/wanganshi.js';
+import { WangAnShi } from '../characters/王安石/wanganshi.js';
 import { TiemuZhen } from '../characters/铁木真/tiemuzhen.js';
 import { YingZheng } from '../characters/嬴政/yingzheng.js';
 import { LinghuChong } from '../characters/令狐冲/linghuchong.js';
@@ -34,89 +34,118 @@ document.addEventListener('DOMContentLoaded', () => {
     if (path.includes('huoqubing')) {
         const huoqubing = new HuoQubing();
         huoqubing.init();
+        window.currentCharacter = huoqubing;
     } else if (path.includes('liubang')) {
         const liubang = new LiuBang();
         liubang.init();
+        window.currentCharacter = liubang;
     } else if (path.includes('xiangyu')) {
         const xiangyu = new XiangYu();
         xiangyu.init();
+        window.currentCharacter = xiangyu;
     } else if (path.includes('caocao')) {
         const caocao = new CaoCao();
         caocao.init();
+        window.currentCharacter = caocao;
     } else if (path.includes('qiuchuji')) {
         const qiuchuji = new QiuChuji();
         qiuchuji.init();
+        window.currentCharacter = qiuchuji;
     } else if (path.includes('kongzi')) {
         const kongzi = new KongZi();
         kongzi.init();
+        window.currentCharacter = kongzi;
     } else if (path.includes('zhangliang')) {
         const zhangliang = new ZhangLiang();
         zhangliang.init();
+        window.currentCharacter = zhangliang;
     } else if (path.includes('fankuai')) {
         const fankuai = new FanKuai();
         fankuai.init();
+        window.currentCharacter = fankuai;
     } else if (path.includes('zhaoyun')) {
         const zhaoyun = new ZhaoYun();
         zhaoyun.init();
+        window.currentCharacter = zhaoyun;
     } else if (path.includes('songzanganbu')) {
         const songzanganbu = new Songzanganbu();
         songzanganbu.init();
+        window.currentCharacter = songzanganbu;
     } else if (path.includes('wenchenggongzhu')) {
         const wenchenggongzhu = new Wenchenggongzhu();
         wenchenggongzhu.init();
+        window.currentCharacter = wenchenggongzhu;
     } else if (path.includes('niudun')) {
         const niudun = new Niudun();
         niudun.init();
+        window.currentCharacter = niudun;
     } else if (path.includes('mengdeer')) {
         const mengdeer = new Mengdeer();
         mengdeer.init();
+        window.currentCharacter = mengdeer;
     } else if (path.includes('yelvabaoji')) {
         const yelvabaoji = new Yelvabaoji();
         yelvabaoji.init();
+        window.currentCharacter = yelvabaoji;
     } else if (path.includes('zhanfengzu')) {
         const zhanfengzu = new Zhanfengzu();
         zhanfengzu.init(); 
+        window.currentCharacter = zhanfengzu;
     } else if (path.includes('jinyiwei')) {
         const jinyiwei = new JinYiWei();
         jinyiwei.init(); 
+        window.currentCharacter = jinyiwei;
     } else if (path.includes('zhangqian')) {
         const zhangqian = new ZhangQian();
         zhangqian.init(); 
+        window.currentCharacter = zhangqian;
     } else if (path.includes('tenggeliqibing')) {
         const tenggeliqibing = new TengGeliQiBing();
         tenggeliqibing.init();
+        window.currentCharacter = tenggeliqibing;
     } else if (path.includes('zhangjuzheng')) {
         const zhangjuzheng = new ZhangJuzheng();
         zhangjuzheng.init();
+        window.currentCharacter = zhangjuzheng;
     } else if (path.includes('zhangfei')) {
         const zhangfei = new ZhangFei();
         zhangfei.init(); 
+        window.currentCharacter = zhangfei;
     } else if (path.includes('zhuyijun')) {
         const zhuyijun = new ZhuYijun();
         zhuyijun.init();
+        window.currentCharacter = zhuyijun;
     } else if (path.includes('simaguang')) {
         const simaguang = new SimaGuang();
         simaguang.init(); 
+        window.currentCharacter = simaguang;
     } else if (path.includes('wanganshi')) {
-        const wanganshi = new WangAnshi();
+        const wanganshi = new WangAnShi();
         wanganshi.init(); 
+        window.currentCharacter = wanganshi;
     } else if (path.includes('tiemuzhen')) {
         const tiemuzhen = new TiemuZhen();
         tiemuzhen.init(); 
+        window.currentCharacter = tiemuzhen;
     } else if (path.includes('yingzheng')) {
         const yingzheng = new YingZheng();
         yingzheng.init(); 
+        window.currentCharacter = yingzheng;
     } else if (path.includes('linghuchong')) {
         const linghuchong = new LinghuChong();
         linghuchong.init(); 
+        window.currentCharacter = linghuchong;
     } else if (path.includes('sunquan')) {
         const sunquan = new SunQuan();
         sunquan.init();  
+        window.currentCharacter = sunquan;
     } else if (path.includes('yuefei')) {
         const yuefei = new YueFei();
         yuefei.init();   
+        window.currentCharacter = yuefei;
     } else if (path.includes('liubei')) {
         const liubei = new LiuBei();
         liubei.init();
+        window.currentCharacter = liubei;
     }
 });

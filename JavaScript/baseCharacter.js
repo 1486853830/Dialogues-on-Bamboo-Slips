@@ -9,6 +9,7 @@ export class BaseCharacter {
     constructor(characterName, systemMessage) {
         this.API_KEY = localStorage.getItem('apiKey');
         this.characterName = characterName;
+        this.name = characterName; // 关键补充，确保 this.name 可用
         this.userName = localStorage.getItem('userName') || '访客';
         this.userGender = localStorage.getItem('userGender') || 'unknown';
         this.userPersona = localStorage.getItem('userPersona') || '';
@@ -35,11 +36,11 @@ export class BaseCharacter {
             (chatContainer, message, sender, messageIdCounter) => {
                 // 添加参数校验
                 const counter = Number.isInteger(messageIdCounter) ? messageIdCounter : this.messageIdCounter;
-                const result = displayMessage(chatContainer, message, sender, counter, this.characterName);
+                const result = displayMessage(chatContainer, message, sender, counter, this.name); // 传递角色名
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
                     addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
-                    synthesizeSpeech(message, this.characterName); // 自动流式播放
+                    synthesizeSpeech(message, this.name); // 自动流式播放
                 }
                 chatContainer.appendChild(result.messageContainer);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -83,7 +84,7 @@ export class BaseCharacter {
         if (userMessage) {
             const chatContainer = document.getElementById('chat-container');
             this.messageHistory.push(userMessage);
-            const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', this.messageIdCounter);
+            const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', this.messageIdCounter, this.name); // 传递角色名
             this.messageIdCounter = messageContainer.messageIdCounter;
             chatContainer.appendChild(messageContainer);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -92,20 +93,20 @@ export class BaseCharacter {
     }
 
     async getPresetResponseWrapper() {
-        return getPresetResponse(this.API_KEY, this.messageHistory, this.characterName);
+        return getPresetResponse(this.API_KEY, this.messageHistory, this.name);
     }
 
     async sendWelcomeMessageWrapper() {
-        if (!localStorage.getItem(`firstVisit_${this.characterName}`)) return;
+        if (!localStorage.getItem(`firstVisit_${this.name}`)) return;
         
         const chatContainer = document.getElementById('chat-container');
         await sendWelcomeMessage(
             this.API_KEY,
             this.messageHistory,
-            this.characterName,
+            this.name,
             chatContainer,
             (chatContainer, message, sender, messageIdCounter) => {
-                const result = displayMessage(chatContainer, message, sender, messageIdCounter);
+                const result = displayMessage(chatContainer, message, sender, messageIdCounter, this.name); // 传递角色名
                 this.messageIdCounter = result.messageIdCounter;
                 if (sender === 'bot') {
                     addRephraseButton(result.messageContainer, this.handleRephraseWrapper.bind(this));
@@ -115,7 +116,7 @@ export class BaseCharacter {
                 return result;
             }
         );
-        localStorage.removeItem(`firstVisit_${this.characterName}`);
+        localStorage.removeItem(`firstVisit_${this.name}`);
     }
 
     initEventListenersWrapper() {
@@ -127,7 +128,7 @@ export class BaseCharacter {
     }
 
     loadHistory() {
-        const savedHistory = localStorage.getItem(`chatHistory_${this.characterName}`);
+        const savedHistory = localStorage.getItem(`chatHistory_${this.name}`);
         const chatContainer = document.getElementById('chat-container');
         
         try {
@@ -145,11 +146,11 @@ export class BaseCharacter {
                     if(msg.role === 'system') return;
                     
                     if (msg.role === 'user') {
-                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter);
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'user', this.messageIdCounter, this.name); // 传递角色名
                         this.messageIdCounter = messageContainer.messageIdCounter;
                         chatContainer.appendChild(messageContainer);
                     } else if (msg.role === 'assistant') {
-                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter);
+                        const { messageContainer } = displayMessage(chatContainer, msg.content, 'bot', this.messageIdCounter, this.name); // 传递角色名
                         this.messageIdCounter = messageContainer.messageIdCounter;
                         addRephraseButton(messageContainer, this.handleRephraseWrapper.bind(this));
                         chatContainer.appendChild(messageContainer);
@@ -157,12 +158,12 @@ export class BaseCharacter {
                 });
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             } else {
-                localStorage.setItem(`firstVisit_${this.characterName}`, 'true');
+                localStorage.setItem(`firstVisit_${this.name}`, 'true');
                 this.sendWelcomeMessageWrapper();
             }
         } catch (error) {
             console.error('历史记录加载失败:', error);
-            localStorage.removeItem(`chatHistory_${this.characterName}`);
+            localStorage.removeItem(`chatHistory_${this.name}`);
             chatContainer.innerHTML = '<div class="error">历史记录损坏，已重置</div>';
             this.messageHistory = [this.systemMessage];
         }
@@ -176,7 +177,7 @@ export class BaseCharacter {
         this.loadHistory();
         initBackgroundVideo();
         this.initBackground();
-        initMusicControls(this.characterName);
+        initMusicControls(this.name);
 
         document.body.addEventListener('click', () => {
             let audio = document.getElementById('tts-audio');

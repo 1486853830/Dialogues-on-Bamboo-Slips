@@ -23,6 +23,8 @@ import { displayMessage } from './messageHandler.js';
 export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase, chatContainer, handleRephrase, callback) {
     const apiProvider = getApiProvider();
     const apiKey = getApiKey();
+    // 获取当前角色名
+    const characterName = window.currentCharacter?.name || "默认";
 
     if (messageHistory.length === 1) {
         messageHistory[0].content = `你正在与${localStorage.getItem('userName') || '访客'}(${localStorage.getItem('userGender') || 'unknown'})对话。
@@ -35,7 +37,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
     if (!isRephrase) {
         if (!userInput.trim()) return;
         messageHistory.push({ role: "user", content: userInput });
-        const { messageContainer } = displayMessage(chatContainer, userInput, 'user', 0);
+        const { messageContainer } = displayMessage(chatContainer, userInput, 'user', 0, characterName);
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         document.getElementById('user-input').value = '';
@@ -46,7 +48,7 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
         const userMessage = handleRephrase();
         if (userMessage) {
             messageHistory.push(userMessage);
-            const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', 0);
+            const { messageContainer } = displayMessage(chatContainer, userMessage.content, 'user', 0, characterName);
             chatContainer.appendChild(messageContainer);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -96,9 +98,9 @@ export async function sendMessage(API_KEY, messageHistory, userInput, isRephrase
         // 修复messageIdCounter参数传递
         let result;
         if (typeof callback === 'function') {
-            result = callback(chatContainer, botResponse, 'bot', 0); // 使用固定初始值
+            result = callback(chatContainer, botResponse, 'bot', 0, characterName); // 传递角色名
         } else {
-            result = displayMessage(chatContainer, botResponse, 'bot', 0);
+            result = displayMessage(chatContainer, botResponse, 'bot', 0, characterName);
         }
 
         const messageContainer = result.messageContainer;
@@ -143,7 +145,7 @@ export async function sendWelcomeMessage(API_KEY, messageHistory, characterName,
             loadingElement.parentNode.removeChild(loadingElement);
         }
 
-        const { messageContainer } = displayMessage(chatContainer, welcomeMessage, 'bot', 0);
+        const { messageContainer } = displayMessage(chatContainer, welcomeMessage, 'bot', 0, characterName);
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         messageHistory.push({ role: "assistant", content: welcomeMessage });
@@ -154,7 +156,7 @@ export async function sendWelcomeMessage(API_KEY, messageHistory, characterName,
             loadingElement.parentNode.removeChild(loadingElement);
         }
         const fallbackMessage = `（微笑）${localStorage.getItem('userName') || '访客'}，你好！`;
-        const { messageContainer } = displayMessage(chatContainer, fallbackMessage, 'bot', 0);
+        const { messageContainer } = displayMessage(chatContainer, fallbackMessage, 'bot', 0, characterName);
         chatContainer.appendChild(messageContainer);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         messageHistory.push({ role: "assistant", content: fallbackMessage });

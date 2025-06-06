@@ -1,6 +1,8 @@
 import { synthesizeSpeech } from './speechSynthesis.js';
 
 export function displayMessage(chatContainer, message, sender, messageIdCounter, characterName = "默认") {
+    console.log('displayMessage 传入的 characterName:', characterName); // 加这一行
+
     const halfScreen = localStorage.getItem('halfScreen') === 'true';
     if (halfScreen) {
         chatContainer.style.position = 'fixed';
