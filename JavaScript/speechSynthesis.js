@@ -74,6 +74,10 @@ export async function synthesizeSpeechStream(text, character = "默认") {
     const playId = ++currentPlayId;
     try {
         text = stripBrackets(text);
+        // 合并多余空行，只保留一行
+        text = text.replace(/\n\s*\n+/g, '\n');
+        // 去除首尾空白
+        text = text.trim();
         setMusicVolume(0.5); // 语音播放前降低音量
         const apiKey = localStorage.getItem('qianwenApiKey');
         const ttsParams = getTTSParams(character);
