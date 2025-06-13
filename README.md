@@ -2,7 +2,7 @@
 
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
 [![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)
-[![Fork me on Gitee](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/widgets/widget_1.svg)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips)
+
 
 ## 项目简介
 ![主页展示](Technical-documentation/主页展示.png)
