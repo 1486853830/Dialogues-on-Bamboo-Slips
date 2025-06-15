@@ -284,3 +284,35 @@ export async function getPresetResponse(API_KEY, messageHistory, characterName) 
         ];
     }
 }
+
+
+async function callAliDigitalHuman(apiKey, text, character) {
+    try {
+        const response = await fetch("http://localhost:3000/ali-digital-human", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                text,
+                character
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('请求失败');
+        }
+
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        return videoUrl;
+    } catch (error) {
+        console.error('调用阿里云数字人失败:', error);
+        throw error;
+    }
+}
+
+// 在合适的位置调用这个函数，例如消息处理部分
+// const videoUrl = await callAliDigitalHuman(apiKey, botResponse, selectedCharacter);
+// 然后将videoUrl赋值给video元素的src

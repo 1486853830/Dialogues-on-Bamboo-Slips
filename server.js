@@ -499,3 +499,30 @@ app.post('/ws-tts', async (req, res) => {
         if (ws && ws.readyState === WebSocket.OPEN) ws.close();
     });
 });
+
+// 阿里云数字人接口
+app.post('/ali-digital-human', async (req, res) => {
+    try {
+        const result = await axios.post('https://your-aliyun-digital-human-api-url', {
+            // 这里根据实际API文档添加参数
+            text: req.body.text,
+            character: req.body.character
+        }, {
+            headers: {
+                'Authorization': `Bearer ${req.headers.authorization.split(' ')[1]}`,
+                'Content-Type': 'application/json'
+            },
+            responseType: 'arraybuffer'
+        });
+
+        res.set({
+            'Content-Type': 'video/mp4', // 根据实际返回类型调整
+            'Content-Length': result.headers['content-length'],
+            'Cache-Control': 'no-cache'
+        });
+        res.send(result.data);
+    } catch (error) {
+        console.error('阿里云数字人服务错误:', error);
+        res.status(500).json({ error: '阿里云数字人服务不可用' });
+    }
+});
