@@ -164,7 +164,7 @@ button {
         margin-left: auto !important;
         margin-right: 10px;
     }
-    
+
     .bot-message {
         max-width: 30%;
         margin-right: auto !important;
@@ -179,7 +179,8 @@ button {
     text-align: left;
     display: block;
     width: fit-content;
-    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
+    max-width: 80%;
+    /* 这个定义会被后面的重复定义覆盖 */
 }
 
 .bot-message {
@@ -189,7 +190,8 @@ button {
     text-align: left;
     display: block;
     width: fit-content;
-    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
+    max-width: 80%;
+    /* 这个定义会被后面的重复定义覆盖 */
 }
 
 /* 将媒体查询移到所有消息定义之后 */
@@ -199,7 +201,7 @@ button {
         margin-left: auto !important;
         margin-right: 10px !important;
     }
-    
+
     .bot-message {
         max-width: 30% !important;
         margin-right: auto !important;
@@ -215,7 +217,8 @@ button {
     text-align: left;
     display: block;
     width: fit-content;
-    max-width: 80%; /* 这个定义会被后面的重复定义覆盖 */
+    max-width: 80%;
+    /* 这个定义会被后面的重复定义覆盖 */
 }
 
 /* 添加加载动画样式 */
@@ -346,17 +349,36 @@ h1 {
 }
 
 #input-area {
-    background: rgba(0, 0, 0, 0.7);
-    /* 黑色背景 */
+    background: rgba(0, 0, 0, 0.3); /* 原为 rgba(255,255,255,0.1) */
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 8px 15px;
 }
+
+/* 可选：调整输入框透明效果 */
+#user-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+}
+
 
 #user-input {
     background: rgba(30, 30, 30, 0.8);
     /* 深灰背景 */
     color: white;
     /* 白色文字 */
-    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);  /* 降低边框透明度 */
+    box-shadow: none;  /* 移除默认阴影 */
+}
+
+#user-input:focus {
+    border-color: rgba(0, 123, 255, 0.3);  /* 调淡聚焦边框颜色 */
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.1);  /* 减少发光范围 */
 }
 
 #user-input::placeholder {
@@ -455,9 +477,12 @@ button {
 }
 
 .rephrase-btn {
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* IE10+ */
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
     user-select: none;
     cursor: default;
 }
@@ -536,9 +561,12 @@ button {
 }
 
 .play-btn {
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* IE10+ */
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
     user-select: none;
     cursor: default;
 }
@@ -564,7 +592,3 @@ button {
     position: relative;
     padding-left: 30px;
 }
-
-
-
-
