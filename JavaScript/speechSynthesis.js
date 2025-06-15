@@ -14,7 +14,7 @@ const characterTTSParams = {
     "刘邦":     { voice_type: "longfei", rate: 1.0, pitch: 0.95, volume: 100 },
     "刘备":     { voice_type: "longfei", rate: 1.0, pitch: 0.95, volume: 100 },
     "孟德尔":   { voice_type: "longfei", rate: 1.0, pitch: 1.0, volume: 100 },
-    "牛顿":     { voice_type: "loogfei", rate: 1.0, pitch: 1.0, volume: 100 },
+    "牛顿":     { voice_type: "longfei", rate: 1.0, pitch: 1.0, volume: 100 },
     "丘处机":   { voice_type: "longfei", rate: 1.0, pitch: 1.0, volume: 100 },
     "司马光":   { voice_type: "longshu", rate: 1.0, pitch: 1.0, volume: 100 },
     "松赞干布": { voice_type: "longyuan", rate: 1.0, pitch: 1.0, volume: 100 },
