@@ -5,7 +5,7 @@ let currentPlayId = 0; // 全局唯一播放标记，防止多段语音乱套
 
 // 历史人物语音参数表，可自行扩展，配音啥的都在这
 const characterTTSParams = {
-    "曹操":     { voice_type: "longshu", rate: 0.9, pitch: 0.95, volume: 100 },
+    "曹操":     { voice_type: "longfei", rate: 0.9, pitch: 0.95, volume: 100 },
     "樊哙":     { voice_type: "longshu", rate: 1.0, pitch: 0.9, volume: 100 },
     "霍去病":   { voice_type: "longcheng", rate: 1.0, pitch: 1.0, volume: 100 },
     "锦衣卫":   { voice_type: "longfei", rate: 1.0, pitch: 1.0, volume: 100 },
