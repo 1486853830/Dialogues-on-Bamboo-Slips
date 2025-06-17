@@ -64,12 +64,6 @@ body {
     color: #ffffff;
 }
 
-.bot-message {
-    background-color: rgba(50, 50, 50, 0.7);
-    /* 深灰色机器人消息 */
-    color: #ffffff;
-}
-
 #input-area {
     display: flex;
     gap: 10px;
@@ -82,10 +76,15 @@ body {
     max-width: 760px;
     backdrop-filter: blur(10px);
     /* 毛玻璃效果 */
-    padding: 10px;
-    border-radius: 8px;
+    padding: 6px;
     background: rgba(255, 255, 255, 0.2);
     /* 半透明背景 */
+    background: rgba(0, 0, 0, 0.3); /* 原为 rgba(255,255,255,0.1) */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #user-input {
@@ -153,25 +152,6 @@ button {
     max-width: 80%;
 }
 
-.bot-message {
-    max-width: 80%;
-}
-
-/* 添加宽屏响应式样式 */
-@media (min-width: 768px) {
-    .user-message {
-        max-width: 30%;
-        margin-left: auto !important;
-        margin-right: 10px;
-    }
-
-    .bot-message {
-        max-width: 30%;
-        margin-right: auto !important;
-        margin-left: 10px;
-    }
-}
-
 .user-message {
     background-color: rgba(227, 242, 253, 0.7);
     margin-left: auto;
@@ -184,14 +164,18 @@ button {
 }
 
 .bot-message {
-    background-color: rgba(241, 241, 241, 0.7);
     margin-right: auto;
     margin-left: 0;
     text-align: left;
     display: block;
     width: fit-content;
     max-width: 80%;
-    /* 这个定义会被后面的重复定义覆盖 */
+    background-color: rgba(20, 20, 20, 0.7);
+    /* 深灰背景 */
+    color: white;
+    /* 白色文字 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 浅色边框 */
 }
 
 /* 将媒体查询移到所有消息定义之后 */
@@ -207,18 +191,6 @@ button {
         margin-right: auto !important;
         margin-left: 10px !important;
     }
-}
-
-/* 删除下方重复的.user-message和.bot-message定义 */
-.bot-message {
-    background-color: rgba(241, 241, 241, 0.7);
-    margin-right: auto;
-    margin-left: 0;
-    text-align: left;
-    display: block;
-    width: fit-content;
-    max-width: 80%;
-    /* 这个定义会被后面的重复定义覆盖 */
 }
 
 /* 添加加载动画样式 */
@@ -255,7 +227,6 @@ button {
     width: fit-content;
     position: absolute;
     top: 20px;
-    left: 20px;
 }
 
 .title-avatar {
@@ -339,25 +310,6 @@ h1 {
     /* 浅色边框 */
 }
 
-.bot-message {
-    background-color: rgba(20, 20, 20, 0.7);
-    /* 深灰背景 */
-    color: white;
-    /* 白色文字 */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    /* 浅色边框 */
-}
-
-#input-area {
-    background: rgba(0, 0, 0, 0.3); /* 原为 rgba(255,255,255,0.1) */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    padding: 8px 15px;
-}
-
 /* 可选：调整输入框透明效果 */
 #user-input {
     background: rgba(255, 255, 255, 0.1);
@@ -421,11 +373,6 @@ h1 {
 .message {
     padding: 12px 16px;
     font-size: inherit;
-}
-
-#input-area {
-    padding: 6px;
-    /* 原8px */
 }
 
 #user-input {
