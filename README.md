@@ -1,4 +1,4 @@
-# 青简问对 | 文脉千年待君询
+# 🎉青简问对 | 文脉千年待君询
 
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
 [![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)
