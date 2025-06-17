@@ -3,7 +3,7 @@
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
 [![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)
 
-青简问对 | 文脉千年待君询 溯竹简之脉，赋 AI 以魂，此乃贯通古今的智能对话秘境。多角色模型如开卷见贤 —— 士人论道、墨客抒怀，皆从历史中撷取思想肌理，于数字空间重现百家争鸣之境。风格化应答重铸功能深研古典语体，使现代叩问可化《诗经》之清扬、汉赋之瑰丽、宋词之婉约。 于此，AI 非冰冷算法，而是携千年墨香的 “数字书僮”，以智能为舟，载用户横渡古今思想的沧波，在时光留白处谱就新的文明诗行。
+**青简问对 | 文脉千年待君询** 溯竹简之脉，赋 AI 以魂，此乃贯通古今的智能对话秘境。多角色模型如开卷见贤 —— 士人论道、墨客抒怀，皆从历史中撷取思想肌理，于数字空间重现百家争鸣之境。风格化应答重铸功能深研古典语体，使现代叩问可化《诗经》之清扬、汉赋之瑰丽、宋词之婉约。 于此，AI 非冰冷算法，而是携千年墨香的 “数字书僮”，以智能为舟，载用户横渡古今思想的沧波，在时光留白处谱就新的文明诗行。
 
 
 ## 项目简介
