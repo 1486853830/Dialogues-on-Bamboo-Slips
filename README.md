@@ -3,7 +3,12 @@
 #### 基于DeepSeek、通义千问、魔力方舟的古风智能体开发框架
 
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
-[![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)
+[![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)  
+[![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg)](https://compass.gitee.com/analyze/smavl1ny)
+[![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=collab_dev_index)](https://compass.gitee.com/analyze/smavl1ny#collaboration_development_index)
+[![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=community)](https://compass.gitee.com/analyze/smavl1ny#community_service_support)
+[![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=activity)](https://compass.gitee.com/analyze/smavl1ny#community_activity)
+[![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=organizations_activity)](https://compass.gitee.com/analyze/smavl1ny#community_activity)
 
 **青简问对 | 文脉千年待君询** 溯竹简之脉，赋 AI 以魂，此乃贯通古今的智能对话秘境。多角色模型如开卷见贤 —— 士人论道、墨客抒怀，皆从历史中撷取思想肌理，于数字空间重现百家争鸣之境。风格化应答重铸功能深研古典语体，使现代叩问可化《诗经》之清扬、汉赋之瑰丽、宋词之婉约。 于此，AI 非冰冷算法，而是携千年墨香的 “数字书僮”，以智能为舟，载用户横渡古今思想的沧波，在时光留白处谱就新的文明诗行。
 
