@@ -1,6 +1,6 @@
 # 🎉青简问对 | 文脉千年待君询
 
-#### 基于DeepSeek、通义千问、魔力方舟的古风智能体开发框架
+#### 🎉集成模力方舟、DeepSeek、阿里云等API的AI聊天智能体开发框架
 
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
 [![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)    
