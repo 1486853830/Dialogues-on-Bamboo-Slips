@@ -3,7 +3,8 @@
 #### 基于DeepSeek、通义千问、魔力方舟的古风智能体开发框架
 
 [![star](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/star.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/stargazers)
-[![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)  
+[![fork](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/badge/fork.svg?theme=dark)](https://gitee.com/BambooScript-Dialogues/Dialogues-on-Bamboo-Slips/members)    
+
 [![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg)](https://compass.gitee.com/analyze/smavl1ny)
 [![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=collab_dev_index)](https://compass.gitee.com/analyze/smavl1ny#collaboration_development_index)
 [![OSS Compass Analyze](https://compass.gitee.com/badge/smavl1ny.svg?metric=community)](https://compass.gitee.com/analyze/smavl1ny#community_service_support)
